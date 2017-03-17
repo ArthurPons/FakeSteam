@@ -2,12 +2,12 @@
 A video game store for a class about web application's architecture.
 
 
-##Technologies
+## Technologies
 The project will be written in java using the [Eclipse IDE](https://eclipse.org/). The application server will be [Wildfly](wildfly.org).
 
 ***
 
-##Useful info
+## Useful info
 
 Everything concerning the project : https://webapplis.utc.fr/sr03/
 
