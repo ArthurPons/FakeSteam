@@ -88,18 +88,30 @@ public class CommentDaoImpl implements CommentDao{
 	private static Comment map( ResultSet resultSet ) throws SQLException {
 	    Comment comment = new Comment();
 	    comment.setIdComment( resultSet.getInt( "id_comment" ) );
+<<<<<<< HEAD
 	    comment.setMessageComment( resultSet.getString("message_comment") );
 	   
 	    
 	    //recherche de l'objet game
 	    int gameId = resultSet.getInt("fk_game_comment");
 	    System.out.print("game : "+gameId+"\n");
+=======
+	    comment.setMessageComment( resultSet.getString("messageComment") );
+	   
+	    
+	    //recherche de l'objet game
+	    int gameId = resultSet.getInt("game");
+>>>>>>> b7148432fc5e4c48c627a473912a1fece9e1e616
 	    GameDaoImpl g=new GameDaoImpl(daoFactory);
 	    comment.setGame(g.find(gameId));
 	    
 	    //reccherche de l'objet user
+<<<<<<< HEAD
 	    int userId = resultSet.getInt("fk_user_comment");
 	    System.out.print("user : "+userId+"\n");
+=======
+	    int userId = resultSet.getInt("user");
+>>>>>>> b7148432fc5e4c48c627a473912a1fece9e1e616
 	    UserDaoImpl u = new UserDaoImpl(daoFactory);
 	    comment.setUser(u.find(userId));
 	    

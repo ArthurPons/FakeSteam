@@ -13,7 +13,10 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 
 import bean.Game;
+<<<<<<< HEAD
 import bean.User;
+=======
+>>>>>>> b7148432fc5e4c48c627a473912a1fece9e1e616
 import dao.DaoFactory;
 
 @Path("Game")
@@ -30,6 +33,7 @@ public class GameRest {
 		
 		Game g = gameDao.find(i);
 		return g;
+<<<<<<< HEAD
 		
 	}
 	
@@ -46,6 +50,29 @@ public class GameRest {
 		
 		return u;
 			
+=======
+		/*
+		List<Game> listOfGames = new ArrayList<Game>();
+		
+		Game g = new Game();
+		g.setPictureUrlGame("image.com");
+		g.setPriceGame((float) 49.99);
+		g.setIdGame(1);
+		g.setTitleGame("Dark Souls");
+		
+		Game g2 = new Game();
+		g2.setPictureUrlGame("planete.pouf");
+		g2.setPriceGame((float) 13.23);
+		g2.setIdGame(1);
+		g2.setTitleGame("Dragon's Lair");
+		
+		
+		listOfGames.add(g);
+		listOfGames.add(g2);
+		*/
+		
+		
+>>>>>>> b7148432fc5e4c48c627a473912a1fece9e1e616
 
 	}
 

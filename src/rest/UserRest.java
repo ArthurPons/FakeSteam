@@ -32,6 +32,7 @@ public class UserRest {
 			
 
 	}
+<<<<<<< HEAD
 	
 	
 	@GET
@@ -51,5 +52,7 @@ public class UserRest {
 	}
 	
 	
+=======
+>>>>>>> b7148432fc5e4c48c627a473912a1fece9e1e616
 
 }

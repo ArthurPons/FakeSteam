@@ -1,0 +1,6 @@
+/build/
+.classpath
+/src/dao/dao.properties
+.project
+.tern-project
+.settings
