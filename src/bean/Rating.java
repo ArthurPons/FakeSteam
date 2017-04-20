@@ -65,5 +65,15 @@ public class Rating implements Serializable {
 	public void setUser(User user) {
 		this.user = user;
 	}
+	
+	public int getGameId()
+	{
+		return game.getIdGame();
+	}
+
+	public int getUserId()
+	{
+		return user.getIdUser();
+	}
 
 }

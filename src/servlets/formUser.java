@@ -14,7 +14,7 @@ import dao.GameDao;
 import dao.UserDao;
 
 
-public class formUser extends HttpServlet {
+public class FormUser extends HttpServlet {
 	
     public static final String CONF_DAO_FACTORY = "daofactory";
     public static final String ATT_GAME         = "game";
@@ -41,7 +41,7 @@ public class formUser extends HttpServlet {
     public void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
        
     	System.out.print("passe formulaire\n");
-    	CheckFormUser form = new CheckFormUser( userDao );
+    	DbFormUser form = new DbFormUser( userDao );
 
         /* Traitement de la requête et récupération du bean en résultant */
     	User user = form.addUser(request);

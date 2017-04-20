@@ -7,22 +7,21 @@ import javax.servlet.http.HttpServletRequest;
 
 
 import bean.Game;
-import bean.User;
 import dao.DaoException;
 import dao.GameDao;
-import dao.UserDao;
 
-public final class CheckFormUser {
-    private static final String CHAMP_USERNAME = "username";
-    private static final String CHAMP_PWD = "pwd";
+public final class DbFormGame {
+    private static final String CHAMP_URL = "url";
+    private static final String CHAMP_PRICE = "price";
+    private static final String CHAMP_TITLE  = "title";
     
    
     private String resultat;
     private Map<String, String> erreurs          = new HashMap<String, String>();
-    private UserDao userDao;
+    private GameDao      gameDao;
 
-    public CheckFormUser( UserDao userDao ) {
-        this.userDao = userDao;
+    public DbFormGame( GameDao gameDao ) {
+        this.gameDao = gameDao;
     }
 
     public Map<String, String> getErreurs() {
@@ -33,20 +32,18 @@ public final class CheckFormUser {
         return resultat;
     }
 
-    public User addUser( HttpServletRequest request ) {
-        String username = getValeurChamp( request, CHAMP_USERNAME );
-        String pwd = getValeurChamp( request, CHAMP_PWD );
+    public Game addGame( HttpServletRequest request ) {
+        String url = getValeurChamp( request, CHAMP_URL );
+        String price = getValeurChamp( request, CHAMP_PRICE );
+        String title = getValeurChamp( request, CHAMP_TITLE );
         
-        
-        System.out.print("username :"+username+"\n");
-        System.out.print("pwd"+pwd+"\n");
-        User user = new User();
-        user.setUsernameUser(username);
-        user.setPwdUser(pwd);
-           
+        Game game = new Game();
+        game.setPictureUrlGame(url);
+        game.setPriceGame((float)Integer.parseInt(price));
+        game.setTitleGame(title);
         
         try {          
-                userDao.create( user );
+                gameDao.create( game );
                 resultat = "Succès de l'inscription.";
             
         } catch ( DaoException e ) {
@@ -54,7 +51,7 @@ public final class CheckFormUser {
             e.printStackTrace();
         }
 
-        return user;
+        return game;
     }
 
 

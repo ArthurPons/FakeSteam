@@ -10,29 +10,27 @@
 	    <welcome-file>default.jsp</welcome-file>
  	 </welcome-file-list>
   
-<<<<<<< HEAD
+
   	 <!--   servlet  -->
-=======
-  
->>>>>>> b7148432fc5e4c48c627a473912a1fece9e1e616
- 	 <listener>
+
+   	 <listener>
 		<listener-class>
 			org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap
 		</listener-class>
  	 </listener>
   
  	<servlet>
-		<servlet-name>Inscription</servlet-name>
-		<servlet-class>servlets.test</servlet-class>
+		<servlet-name>add game</servlet-name>
+		<servlet-class>servlets.FormGame</servlet-class>
  	</servlet>
   	<servlet-mapping>
-		<servlet-name>Inscription</servlet-name>
-		<url-pattern>/inscription</url-pattern>
+		<servlet-name>add game</servlet-name>
+		<url-pattern>/addGame</url-pattern>
  	 </servlet-mapping>
   
  	 <servlet>
 		<servlet-name>add user</servlet-name>
-		<servlet-class>servlets.formUser</servlet-class>
+		<servlet-class>servlets.FormUser</servlet-class>
  	 </servlet>
   	<servlet-mapping>
 		<servlet-name>add user</servlet-name>
@@ -48,11 +46,10 @@
 		<url-pattern>/addComment</url-pattern>
   	</servlet-mapping>
   
-<<<<<<< HEAD
+
   
   <!--   Resteasy  -->
-=======
->>>>>>> b7148432fc5e4c48c627a473912a1fece9e1e616
+
   	<servlet> 
 		<servlet-name>Resteasy</servlet-name>
 		<servlet-class>org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher</servlet-class>
@@ -71,11 +68,10 @@
 	</context-param>
 	
 	
-<<<<<<< HEAD
+
 	 <!--   Faces Servlet  -->
 	
-=======
->>>>>>> b7148432fc5e4c48c627a473912a1fece9e1e616
+
 	<servlet>
 		<servlet-name>Faces Servlet</servlet-name>
 		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>

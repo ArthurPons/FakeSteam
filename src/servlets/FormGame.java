@@ -12,11 +12,11 @@ import dao.DaoFactory;
 import dao.GameDao;
 
 
-public class test extends HttpServlet {
+public class FormGame extends HttpServlet {
     public static final String CONF_DAO_FACTORY = "daofactory";
     public static final String ATT_GAME         = "game";
     public static final String ATT_FORM         = "form";
-    public static final String VUE              = "/WEB-INF/inscription.jsp";
+    public static final String VUE              = "/WEB-INF/formGame.jsp";
 
     private GameDao    gameDao;
 
@@ -38,7 +38,7 @@ public class test extends HttpServlet {
     public void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
        
     	System.out.print("passe formulaire\n");
-    	 formulaire form = new formulaire( gameDao );
+    	DbFormGame form = new DbFormGame( gameDao );
 
         /* Traitement de la requête et récupération du bean en résultant */
     	 Game game = form.addGame( request );

@@ -37,7 +37,7 @@ public class FormComment extends HttpServlet {
 
     public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
         /* Affichage de la page d'inscription */
-    	System.out.print("passe get\n");
+    	System.out.print("passe get comment\n");
         this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
     }
 

@@ -1,50 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" 
-xmlns:h="http://java.sun.com/jsf/html"
-xmlns:f="http://java.sun.com/jsf/core"
->
-<h:head>
-<title>formComment.xhtml</title>
-</h:head>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      >
+    <h:body>
 
-<h:body>
+    	<h1>JSF 2 dropdown box example</h1>
+    	<h:form>
 
-<h1>JSF 2.0 View Data From The Database Table Example</h1>
+		
+	      
+         <h:selectOneListbox label="#{Game.titleGame}" size="5">
+              	 <f:selectItems value="#{GameDao.findAll()}" var="u" itemValue="#{u.titleGame}" itemLabel="#{u.titleGame}"/>
+         </h:selectOneListbox><br />
+	       	
+	       	
 
-<h:dataTable value="#{GameDao.findAll()}" var="u" border="1">
+	        <br /><br />
 
-<h:column>
-<f:facet name="header">
-game ID
-</f:facet>
-#{u.idGame}
-</h:column>
+    	        <h:commandButton value="Submit" action="/WEB-INF/resultComment.xhtml" />
+	     
 
-<h:column>
-<f:facet name="header">
-url
-</f:facet>
-#{u.pictureUrlGame}
-</h:column>
-
-<h:column>
-<f:facet name="header">
-price
-</f:facet>
-#{u.priceGame}
-</h:column>
-
-<h:column>
-<f:facet name="header">
-title
-</f:facet>
-#{u.titleGame}
-</h:column>
-
-</h:dataTable>
-
-</h:body>
-
+    	</h:form>
+    </h:body>
 </html>

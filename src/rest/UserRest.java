@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import bean.User;
 import dao.DaoFactory;
 
-@Path("User")
+@Path("user")
 public class UserRest {
 		
 	@GET
@@ -28,17 +28,15 @@ public class UserRest {
 		
         User u = userDao.find(i);
 		
-		return u;
-			
+		return u;			
 
 	}
-<<<<<<< HEAD
-	
+
 	
 	@GET
 	@Path("/get")
 	@Produces(MediaType.APPLICATION_JSON)	
-	public List<User> printGameById() {
+	public List<User> printAllUsers() {
 		
 		
 		DaoFactory fact = DaoFactory.getInstance();
@@ -46,13 +44,10 @@ public class UserRest {
 		
         List<User> u = userDao.findAll();
 		
-		return u;
-			
+		return u;			
 
 	}
 	
-	
-=======
->>>>>>> b7148432fc5e4c48c627a473912a1fece9e1e616
+
 
 }

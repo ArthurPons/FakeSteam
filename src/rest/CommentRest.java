@@ -16,7 +16,7 @@ import bean.Game;
 import bean.User;
 import dao.DaoFactory;
 
-@Path("Comment")
+@Path("comment")
 public class CommentRest {
 		
 	@GET
@@ -34,6 +34,23 @@ public class CommentRest {
 		return c;
 		
 	}
+	
+	@GET
+	@Path("/get")
+	@Produces(MediaType.APPLICATION_JSON)	
+	public List<Comment> printAllComments() {
+		
+		
+		DaoFactory fact = DaoFactory.getInstance();
+		dao.CommentDao commentDao =fact.getCommentDao();
+      
+		
+        List<Comment> c = commentDao.findAll();
+		
+		return c;
+	}
+	
+	
 	
 	
 
