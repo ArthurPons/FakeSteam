@@ -15,7 +15,7 @@ import javax.faces.bean.ManagedBean;
 import bean.Game;
 import bean.User;
 
-@ManagedBean(name = "User")
+@ManagedBean(name = "UserDao")
 public class UserDaoImpl implements UserDao{
 
 	private static final String SQL_SELECT_BY_ID = "SELECT * FROM user WHERE id_user = ?";

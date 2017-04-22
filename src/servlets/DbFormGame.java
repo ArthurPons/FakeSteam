@@ -14,25 +14,15 @@ public final class DbFormGame {
     private static final String CHAMP_URL = "url";
     private static final String CHAMP_PRICE = "price";
     private static final String CHAMP_TITLE  = "title";
-    
-   
-    private String resultat;
-    private Map<String, String> erreurs          = new HashMap<String, String>();
+  
     private GameDao      gameDao;
 
     public DbFormGame( GameDao gameDao ) {
         this.gameDao = gameDao;
     }
 
-    public Map<String, String> getErreurs() {
-        return erreurs;
-    }
-
-    public String getResultat() {
-        return resultat;
-    }
-
-    public Game addGame( HttpServletRequest request ) {
+  
+    public void addGame( HttpServletRequest request ) {
         String url = getValeurChamp( request, CHAMP_URL );
         String price = getValeurChamp( request, CHAMP_PRICE );
         String title = getValeurChamp( request, CHAMP_TITLE );
@@ -43,15 +33,13 @@ public final class DbFormGame {
         game.setTitleGame(title);
         
         try {          
-                gameDao.create( game );
-                resultat = "Succès de l'inscription.";
+                gameDao.create( game );                
             
         } catch ( DaoException e ) {
-            resultat = "Échec de l'inscription : une erreur imprévue est survenue, merci de réessayer dans quelques instants.";
             e.printStackTrace();
         }
 
-        return game;
+      
     }
 
 

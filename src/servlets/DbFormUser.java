@@ -15,31 +15,19 @@ import dao.UserDao;
 public final class DbFormUser {
     private static final String CHAMP_USERNAME = "username";
     private static final String CHAMP_PWD = "pwd";
-    
    
-    private String resultat;
-    private Map<String, String> erreurs          = new HashMap<String, String>();
     private UserDao userDao;
 
     public DbFormUser( UserDao userDao ) {
         this.userDao = userDao;
     }
 
-    public Map<String, String> getErreurs() {
-        return erreurs;
-    }
 
-    public String getResultat() {
-        return resultat;
-    }
-
-    public User addUser( HttpServletRequest request ) {
+    public void addUser( HttpServletRequest request ) {
         String username = getValeurChamp( request, CHAMP_USERNAME );
         String pwd = getValeurChamp( request, CHAMP_PWD );
         
-        
-        System.out.print("username :"+username+"\n");
-        System.out.print("pwd"+pwd+"\n");
+      
         User user = new User();
         user.setUsernameUser(username);
         user.setPwdUser(pwd);
@@ -47,16 +35,13 @@ public final class DbFormUser {
         
         try {          
                 userDao.create( user );
-                resultat = "Succès de l'inscription.";
+               
             
-        } catch ( DaoException e ) {
-            resultat = "Échec de l'inscription : une erreur imprévue est survenue, merci de réessayer dans quelques instants.";
+        } catch ( DaoException e ) {            
             e.printStackTrace();
         }
-
-        return user;
+       
     }
-
 
 
     /*

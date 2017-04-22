@@ -44,7 +44,7 @@ public class FormUser extends HttpServlet {
     	DbFormUser form = new DbFormUser( userDao );
 
         /* Traitement de la requête et récupération du bean en résultant */
-    	User user = form.addUser(request);
+    	form.addUser(request);
     	    	 
         this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
     }

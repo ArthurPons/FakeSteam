@@ -7,7 +7,7 @@
        
     </head>
     <body>
-        <form method="post" action="inscription">
+        <form method="post" action="addGame">
 	    <fieldset>
                 <legend>Game</legend>
                 <p>Ajouter un jeu</p>

@@ -11,17 +11,23 @@
     	<h:form>
 
 		
-	      
-         <h:selectOneListbox label="#{Game.titleGame}" size="5">
-              	 <f:selectItems value="#{GameDao.findAll()}" var="u" itemValue="#{u.titleGame}" itemLabel="#{u.titleGame}"/>
-         </h:selectOneListbox><br />
-	       	
-	       	
-
-	        <br /><br />
-
-    	        <h:commandButton value="Submit" action="/WEB-INF/resultComment.xhtml" />
 	     
+         <h:inputText value="#{Comment.messageComment}" />
+         
+         <br /><br />  
+         
+         <h:selectOneListbox value="#{Comment.idGame}" size="5">              	
+              	 <f:selectItems value="#{GameDao.findAll()}" var="g" itemValue="#{g.idGame}" itemLabel="#{g.titleGame}"/>
+         </h:selectOneListbox><br />       	
+	     <br /><br />   
+	     
+	     <h:selectOneListbox value="#{Comment.idUser}" size="5">              	
+              	 <f:selectItems value="#{UserDao.findAll()}" var="u" itemValue="#{u.idUser}" itemLabel="#{u.usernameUser}"/>
+         </h:selectOneListbox><br />       	
+         
+	     <br /><br />   	       	        		
+	     		
+	     <h:commandButton value="Submit" action="#{Comment.submit()}" />
 
     	</h:form>
     </h:body>

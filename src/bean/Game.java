@@ -15,6 +15,7 @@ import java.util.List;
 public class Game implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
+
 	private int idGame;	
 	private String pictureUrlGame;	
 	private float priceGame;	
@@ -168,4 +169,10 @@ public class Game implements Serializable {
 		return userOwnsGame;
 	}
 
+	/*
+	 public void submit() {
+	     		 	
+	        System.out.println("Submitted titleGame : "+titleGame+"\n");
+	    }
+	    */
 }

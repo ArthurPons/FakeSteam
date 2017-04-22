@@ -37,15 +37,7 @@
 		<url-pattern>/addUser</url-pattern>
   	</servlet-mapping>
 	
-	<servlet>
-		<servlet-name>add comment</servlet-name>
-		<servlet-class>servlets.FormComment</servlet-class>
- 	 </servlet>
-  	<servlet-mapping>
-		<servlet-name>add comment</servlet-name>
-		<url-pattern>/addComment</url-pattern>
-  	</servlet-mapping>
-  
+	 
 
   
   <!--   Resteasy  -->

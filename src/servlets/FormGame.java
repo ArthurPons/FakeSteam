@@ -41,7 +41,7 @@ public class FormGame extends HttpServlet {
     	DbFormGame form = new DbFormGame( gameDao );
 
         /* Traitement de la requête et récupération du bean en résultant */
-    	 Game game = form.addGame( request );
+    	 form.addGame( request );
     	 //gameDao.create(game);
 
         /* Stockage du formulaire et du bean dans l'objet request */
