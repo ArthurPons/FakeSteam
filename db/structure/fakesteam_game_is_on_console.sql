@@ -23,12 +23,14 @@ DROP TABLE IF EXISTS `game_is_on_console`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `game_is_on_console` (
-  `fk_game` int(11) NOT NULL,
-  `fk_console` int(11) NOT NULL,
-  PRIMARY KEY (`fk_game`,`fk_console`),
-  KEY `fk_console_idx` (`fk_console`),
-  CONSTRAINT `fk_game` FOREIGN KEY (`fk_game`) REFERENCES `game` (`id_game`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_console` FOREIGN KEY (`fk_console`) REFERENCES `console` (`id_console`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  `fk_game_game_is_on_console` int(11) NOT NULL,
+  `fk_console_game_is_on_console` int(11) NOT NULL,
+  `id_game_is_on_console` int(11) NOT NULL,
+  PRIMARY KEY (`id_game_is_on_console`),
+  KEY `fk_game_idx` (`fk_game_game_is_on_console`),
+  KEY `fk_console_idx` (`fk_console_game_is_on_console`),
+  CONSTRAINT `fk_game` FOREIGN KEY (`fk_game_game_is_on_console`) REFERENCES `game` (`id_game`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_console` FOREIGN KEY (`fk_console_game_is_on_console`) REFERENCES `console` (`id_console`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -41,4 +43,4 @@ CREATE TABLE `game_is_on_console` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-04-07 14:58:00
+-- Dump completed on 2017-04-23 17:50:01

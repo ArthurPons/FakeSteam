@@ -9,27 +9,27 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import bean.Console;
+import bean.Genre;
 
-public class ConsoleDaoImpl implements ConsoleDao{
+public class GenreDaoImpl implements GenreDao{
 
 	private static DaoFactory daoFactory;
-	private static final String SQL_SELECT_BY_ID = "SELECT * FROM console WHERE id_console = ?";
-	private static final String SQL_INSERT = "INSERT INTO console (name_console, year_console) VALUES (?,?)";
-	private static final String SQL_SELECT_ALL = "SELECT * FROM console";
+	private static final String SQL_SELECT_BY_ID = "SELECT * FROM genre WHERE id_genre = ?";
+	private static final String SQL_INSERT = "INSERT INTO genre (name_genre) VALUES (?)";
+	private static final String SQL_SELECT_ALL = "SELECT * FROM genre";
 	
-	public ConsoleDaoImpl()
+	public GenreDaoImpl()
 	{
 		daoFactory= DaoFactory.getInstance();
 	}
 	
-	public ConsoleDaoImpl(DaoFactory dao)
+	public GenreDaoImpl(DaoFactory dao)
 	{
 		daoFactory=dao;
 	}
 	
 	@Override
-	public void create( Console console ) throws DaoException
+	public void create( Genre genre ) throws DaoException
 	{
 		Connection connexion = null;
 	    PreparedStatement preparedStatement = null;
@@ -38,19 +38,19 @@ public class ConsoleDaoImpl implements ConsoleDao{
 	    try {
 	        /* Récupération d'une connexion depuis la Factory */
 	        connexion = daoFactory.getConnection();
-	        preparedStatement = initialisationRequetePreparee( connexion, SQL_INSERT, true, console.getNameConsole(), console.getYearConsole());
+	        preparedStatement = initialisationRequetePreparee( connexion, SQL_INSERT, true, genre.getNameGenre());
 	        int statut = preparedStatement.executeUpdate();
 	        /* Analyse du statut retourné par la requête d'insertion */
 	        if ( statut == 0 ) {
-	            throw new DaoException( "Échec de la création de la console, aucune ligne ajoutée dans la table." );
+	            throw new DaoException( "Échec de la création du genre, aucune ligne ajoutée dans la table." );
 	        }
 	        /* Récupération de l'id auto-généré par la requête d'insertion */
 	        valeursAutoGenerees = preparedStatement.getGeneratedKeys();
 	        if ( valeursAutoGenerees.next() ) {
-	            /* Puis initialisation de la propriété id du bean Console avec sa valeur */
-	            console.setIdConsole((int) valeursAutoGenerees.getLong( 1 ) );
+	            /* Puis initialisation de la propriété id du bean Genre avec sa valeur */
+	            genre.setIdGenre((int) valeursAutoGenerees.getLong( 1 ) );
 	        } else {
-	            throw new DaoException( "Échec de la création de la console, aucun ID auto-généré retourné." );
+	            throw new DaoException( "Échec de la création du genre, aucun ID auto-généré retourné." );
 	        }
 	    } catch ( SQLException e ) {
 	        throw new DaoException( e );
@@ -60,12 +60,12 @@ public class ConsoleDaoImpl implements ConsoleDao{
 	}
 	
 	@Override
-	public Console find( int id ) throws DaoException
+	public Genre find( int id ) throws DaoException
 	{
 		 Connection connexion = null;
 		 PreparedStatement preparedStatement = null;
 		 ResultSet resultSet = null;
-		 Console console = null;
+		 Genre genre = null;
 
 		 try {
 		     /* Récupération d'une connexion depuis la Factory */
@@ -74,7 +74,7 @@ public class ConsoleDaoImpl implements ConsoleDao{
 		     resultSet = preparedStatement.executeQuery();
 		     /* Parcours de la ligne de données de l'éventuel ResulSet retourné */
 		     if ( resultSet.next() ) {
-		         console = map( resultSet );
+		         genre = map( resultSet );
 		     }
 		 } catch ( SQLException e ) {
 		     throw new DaoException( e );
@@ -82,17 +82,17 @@ public class ConsoleDaoImpl implements ConsoleDao{
 		     fermeturesSilencieuses( resultSet, preparedStatement, connexion );
 		 }
 
-		 return console;
+		 return genre;
 	}
 	
-	 public List<Console> findAll () throws DaoException
+	 public List<Genre> findAll () throws DaoException
 	 {
 		 Connection connexion = null;
 		 PreparedStatement preparedStatement = null;
 		 ResultSet resultSet = null;
-		 Console console = null;
+		 Genre genre = null;
 		 
-		 List<Console> listOfConsole = new ArrayList<Console>();
+		 List<Genre> listOfGenre = new ArrayList<Genre>();
 
 		 try {
 		     /* Récupération d'une connexion depuis la Factory */
@@ -101,8 +101,8 @@ public class ConsoleDaoImpl implements ConsoleDao{
 		     resultSet = preparedStatement.executeQuery();
 		     /* Parcours de la ligne de données de l'éventuel ResulSet retourné */
 		     while ( resultSet.next() ) {
-		         console = map( resultSet );
-		         listOfConsole.add(console);
+		         genre = map( resultSet );
+		         listOfGenre.add(genre);
 		     }
 		 } catch ( SQLException e ) {
 		     throw new DaoException( e );
@@ -110,19 +110,21 @@ public class ConsoleDaoImpl implements ConsoleDao{
 		     fermeturesSilencieuses( resultSet, preparedStatement, connexion );
 		 }
 
-		 return listOfConsole;
+		 return listOfGenre;
 	 }
 	
-	private static Console map( ResultSet resultSet ) throws SQLException {
-	    Console console = new Console();
-	    console.setIdConsole( resultSet.getInt( "id_console" ) );
+	private static Genre map( ResultSet resultSet ) throws SQLException {
+	    Genre genre = new Genre();
+	    genre.setIdGenre( resultSet.getInt( "id_genre" ) );
 
-	    console.setNameConsole( resultSet.getString("name_console") );	   
+	    genre.setNameGenre( resultSet.getString("name_genre") );
+	   
 	    
 	    //recherche de l'objet game	 (id puis objet)   
-	    int consoleId = resultSet.getInt("id_console");
-	    System.out.print("console : "+consoleId+"\n");
+	    int genreId = resultSet.getInt("id_genre");
+	    System.out.print("genre : "+genreId+"\n");
 	    
-	    return console;
+	 
+	    return genre;
 	}
 }

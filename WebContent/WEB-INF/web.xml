@@ -3,11 +3,6 @@
   	<display-name>FakeSteam</display-name>
   	<welcome-file-list>
 	    <welcome-file>index.html</welcome-file>
-	    <welcome-file>index.htm</welcome-file>
-	    <welcome-file>index.jsp</welcome-file>
-	    <welcome-file>default.html</welcome-file>
-	    <welcome-file>default.htm</welcome-file>
-	    <welcome-file>default.jsp</welcome-file>
  	 </welcome-file-list>
   
 
@@ -87,9 +82,6 @@
 			<param-value>resources.application</param-value>
 	</context-param>
 
-	<listener>
-		<listener-class>com.sun.faces.config.ConfigureListener</listener-class>
-	</listener>
 	<servlet-mapping>
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>*.faces</url-pattern>
