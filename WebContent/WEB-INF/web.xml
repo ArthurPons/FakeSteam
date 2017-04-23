@@ -32,7 +32,14 @@
 		<url-pattern>/addUser</url-pattern>
   	</servlet-mapping>
 	
-	 
+	 <servlet>
+		<servlet-name>log user</servlet-name>
+		<servlet-class>servlets.FormLogUser</servlet-class>
+ 	 </servlet>
+  	<servlet-mapping>
+		<servlet-name>log user</servlet-name>
+		<url-pattern>/logUser</url-pattern>
+  	</servlet-mapping>
 
   
   <!--   Resteasy  -->

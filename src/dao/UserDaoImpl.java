@@ -91,17 +91,16 @@ public class UserDaoImpl implements UserDao{
 	
 	private static User map( ResultSet resultSet ) throws SQLException {
 	    User user = new User();
-	    System.out.print("passe map\n");
 	    user.setIdUser( resultSet.getInt( "id_user" ) );
 	    user.setPwdUser( resultSet.getString("pwd_user") );
 	    user.setUsernameUser(resultSet.getString("username_user"));//creer object game
-	   	    	 
+	    user.setSaltUser(resultSet.getBytes("salt_user"));
+	    
 	    return user;
 	}
 	
 	public List<User> findAll () throws DaoException
 	 {
-		 System.out.print("findAll user\n");
 		 Connection connexion = null;
 		 PreparedStatement preparedStatement = null;
 		 ResultSet resultSet = null;
