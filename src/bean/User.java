@@ -10,6 +10,7 @@ public class User implements Serializable {
 
 	private int idUser;
 	private String pwdUser;
+	private byte[] saltUser;
 	private String usernameUser;
 	
 	private Rating rating;
@@ -36,6 +37,15 @@ public class User implements Serializable {
 	public void setPwdUser(String pwdUser) {
 		this.pwdUser = pwdUser;
 	}
+	
+	public byte[] getSaltUser() {
+		return this.saltUser;
+	}
+	
+	public void setSaltUser(byte[] salt) {
+		this.saltUser = salt;
+	}
+
 
 	public String getUsernameUser() {
 		return this.usernameUser;

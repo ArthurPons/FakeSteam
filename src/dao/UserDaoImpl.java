@@ -20,7 +20,7 @@ public class UserDaoImpl implements UserDao{
 
 	private static final String SQL_SELECT_BY_ID = "SELECT * FROM user WHERE id_user = ?";
 	private DaoFactory daoFactory;
-	private static final String SQL_INSERT = "INSERT INTO user (pwd_user, username_user) VALUES (?, ?)";
+	private static final String SQL_INSERT = "INSERT INTO user (pwd_user, salt_user, username_user) VALUES (?, ?, ?)";
 	private static final String SQL_SELECT_ALL = "SELECT * FROM user ";
 	
 	public UserDaoImpl()
@@ -43,7 +43,7 @@ public class UserDaoImpl implements UserDao{
 		try {
 		     /* Récupération d'une connexion depuis la Factory */
 		     connexion = daoFactory.getConnection();
-		     preparedStatement = initialisationRequetePreparee( connexion, SQL_INSERT, true, user.getPwdUser(), user.getUsernameUser() );
+		     preparedStatement = initialisationRequetePreparee( connexion, SQL_INSERT, true, user.getPwdUser(), user.getSaltUser(), user.getUsernameUser() );
 		     int statut = preparedStatement.executeUpdate();
 		     /* Analyse du statut retourné par la requête d'insertion */
 		     if ( statut == 0 ) {

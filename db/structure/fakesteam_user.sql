@@ -25,9 +25,10 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id_user` int(11) NOT NULL AUTO_INCREMENT,
   `username_user` varchar(45) NOT NULL,
-  `pwd_user` varchar(45) NOT NULL,
+  `pwd_user` varchar(250) NOT NULL,
+  `salt_user` varchar(45) NOT NULL,
   PRIMARY KEY (`id_user`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -39,4 +40,4 @@ CREATE TABLE `user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-04-07 14:58:01
+-- Dump completed on 2017-04-23 18:57:23

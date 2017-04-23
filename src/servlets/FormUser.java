@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -44,7 +45,11 @@ public class FormUser extends HttpServlet {
     	DbFormUser form = new DbFormUser( userDao );
 
         /* Traitement de la requête et récupération du bean en résultant */
-    	form.addUser(request);
+    	try {
+			form.addUser(request);
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
     	    	 
         this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
     }

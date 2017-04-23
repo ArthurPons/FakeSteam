@@ -2,6 +2,9 @@ package servlets;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,19 +26,21 @@ public final class DbFormUser {
     }
 
 
-    public void addUser( HttpServletRequest request ) {
+    public void addUser( HttpServletRequest request ) throws NoSuchAlgorithmException {
         String username = getValeurChamp( request, CHAMP_USERNAME );
         String pwd = getValeurChamp( request, CHAMP_PWD );
         
-      
+        //On hash le mdp
+        byte[] salt = getSalt();
+        String securePassword = get_SHA_256_SecurePassword(pwd, salt);
+        
         User user = new User();
         user.setUsernameUser(username);
-        user.setPwdUser(pwd);
-           
+        user.setPwdUser(securePassword);
+        user.setSaltUser(salt);
         
         try {          
                 userDao.create( user );
-               
             
         } catch ( DaoException e ) {            
             e.printStackTrace();
@@ -55,5 +60,40 @@ public final class DbFormUser {
         } else {
             return valeur;
         }
+    }
+    
+    /*
+     * Méthode utilitaire qui retourne le hash d'un mdp
+     */
+    private static String get_SHA_256_SecurePassword(String passwordToHash, byte[] salt)
+    {
+    	String generatedPassword = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.update(salt);
+            byte[] bytes = md.digest(passwordToHash.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for(int i=0; i< bytes.length ;i++)
+            {
+                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            generatedPassword = sb.toString();
+        } 
+        catch (NoSuchAlgorithmException e) 
+        {
+            e.printStackTrace();
+        }
+        return generatedPassword;
+    }
+     
+    /*
+     * Méthode utilitaire pour ajouter du sel à un mdp 
+     */
+    private static byte[] getSalt() throws NoSuchAlgorithmException
+    {
+        SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
+        byte[] salt = new byte[16];
+        sr.nextBytes(salt);
+        return salt;
     }
 }
