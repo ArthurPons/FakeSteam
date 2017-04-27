@@ -41,6 +41,17 @@
 		<url-pattern>/logUser</url-pattern>
   	</servlet-mapping>
 
+
+
+  <!--  Client -->
+  	 <servlet>
+		<servlet-name>get Games</servlet-name>
+		<servlet-class>client.GetInfos</servlet-class>
+ 	 </servlet>
+  	<servlet-mapping>
+		<servlet-name>get Games</servlet-name>
+		<url-pattern>/getAllGames</url-pattern>
+  	</servlet-mapping>
   
   <!--   Resteasy  -->
 

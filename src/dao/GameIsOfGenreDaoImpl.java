@@ -134,8 +134,8 @@ public class GameIsOfGenreDaoImpl implements GameIsOfGenreDao{
 	    int genreId = resultSet.getInt("fk_genre_game_is_of_genre");
 	    System.out.print("user : "+genreId+"\n");	   
 
-	    GenreDaoImpl ge = new GenreDaoImpl(daoFactory);
-	    gameIsOfGenre.setGenre(ge.find(genreId));
+	    //GenreDaoImpl ge = new GenreDaoImpl(daoFactory);
+	    //gameIsOfGenre.setGenre(ge.find(genreId));
 	    
 	 
 	    return gameIsOfGenre;
