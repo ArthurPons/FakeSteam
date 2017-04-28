@@ -4,27 +4,27 @@ A video game store for a class about web application's architecture.
 ## TODO
 
 - Add image upload in /inscription
-- Hash pwd
+- ~~Hash pwd~~
 - Code webservices
 - Primefaces (API JSF)
 
-- Finish DAOs
+- ~~Finish DAOs~~
 
 Thomas
 	
-	- ~~comment~~
-	- ~~game~~
-	- ~~user~~
-	- historic
-	- rating
+	~~comment~~
+	~~game~~
+	~~user~~
+	~~historic~~
+	~~rating~~
 
 Arthur
 
-	- gameisofgenre
-	- genre
-	- gameisonconsole
-	- console
-	- userowngame
+	~~gameisofgenre~~
+	~~genre~~
+	~~gameisonconsole~~
+	~~console~~
+	~~userowngame~~
 
 ### Namming conventions
 
@@ -57,6 +57,13 @@ Arthur
 - Deletion in DB table : /del + class
 - Update in DB table : /udpdate + class
 - REST urls : /rest/class/get/(null|idNumber)
+
+#### Forms
+
+Servlet declared in web.xmk and mapped to an URL
+When URL is accessed, the JSF (xhtml) page configured in the servlet is displayed
+When the form is submitted, it calls submit method in corresponding bean (comment form calls comment.submit())
+submit() directly calls the DAO and inserts data in DB
 
 ## Technologies
 The project will be written in java using the [Eclipse IDE](https://eclipse.org/). The application server will be [Wildfly](wildfly.org).
