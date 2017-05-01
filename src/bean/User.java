@@ -1,10 +1,23 @@
 package bean;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import javax.persistence.*;
+
+import dao.DaoException;
+import dao.DaoFactory;
+import dao.UserDao;
+
+
 import java.util.List;
 
-
+@ManagedBean(name = "User")
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -129,4 +142,74 @@ public class User implements Serializable {
 		return userOwnsGame;
 	}
 
+	private static String get_SHA_256_SecurePassword(String passwordToHash, byte[] salt)
+    {
+    	String generatedPassword = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.update(salt);
+            byte[] bytes = md.digest(passwordToHash.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for(int i=0; i< bytes.length ;i++)
+            {
+                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            generatedPassword = sb.toString();
+        } 
+        catch (NoSuchAlgorithmException e) 
+        {
+            e.printStackTrace();
+        }
+        return generatedPassword;
+    }
+     
+    /*
+     * Méthode utilitaire pour ajouter du sel à un mdp 
+     */
+    private static byte[] getSalt() throws NoSuchAlgorithmException
+    {
+        SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
+        byte[] salt = new byte[16];
+        sr.nextBytes(salt);
+        return salt;
+    }
+	
+	
+	public void submit() {
+	 		                
+		System.out.println("Submitted idUser : "+ usernameUser +"\n");
+        System.out.println("Submitted pwd : "+ pwdUser +"\n");   
+        
+        try {
+			saltUser = getSalt();
+		} catch (NoSuchAlgorithmException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        
+        String securePassword = get_SHA_256_SecurePassword(pwdUser, saltUser);
+        pwdUser = securePassword;
+        
+        
+        DaoFactory fact = DaoFactory.getInstance();
+        UserDao userDao = fact.getUserDao();        
+       
+    	
+    	try {          
+            userDao.create( this );            
+        
+	    } catch ( DaoException e ) {	        
+	        e.printStackTrace();
+	    }
+    	
+    	try {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("sucess.html");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        /* Traitement de la requête et récupération du bean en résultant */
+        
+    	//form.addComment(idGame, idUser, messageComment );
+    }
 }

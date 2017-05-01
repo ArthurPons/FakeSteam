@@ -1,11 +1,14 @@
 package bean;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import javax.persistence.*;
 
 import dao.CommentDao;
+import dao.DaoException;
 import dao.DaoFactory;
 import servlets.DbFormComment;
 
@@ -93,10 +96,38 @@ public class Comment implements Serializable {
         DaoFactory fact = DaoFactory.getInstance();
         CommentDao commentDao = fact.getCommentDao();
         
-        DbFormComment form = new DbFormComment( commentDao );
+       // DbFormComment form = new DbFormComment( commentDao );
+        
+        //Comment comment = new Comment();
+    	
+    	//sauvegarde de l'id du jeu
+        //game = new Game();
+        //game.setIdGame(idGame);
+        //comment.setGame(game);
+        
+        //sauvegarde de l'id du user
+        //user = new User();
+        
+        //user.setIdUser(idUser);
+        //comment.setUser(user);       
+    	
+    	//comment.setMessageComment(messageComment);
+    	
+    	try {          
+            commentDao.create( this );            
+        
+	    } catch ( DaoException e ) {	        
+	        e.printStackTrace();
+	    }
 
+    	try {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("sucess.html");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         /* Traitement de la requête et récupération du bean en résultant */
         
-    	form.addComment(idGame, idUser, messageComment );
+    	//form.addComment(idGame, idUser, messageComment );
     }
 }

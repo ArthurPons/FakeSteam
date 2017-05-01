@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      >
+    <h:body>
+
+    	<h:form>
+
+			 <fieldset>
+                <legend>User</legend>
+                <p>Ajouter un jeu</p>
+
+                Titre : <h:inputText value="#{Game.titleGame}" />               
+                 <br/>
+                Prix :  <h:inputText value="#{Game.priceGame}" />               
+                <br/>    
+                Chemin de l'image :  <h:inputText value="#{Game.pictureUrlGame}" />               
+                <br/>                
+               
+            </fieldset>         	
+         
+	     <br /><br />   	       	        		
+	     		
+	     <h:commandButton value="Submit" action="#{Game.submit()}" />
+
+    	</h:form>
+    </h:body>
+</html>

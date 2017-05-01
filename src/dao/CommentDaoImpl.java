@@ -40,7 +40,7 @@ public class CommentDaoImpl implements CommentDao{
 	    try {
 	        /* Récupération d'une connexion depuis la Factory */
 	        connexion = daoFactory.getConnection();
-	        preparedStatement = initialisationRequetePreparee( connexion, SQL_INSERT, true, comment.getMessageComment(), comment.getGameId(), comment.getUserId() );
+	        preparedStatement = initialisationRequetePreparee( connexion, SQL_INSERT, true, comment.getMessageComment(), comment.getIdGame(), comment.getIdUser() );
 	        int statut = preparedStatement.executeUpdate();
 	        /* Analyse du statut retourné par la requête d'insertion */
 	        if ( statut == 0 ) {

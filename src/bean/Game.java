@@ -1,13 +1,21 @@
 package bean;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.security.NoSuchAlgorithmException;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import javax.persistence.*;
 
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import dao.DaoException;
+import dao.DaoFactory;
+import dao.GameDao;
+import dao.UserDao;
 
 import java.util.List;
 
@@ -169,10 +177,32 @@ public class Game implements Serializable {
 		return userOwnsGame;
 	}
 
-	/*
-	 public void submit() {
-	     		 	
-	        System.out.println("Submitted titleGame : "+titleGame+"\n");
+	public void submit() {
+         
+		System.out.println("Submitted titleGame : "+ titleGame +"\n");
+        System.out.println("Submitted priceGame : "+ priceGame +"\n");   
+        System.out.println("Submitted pictureUrlGame : "+ pictureUrlGame +"\n");   
+        
+                    
+        DaoFactory fact = DaoFactory.getInstance();
+        GameDao gameDao = fact.getGameDao();        
+       
+    	
+    	try {          
+            gameDao.create( this );            
+        
+	    } catch ( DaoException e ) {	        
+	        e.printStackTrace();
 	    }
-	    */
+    	
+    	try {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("sucess.html");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        /* Traitement de la requête et récupération du bean en résultant */
+        
+    	//form.addComment(idGame, idUser, messageComment );
+    }
 }
