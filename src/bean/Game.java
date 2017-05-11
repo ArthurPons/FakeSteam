@@ -7,8 +7,13 @@ import java.security.NoSuchAlgorithmException;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.persistence.*;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
-
+import org.jboss.resteasy.client.jaxrs.ResteasyClient;
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -183,26 +188,35 @@ public class Game implements Serializable {
         System.out.println("Submitted priceGame : "+ priceGame +"\n");   
         System.out.println("Submitted pictureUrlGame : "+ pictureUrlGame +"\n");   
         
-                    
-        DaoFactory fact = DaoFactory.getInstance();
-        GameDao gameDao = fact.getGameDao();        
-       
-    	
-    	try {          
-            gameDao.create( this );            
+        try {
+        	
+			ResteasyClient client = new ResteasyClientBuilder().build();
+
+			ResteasyWebTarget target = client.target("http://localhost:8080/FakeSteam/rest/game/receive");
+			
+			Response response = target.request().post(Entity.entity(this,MediaType.APPLICATION_JSON));			
+			
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			}
+
+			System.out.println("Server response : \n");
+			System.out.println(response.readEntity(String.class));
+
+			response.close();
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		} 
         
-	    } catch ( DaoException e ) {	        
-	        e.printStackTrace();
-	    }
-    	
-    	try {
+        try {
 			FacesContext.getCurrentInstance().getExternalContext().redirect("sucess.html");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        /* Traitement de la requête et récupération du bean en résultant */
-        
-    	//form.addComment(idGame, idUser, messageComment );
+                   
     }
 }

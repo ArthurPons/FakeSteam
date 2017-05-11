@@ -91,4 +91,15 @@ public class DaoFactory {
     {
     	return  new RatingDaoImpl(this);
     }
+    
+    public HistoricDao getHistoricDao()
+    {
+    	return new HistoricDaoImpl(this);
+    }
+    
+    public UploadDao getUploadDao()
+    {
+    	return new UploadDaoImpl(this);
+    }
+    
 }

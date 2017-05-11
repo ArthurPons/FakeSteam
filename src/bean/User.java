@@ -9,6 +9,13 @@ import java.security.SecureRandom;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.persistence.*;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import org.jboss.resteasy.client.jaxrs.ResteasyClient;
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
 import dao.DaoException;
 import dao.DaoFactory;
@@ -190,26 +197,34 @@ public class User implements Serializable {
         String securePassword = get_SHA_256_SecurePassword(pwdUser, saltUser);
         pwdUser = securePassword;
         
+        try {
+        	
+			ResteasyClient client = new ResteasyClientBuilder().build();
+
+			ResteasyWebTarget target = client.target("http://localhost:8080/FakeSteam/rest/user/receive");
+			
+			Response response = target.request().post(Entity.entity(this,MediaType.APPLICATION_JSON));			
+			
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			}
+
+			System.out.println("Server response : \n");
+			System.out.println(response.readEntity(String.class));
+
+			response.close();
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
         
-        DaoFactory fact = DaoFactory.getInstance();
-        UserDao userDao = fact.getUserDao();        
-       
-    	
-    	try {          
-            userDao.create( this );            
-        
-	    } catch ( DaoException e ) {	        
-	        e.printStackTrace();
-	    }
-    	
-    	try {
+        try {
 			FacesContext.getCurrentInstance().getExternalContext().redirect("sucess.html");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        /* Traitement de la requête et récupération du bean en résultant */
-        
-    	//form.addComment(idGame, idUser, messageComment );
     }
 }

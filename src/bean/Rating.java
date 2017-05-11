@@ -24,9 +24,6 @@ import javax.ws.rs.client.WebTarget;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import dao.DaoException;
-import dao.DaoFactory;
-import dao.GameDao;
 
 @JsonIgnoreProperties(ignoreUnknown=true)
 @ManagedBean(name = "Rating")
@@ -116,36 +113,17 @@ public class Rating implements Serializable {
 		System.out.println("Submitted ratingRating : "+ ratingRating);
         System.out.println("Submitted fkGameRating : "+ fkGameRating);   
         System.out.println("Submitted fkUserRating : "+ fkUserRating);   
-        
-//        @SuppressWarnings("deprecation")
-//		Client client = ClientBuilder.newClient( new ClientConfig().register( LoggingFilter.class ) );
-//        WebTarget webTarget = client.target("http://localhost:8080/FakeSteam/rest/rating/receive");
-//        Rating r = new Rating (44,0,2);
-//        
-//        Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_JSON);
-//        Response response = invocationBuilder.post(Entity.entity(r, MediaType.APPLICATION_JSON));
-//        
-//        System.out.println(response.getStatus());
-//        System.out.println(response.readEntity(String.class));
-        
-        //DaoFactory fact = DaoFactory.getInstance();
-        //GameDao gameDao = fact.getGameDao();        
-       
-    	
-    	
-        //////////////////////:
+    
+
         
         try {
         	
 			ResteasyClient client = new ResteasyClientBuilder().build();
 
 			ResteasyWebTarget target = client.target("http://localhost:8080/FakeSteam/rest/rating/receive");
-
-			//Response response = target.request().post(Entity.entity(r, "rating/receive"));
-			Response response = target.request().post(Entity.entity(this,MediaType.APPLICATION_JSON));
 			
-			//Response response = target.request().post(Entity.entity(this, "rating/receive"));
-			//System.out.print("message du client :"+response.toString()+"\n");
+			Response response = target.request().post(Entity.entity(this,MediaType.APPLICATION_JSON));			
+			
 			if (response.getStatus() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 			}
@@ -159,24 +137,14 @@ public class Rating implements Serializable {
 
 			e.printStackTrace();
 
-		}
+		} 
         
-        
-        
-        
-        //////////////////////
-        
-        
-    	/*
-    	try {
+        try {
 			FacesContext.getCurrentInstance().getExternalContext().redirect("sucess.html");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		*/
-        /* Traitement de la requête et récupération du bean en résultant */
         
-    	//form.addComment(idGame, idUser, messageComment );
     }
 }

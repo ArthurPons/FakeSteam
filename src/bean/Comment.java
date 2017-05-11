@@ -10,7 +10,6 @@ import javax.persistence.*;
 import dao.CommentDao;
 import dao.DaoException;
 import dao.DaoFactory;
-import servlets.DbFormComment;
 
 
 

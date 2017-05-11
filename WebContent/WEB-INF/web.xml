@@ -5,6 +5,16 @@
 	    <welcome-file>index.html</welcome-file>
  	 </welcome-file-list>
   
+	<!--  error pages -->
+	<error-page>
+    <error-code>404</error-code>
+    <location>/error.html</location>
+	</error-page>
+	
+	<error-page>
+    <error-code>500</error-code>
+    <location>/error.html</location>
+	</error-page>
 
   	 <!--   servlet  -->
 
@@ -49,15 +59,24 @@
 		<servlet-name>add rating</servlet-name>
 		<url-pattern>/addRating</url-pattern>
   	</servlet-mapping>
+  	
+  	<servlet>
+		<servlet-name>add historic</servlet-name>
+		<servlet-class>servlets.FormHistoric</servlet-class>
+ 	 </servlet>
+  	<servlet-mapping>
+		<servlet-name>add historic</servlet-name>
+		<url-pattern>/addHistoric</url-pattern>
+  	</servlet-mapping>
 
-	<!-- <servlet>
+	<servlet>
 		<servlet-name>add comment</servlet-name>
 		<servlet-class>servlets.FormComment</servlet-class>
  	 </servlet>
   	<servlet-mapping>
 		<servlet-name>add comment</servlet-name>
 		<url-pattern>/addComment</url-pattern>
-  	</servlet-mapping> -->
+  	</servlet-mapping> 
 
 
   <!--  Client -->
