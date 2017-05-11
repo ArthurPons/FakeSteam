@@ -86,4 +86,9 @@ public class DaoFactory {
     {
     	return  new CommentDaoImpl(this);
     }
+    
+    public RatingDao getRatingDao()
+    {
+    	return  new RatingDaoImpl(this);
+    }
 }

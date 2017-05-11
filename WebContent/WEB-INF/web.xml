@@ -41,15 +41,23 @@
 		<url-pattern>/logUser</url-pattern>
   	</servlet-mapping>
 
-
 	<servlet>
+		<servlet-name>add rating</servlet-name>
+		<servlet-class>servlets.FormRating</servlet-class>
+ 	 </servlet>
+  	<servlet-mapping>
+		<servlet-name>add rating</servlet-name>
+		<url-pattern>/addRating</url-pattern>
+  	</servlet-mapping>
+
+	<!-- <servlet>
 		<servlet-name>add comment</servlet-name>
 		<servlet-class>servlets.FormComment</servlet-class>
  	 </servlet>
   	<servlet-mapping>
 		<servlet-name>add comment</servlet-name>
 		<url-pattern>/addComment</url-pattern>
-  	</servlet-mapping>
+  	</servlet-mapping> -->
 
 
   <!--  Client -->
