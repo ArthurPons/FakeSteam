@@ -17,6 +17,8 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import dao.DaoException;
 import dao.DaoFactory;
 import dao.UserDao;
@@ -24,6 +26,7 @@ import dao.UserDao;
 
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown=true)
 @ManagedBean(name = "User")
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;

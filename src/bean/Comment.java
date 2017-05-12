@@ -7,12 +7,14 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import dao.CommentDao;
 import dao.DaoException;
 import dao.DaoFactory;
 
 
-
+@JsonIgnoreProperties(ignoreUnknown=true)
 @ManagedBean(name = "Comment")
 public class Comment implements Serializable {
 	private static final long serialVersionUID = 1L;

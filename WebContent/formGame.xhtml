@@ -4,10 +4,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      >
+      
+      xmlns:p="http://primefaces.org/ui">
     <h:body>
 
-    	<h:form>
+    	<h:form enctype="multipart/form-data">
 
 			 <fieldset>
                 <legend>User</legend>
@@ -17,7 +18,7 @@
                  <br/>
                 Prix :  <h:inputText value="#{Game.priceGame}" />               
                 <br/>    
-                Chemin de l'image :  <h:inputText value="#{Game.pictureUrlGame}" />               
+                Image : <p:fileUpload value="#{Game.uploadedFile}" mode="simple" />             
                 <br/>                
                
             </fieldset>         	
