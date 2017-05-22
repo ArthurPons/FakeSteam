@@ -41,6 +41,19 @@ public class GameRest {
 	}
 	
 	@GET
+	@Path("/ownedBy/{i}")
+	@Produces(MediaType.APPLICATION_JSON)	
+	public List<Game> printGameOwnedBy(@PathParam("i") int i) {
+		
+		System.out.print("valeur :"+i+"\n");
+		DaoFactory fact = DaoFactory.getInstance();
+        dao.GameDao gameDao = fact.getGameDao();
+		
+		List<Game> g = gameDao.findAllUserGame(i);
+		return g;	
+	}
+	
+	@GET
 	@Path("/get")
 	@Produces(MediaType.APPLICATION_JSON)	
 	public List<Game> printAllGames() {

@@ -12,5 +12,6 @@ public interface GameDao {
 	 void create( Game game ) throws DaoException;
 	 Game find( int id ) throws DaoException;
 	 List<Game> findAll () throws DaoException;
+	 List<Game> findAllUserGame(int idUser) throws DaoException;
 
 }

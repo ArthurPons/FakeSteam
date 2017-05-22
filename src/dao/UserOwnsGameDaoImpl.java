@@ -17,7 +17,7 @@ public class UserOwnsGameDaoImpl implements UserOwnsGameDao{
 
 	private static DaoFactory daoFactory;
 	private static final String SQL_SELECT_BY_ID = "SELECT * FROM user_owns_game WHERE id_user_owns_game = ?";
-	private static final String SQL_INSERT = "INSERT INTO user_owns_game (fk_game_user_owns_game, fk_user_user_owns_game) VALUES (?, ?)";
+	private static final String SQL_INSERT = "INSERT INTO user_owns_game (fk_game_own, fk_user_own) VALUES (?, ?)";
 	private static final String SQL_SELECT_ALL = "SELECT * FROM user_owns_game";
 	
 	public UserOwnsGameDaoImpl()
@@ -40,7 +40,7 @@ public class UserOwnsGameDaoImpl implements UserOwnsGameDao{
 	    try {
 	        /* Récupération d'une connexion depuis la Factory */
 	        connexion = daoFactory.getConnection();
-	        preparedStatement = initialisationRequetePreparee( connexion, SQL_INSERT, true, userOwnsGame.getIdUserOwnsGame(), userOwnsGame.getGame(), userOwnsGame.getUser() );
+	        preparedStatement = initialisationRequetePreparee( connexion, SQL_INSERT, true, userOwnsGame.getIdGame(), userOwnsGame.getIdUser() );
 	        int statut = preparedStatement.executeUpdate();
 	        /* Analyse du statut retourné par la requête d'insertion */
 	        if ( statut == 0 ) {

@@ -20,6 +20,7 @@ public class GameDaoImpl implements GameDao{
 	private static final String SQL_SELECT_BY_ID = "SELECT * FROM game WHERE id_game = ?";
 	private static final String SQL_INSERT = "INSERT INTO game (picture_url_game, price_game, title_game) VALUES (?, ?, ?)";
 	private static final String SQL_SELECT_ALL = "SELECT * FROM game";
+	private static final String SQL_SELECT_ALL_USER_GAMES = "SELECT  g.id_game, g.title_game, g.price_game, g.picture_url_game FROM game AS g, user_owns_game as u WHERE g.id_game=u.fk_game_own and u.fk_user_own=?";
 	
 	public GameDaoImpl()
 	{
@@ -128,5 +129,35 @@ public class GameDaoImpl implements GameDao{
 
 		 return listOfGame;
 	 }
+	 
+	 
+	 public List<Game> findAllUserGame(int idUser) throws DaoException
+	 {
+		 Connection connexion = null;
+		 PreparedStatement preparedStatement = null;
+		 ResultSet resultSet = null;
+		 Game game = null;
+		 
+		 List<Game> listOfGame = new ArrayList<Game>();
+
+		 try {
+		     /* Récupération d'une connexion depuis la Factory */
+		     connexion = daoFactory.getConnection();
+		     preparedStatement = initialisationRequetePreparee( connexion, SQL_SELECT_ALL_USER_GAMES, true,idUser);
+		     resultSet = preparedStatement.executeQuery();
+		     /* Parcours de la ligne de données de l'éventuel ResulSet retourné */
+		     while ( resultSet.next() ) {
+		         game = map( resultSet );
+		         listOfGame.add(game);
+		     }
+		 } catch ( SQLException e ) {
+		     throw new DaoException( e );
+		 } finally {
+		     fermeturesSilencieuses( resultSet, preparedStatement, connexion );
+		 }
+
+		 return listOfGame;
+	 }
+	 
 	 
 }

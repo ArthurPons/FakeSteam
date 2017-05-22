@@ -97,6 +97,11 @@ public class DaoFactory {
     	return new HistoricDaoImpl(this);
     }
     
+    public UserOwnsGameDao getUserOwnsGameDao()
+    {
+    	return new UserOwnsGameDaoImpl(this);
+    }
+    
  
     
 }

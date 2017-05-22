@@ -269,8 +269,21 @@ public class Game implements Serializable {
 			
 			
 			System.out.print("nom de l'image :"+fileName+"\n");
-			String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/");
-						
+			System.out.print("Chemin du repertoire contenant les images :C:\\Users\\thomas\\Pictures\\FakeSteam \n");
+			//String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/");
+			String path ="C:/Users/thomas/Pictures/FakeSteam/images";		
+			
+			
+			//cree repertoire si pas deja cree
+			if (!(new File(path)).exists())
+			{
+				System.out.print("Creation de  "+path+"\n");
+				new File(path).mkdir();
+			}
+			else
+			{
+				System.out.print("le repertoire "+path+" existe deja\n");
+			}
 			
 			try {
 				//verifie si le nom du fichier n'existe pas deja. Sinon, incremente le nom du fichier
@@ -278,7 +291,7 @@ public class Game implements Serializable {
 				
 				System.out.print("nom du fichier final :"+uniqueNameFile+"\n");
 				InputStream in = uploadedFile.getInputstream();
-				OutputStream out = new FileOutputStream(new File(path+"/images",uniqueNameFile) );
+				OutputStream out = new FileOutputStream(new File(path,uniqueNameFile) );
 				int read = 0;
 	            byte[] bytes = new byte[1024];
 	          

@@ -77,7 +77,36 @@
 		<servlet-name>add comment</servlet-name>
 		<url-pattern>/addComment</url-pattern>
   	</servlet-mapping> 
-
+  	
+  	<servlet>
+		<servlet-name>user buy game</servlet-name>
+		<servlet-class>servlets.FormUserOwnsGame</servlet-class>
+ 	 </servlet>
+  	<servlet-mapping>
+		<servlet-name>user buy game</servlet-name>
+		<url-pattern>/buyGame</url-pattern>
+  	</servlet-mapping>
+  	
+  	<!--  
+  	<servlet>
+		<servlet-name>print games owned by user</servlet-name>
+		<servlet-class>client.GetGameOwnedByUser</servlet-class>
+ 	 </servlet>
+  	<servlet-mapping>
+		<servlet-name>print games owned by user</servlet-name>
+		<url-pattern>/getOwnedGames</url-pattern>
+  	</servlet-mapping>
+-->
+	
+	<servlet>
+		<servlet-name>info user</servlet-name>
+		<servlet-class>client.UserInfos</servlet-class>
+ 	 </servlet>
+  	<servlet-mapping>
+		<servlet-name>info user</servlet-name>
+		<url-pattern>/getInfosUser</url-pattern>
+  	</servlet-mapping>
+	
 
   <!--  Client -->
   	 <servlet>
