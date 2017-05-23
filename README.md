@@ -26,6 +26,38 @@ Arthur
 	~~console~~
 	~~userowngame~~
 
+### List of views
+
+- Main page
+	- Featured games in carousel
+	- List of genres with thumbnails
+	- List of consoles with thumbnails
+	- List of random games
+- Game page
+	- Screenshots in carousel
+	- Description of the game
+	- Similar games (same genre, same console)
+	- Rating form
+	- Comment form
+- User account page
+	- List of bought games with date of transaction
+- Login page
+	- Login form
+- Console page
+	- Images of supported games in carousel
+	- List of genres and games in thumbnails
+- Genre page
+	- Images of genres' games in carousel
+	- List of consoles and games in thumbnails
+- Checkout page
+	- Confirmation form
+- Adding game page
+	- Adding game form
+- Adding genre page
+	- Adding genre form
+- Adding console page
+	- Adding console form
+
 ### Namming conventions
 
 #### Servlets
