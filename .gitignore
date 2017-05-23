@@ -1,7 +1,14 @@
-/build/
+FakeSteam/build/
+FakeSteamGit/build/
 .classpath
-/src/dao/dao.properties
+FakeSteam/src/dao/dao.properties
+FakeSteamGit/src/dao/dao.properties
 .project
 .tern-project
 .settings
-/bin/
+FakeSteam/bin/
+FakeSteamGit/bin/
+*.swp
+lib/
+.metadata
+.recommenders
