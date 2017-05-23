@@ -10,12 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import bean.User;
-import dao.DaoFactory;
-import dao.UserDao;
+
 
 
 public class FormLogUser extends HttpServlet {
 	
+	/*
 	private static final long serialVersionUID = 1L;
 	public static final String CONF_DAO_FACTORY = "daofactory";
     public static final String ATT_GAME         = "game";
@@ -26,14 +26,14 @@ public class FormLogUser extends HttpServlet {
 
     
     public void init() throws ServletException {
-        /* Récupération d'une instance de notre DAO Utilisateur */
+        
     	DaoFactory fact = DaoFactory.getInstance();
         this.userDao = fact.getUserDao();
     }
 
 
     public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
-        /* Affichage de la page de connection */
+       
         this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
     }
 
@@ -41,7 +41,7 @@ public class FormLogUser extends HttpServlet {
        
     	DbFormLogUser form = new DbFormLogUser( userDao );
 
-        /* Traitement de la requête et récupération du bean en résultant */
+        
     	try {
 			Optional<User> loggedUser = form.authentificateUser(request);
 
@@ -56,4 +56,5 @@ public class FormLogUser extends HttpServlet {
     	    	 
         this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
     }
+    */
 }

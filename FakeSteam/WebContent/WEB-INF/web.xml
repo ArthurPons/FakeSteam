@@ -16,108 +16,7 @@
     <location>/error.html</location>
 	</error-page>
 
-  	 <!--   servlet  -->
-
-   	 <listener>
-		<listener-class>
-			org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap
-		</listener-class>
- 	 </listener>
-  
- 	<servlet>
-		<servlet-name>add game</servlet-name>
-		<servlet-class>servlets.FormGame</servlet-class>
- 	</servlet>
-  	<servlet-mapping>
-		<servlet-name>add game</servlet-name>
-		<url-pattern>/addGame</url-pattern>
- 	 </servlet-mapping>
-  
- 	 <servlet>
-		<servlet-name>add user</servlet-name>
-		<servlet-class>servlets.FormUser</servlet-class>
- 	 </servlet>
-  	<servlet-mapping>
-		<servlet-name>add user</servlet-name>
-		<url-pattern>/addUser</url-pattern>
-  	</servlet-mapping>
-	
-	 <servlet>
-		<servlet-name>log user</servlet-name>
-		<servlet-class>servlets.FormLogUser</servlet-class>
- 	 </servlet>
-  	<servlet-mapping>
-		<servlet-name>log user</servlet-name>
-		<url-pattern>/logUser</url-pattern>
-  	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>add rating</servlet-name>
-		<servlet-class>servlets.FormRating</servlet-class>
- 	 </servlet>
-  	<servlet-mapping>
-		<servlet-name>add rating</servlet-name>
-		<url-pattern>/addRating</url-pattern>
-  	</servlet-mapping>
   	
-  	<servlet>
-		<servlet-name>add historic</servlet-name>
-		<servlet-class>servlets.FormHistoric</servlet-class>
- 	 </servlet>
-  	<servlet-mapping>
-		<servlet-name>add historic</servlet-name>
-		<url-pattern>/addHistoric</url-pattern>
-  	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>add comment</servlet-name>
-		<servlet-class>servlets.FormComment</servlet-class>
- 	 </servlet>
-  	<servlet-mapping>
-		<servlet-name>add comment</servlet-name>
-		<url-pattern>/addComment</url-pattern>
-  	</servlet-mapping> 
-  	
-  	<servlet>
-		<servlet-name>user buy game</servlet-name>
-		<servlet-class>servlets.FormUserOwnsGame</servlet-class>
- 	 </servlet>
-  	<servlet-mapping>
-		<servlet-name>user buy game</servlet-name>
-		<url-pattern>/buyGame</url-pattern>
-  	</servlet-mapping>
-  	
-  	<!--  
-  	<servlet>
-		<servlet-name>print games owned by user</servlet-name>
-		<servlet-class>client.GetGameOwnedByUser</servlet-class>
- 	 </servlet>
-  	<servlet-mapping>
-		<servlet-name>print games owned by user</servlet-name>
-		<url-pattern>/getOwnedGames</url-pattern>
-  	</servlet-mapping>
--->
-	
-	<servlet>
-		<servlet-name>info user</servlet-name>
-		<servlet-class>client.UserInfos</servlet-class>
- 	 </servlet>
-  	<servlet-mapping>
-		<servlet-name>info user</servlet-name>
-		<url-pattern>/getInfosUser</url-pattern>
-  	</servlet-mapping>
-	
-
-  <!--  Client -->
-  	 <servlet>
-		<servlet-name>get Games</servlet-name>
-		<servlet-class>client.GetInfos</servlet-class>
- 	 </servlet>
-  	<servlet-mapping>
-		<servlet-name>get Games</servlet-name>
-		<url-pattern>/getAllGames</url-pattern>
-  	</servlet-mapping>
-  
   <!--   Resteasy  -->
 
   	<servlet> 
@@ -137,26 +36,7 @@
 			<param-value>/rest</param-value>
 	</context-param>
 	
-	<!-- 
 	
-	<context-param>
-  		<param-name>primefaces.UPLOADER</param-name>
-  		<param-value>auto|native|commons</param-value>
-	</context-param>	
-
-	<filter>
-		 <filter-name>PrimeFaces FileUpload Filter</filter-name>
-		 <filter-class>
-		  org.primefaces.webapp.filter.FileUploadFilter
-		 </filter-class>
-	</filter>
-	
-	<filter-mapping>
-		 <filter-name>PrimeFaces FileUpload Filter</filter-name>
-		 <servlet-name>Faces Servlet</servlet-name>
-	</filter-mapping>
-
-	 -->
 
 	 <!--   Faces Servlet  -->
 	

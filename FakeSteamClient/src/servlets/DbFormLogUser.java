@@ -11,19 +11,21 @@ import java.security.SecureRandom;
 import javax.servlet.http.HttpServletRequest;
 
 import bean.User;
-import dao.DaoException;
-import dao.UserDao;
+
 import java.util.List;
 
 public final class DbFormLogUser {
+	/*
     private static final String CHAMP_USERNAME = "username";
     private static final String CHAMP_PWD = "pwd";
    
     private UserDao userDao;
 
+    
     public DbFormLogUser( UserDao userDao ) {
         this.userDao = userDao;
     }
+    
 
 
     public Optional<User> authentificateUser( HttpServletRequest request ) throws NoSuchAlgorithmException {
@@ -41,10 +43,10 @@ public final class DbFormLogUser {
         return loggedUser;
     }
 
-    /*
-     * Méthode utilitaire qui retourne null si un champ est vide, et son contenu
-     * sinon.
-     */
+    
+      //Méthode utilitaire qui retourne null si un champ est vide, et son contenu
+      sinon.
+     
     private static String getValeurChamp( HttpServletRequest request, String nomChamp ) {
         String valeur = request.getParameter( nomChamp );
         if ( valeur == null || valeur.trim().length() == 0 ) {
@@ -54,9 +56,9 @@ public final class DbFormLogUser {
         }
     }
     
-    /*
-     * Méthode utilitaire qui retourne le hash d'un mdp
-     */
+    
+     //Méthode utilitaire qui retourne le hash d'un mdp
+     
     private static String get_SHA_256_SecurePassword(String passwordToHash, byte[] salt)
     {
     	String generatedPassword = null;
@@ -78,9 +80,9 @@ public final class DbFormLogUser {
         return generatedPassword;
     }
      
-    /*
-     * Méthode utilitaire pour ajouter du sel à un mdp 
-     */
+    
+     //Méthode utilitaire pour ajouter du sel à un mdp 
+     
     private static byte[] getSalt() throws NoSuchAlgorithmException
     {
         SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
@@ -88,4 +90,5 @@ public final class DbFormLogUser {
         sr.nextBytes(salt);
         return salt;
     }
+    */
 }
