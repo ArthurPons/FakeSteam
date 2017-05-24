@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
 @JsonIgnoreProperties(ignoreUnknown=true)
-@ManagedBean(name = "Rating")
+
 public class Rating implements Serializable {
 	private static final long serialVersionUID = 1L;
 

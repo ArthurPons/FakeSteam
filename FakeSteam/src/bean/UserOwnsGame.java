@@ -16,7 +16,7 @@ import dao.UserOwnsGameDao;
 
 
 @JsonIgnoreProperties(ignoreUnknown=true)
-@ManagedBean(name = "UserOwnsGame")
+
 public class UserOwnsGame implements Serializable {
 	private static final long serialVersionUID = 1L;
 

@@ -8,8 +8,12 @@ import java.security.SecureRandom;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
+import javax.json.JsonArray;
 import javax.persistence.*;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -18,7 +22,10 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
 
@@ -36,7 +43,7 @@ public class User implements Serializable {
 	
 	private List<Comment> comments;
 	private List<Historic> historics;
-	private List<UserOwnsGame> userOwnsGames;
+	private List<Game> listOfGame;
 
 	public User() {
 	}
@@ -126,26 +133,41 @@ public class User implements Serializable {
 		this.rating = rating;
 	}
 
-	public List<UserOwnsGame> getUserOwnsGames() {
-		return this.userOwnsGames;
+
+
+	public List<Game> getListOfGame() {
+		
+		Client client = ClientBuilder.newClient();
+		System.out.print("idutilisateur :"+idUser+"\n");
+		
+		//avoir recuperer l'id du user
+		WebTarget target = client.target("http://localhost:8080/FakeSteam/rest/game/ownedBy/2"); 
+		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
+		String jsonString = json.toString();
+		System.out.print("json :"+json+"\n");
+		ObjectMapper mapper = new ObjectMapper();
+		
+		List<Game> listOfGame = null;
+		try {
+			listOfGame = mapper.readValue(jsonString, new TypeReference<List<Game>>(){});
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return listOfGame;	
+		
 	}
 
-	public void setUserOwnsGames(List<UserOwnsGame> userOwnsGames) {
-		this.userOwnsGames = userOwnsGames;
-	}
-
-	public UserOwnsGame addUserOwnsGame(UserOwnsGame userOwnsGame) {
-		getUserOwnsGames().add(userOwnsGame);
-		userOwnsGame.setUser(this);
-
-		return userOwnsGame;
-	}
-
-	public UserOwnsGame removeUserOwnsGame(UserOwnsGame userOwnsGame) {
-		getUserOwnsGames().remove(userOwnsGame);
-		userOwnsGame.setUser(null);
-
-		return userOwnsGame;
+	public void setListOfGame(List<Game> listOfGame) {
+		this.listOfGame = listOfGame;
 	}
 
 	private static String get_SHA_256_SecurePassword(String passwordToHash, byte[] salt)

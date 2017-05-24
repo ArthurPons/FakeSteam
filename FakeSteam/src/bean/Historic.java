@@ -20,7 +20,7 @@ import java.util.Date;
 
 
 @JsonIgnoreProperties(ignoreUnknown=true)
-@ManagedBean(name = "Historic")
+
 public class Historic implements Serializable {
 	private static final long serialVersionUID = 1L;
 

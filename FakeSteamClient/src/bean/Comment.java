@@ -6,6 +6,13 @@ import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.persistence.*;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import org.jboss.resteasy.client.jaxrs.ResteasyClient;
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -75,43 +82,48 @@ public class Comment implements Serializable {
 		this.user = user;
 	}
 	
-	public int getGameId()
-	{
-		return game.getIdGame();
-	}
 
-	public int getUserId()
-	{
-		return user.getIdUser();
-	}
 	
 	public void submit() {
 		 	
+		idGame=2;
+		idUser=2;
         System.out.println("Submitted idGame : "+ idGame +"\n");
         System.out.println("Submitted idUser : "+ idUser +"\n");
         System.out.println("Submitted comment : "+ messageComment +"\n");   
           
-        /*
-        DaoFactory fact = DaoFactory.getInstance();
-        CommentDao commentDao = fact.getCommentDao();
-       
-    	try {          
-            commentDao.create( this );            
-        
-	    } catch ( DaoException e ) {	        
-	        e.printStackTrace();
-	    }
+        try {
+        	
+			ResteasyClient client = new ResteasyClientBuilder().build();
 
-    	try {
+			ResteasyWebTarget target = client.target("http://localhost:8080/FakeSteam/rest/comment/receive");
+			
+			Response response = target.request().post(Entity.entity(this,MediaType.APPLICATION_JSON));			
+			
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+			}
+
+			System.out.println("Server response : \n");
+			System.out.println(response.readEntity(String.class));
+
+			response.close();
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		} 
+        
+        
+        
+        
+        try {
 			FacesContext.getCurrentInstance().getExternalContext().redirect("sucess.html");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-       
-        
-    	//form.addComment(idGame, idUser, messageComment );
-    	 */
     	 
     }
 }

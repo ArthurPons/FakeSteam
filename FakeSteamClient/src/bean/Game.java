@@ -12,10 +12,12 @@ import java.security.NoSuchAlgorithmException;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.persistence.*;
+import javax.servlet.ServletContext;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.io.FilenameUtils;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
@@ -24,7 +26,7 @@ import org.primefaces.model.UploadedFile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-
+import servlets.FormGame;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -256,6 +258,8 @@ public class Game implements Serializable {
 			    
 		}
 
+		
+		
 	public void submit() {
          
 		  
@@ -266,9 +270,11 @@ public class Game implements Serializable {
 			
 			
 			System.out.print("nom de l'image :"+fileName+"\n");
-			System.out.print("Chemin du repertoire contenant les images :C:\\Users\\thomas\\Pictures\\FakeSteam \n");
-			//String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/");
-			String path ="C:/Users/thomas/Pictures/FakeSteam/images";		
+						
+			//String path = FormGame.contextPath;
+			String path= System.getProperty("user.home")+"/images";
+			
+			System.out.print("chemin de l'image* :"+path);
 			
 			
 			//cree repertoire si pas deja cree

@@ -4,31 +4,28 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      >
+      xmlns:ui="http://java.sun.com/jsf/core">
+      
     <h:body>
 
     	<h1>JSF 2 dropdown box example</h1>
+    	
+    
+    	<!--  <h:inputHidden action="#{Comment.setIdUser(2)}" />-->
+    	    	
+    	
+    
+    	
     	<h:form>
-
-		
-	     
-         <h:inputText value="#{Comment.messageComment}" />
-         
-         <br /><br />  
-         
-         <h:selectOneListbox value="#{Comment.idGame}" size="5">              	
-              	 <f:selectItems value="#{GameDao.findAll()}" var="g" itemValue="#{g.idGame}" itemLabel="#{g.titleGame}"/>
-         </h:selectOneListbox><br />       	
-	     <br /><br />   
-	     
-	     <h:selectOneListbox value="#{Comment.idUser}" size="5">              	
-              	 <f:selectItems value="#{UserDao.findAll()}" var="u" itemValue="#{u.idUser}" itemLabel="#{u.usernameUser}"/>
-         </h:selectOneListbox><br />       	
-         
-	     <br /><br />   	       	        		
-	     		
-	     <h:commandButton value="Submit" action="#{Comment.submit()}" />
-
+    		<!--  <h:inputHidden action="#{Comment.setIdUser(2)}}" />
+    		<h:inputHidden action="#{Comment.setIdGame(2)}}" />
+			-->    		
+			 commentaire : <h:inputText value="#{Comment.messageComment}" />  
+			 <br></br>
+			 <h:commandButton value="Submit" action="#{Comment.submit()}" />
+	   
     	</h:form>
+    	
+    	
     </h:body>
 </html>

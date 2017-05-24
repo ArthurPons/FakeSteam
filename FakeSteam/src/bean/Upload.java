@@ -16,8 +16,6 @@ import org.primefaces.model.UploadedFile;
 
 
 
-
-@ManagedBean(name = "Upload")
 public class Upload {
 		
 	private UploadedFile uploadedFile;

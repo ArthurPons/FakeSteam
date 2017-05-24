@@ -1,4 +1,4 @@
-package client;
+package servlets;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 
 
 
-public class UserInfos extends HttpServlet {
-    public static final String VUE = "/userClient.xhtml";
+public class GetUserGames extends HttpServlet {
+    public static final String VUE = "/getUserGames.xhtml";
 
     public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
         /* Affichage de la page d'inscription */

@@ -11,9 +11,9 @@
 
 		<!-- recuperer l'id de l'utilisateur, dans la session -->
 
-		<ui:param name="#{UserClient.idUser}" value="2"/>
+		<ui:param name="#{User.idUser}" value="2"/>
 		
-		<h:dataTable value="#{UserClient.listOfGame}" var="game">
+		<h:dataTable value="#{User.listOfGame}" var="game">
     		<h:column>
         		<h:link value="#{game.titleGame}" outcome="game">
            		 	<f:param name="id" value="#{game.idGame}" />

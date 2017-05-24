@@ -27,7 +27,7 @@ import dao.UserDao;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown=true)
-@ManagedBean(name = "User")
+
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
