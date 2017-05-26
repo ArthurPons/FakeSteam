@@ -53,6 +53,22 @@ public class UserRest {
 
 	}
 	
+	@GET
+	@Path("/getUsers/{l}")
+	@Produces(MediaType.APPLICATION_JSON)	
+	public List<User> printGameById(@PathParam("l") String l) {
+		
+		System.out.print("login :"+l+"\n");
+		DaoFactory fact = DaoFactory.getInstance();
+        dao.UserDao userDao = fact.getUserDao();
+		
+        List<User> listOfUser = userDao.findByLogin(l);
+		
+		return listOfUser;			
+
+	}
+	
+	
 	
 	@POST
 	@Path("/receive")

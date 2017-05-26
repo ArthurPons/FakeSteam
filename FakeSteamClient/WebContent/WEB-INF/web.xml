@@ -107,6 +107,16 @@
 		<url-pattern>/getUserGames</url-pattern>
   	</servlet-mapping>
 	
+	<servlet>
+		<servlet-name>login test</servlet-name>
+		<servlet-class>servlets.Login</servlet-class>
+ 	 </servlet>
+  	<servlet-mapping>
+		<servlet-name>login test</servlet-name>
+		<url-pattern>/connexion</url-pattern>
+  	</servlet-mapping>
+	
+	
 
   <!--  Client -->
   	 <servlet>

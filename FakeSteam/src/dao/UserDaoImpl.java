@@ -22,6 +22,7 @@ public class UserDaoImpl implements UserDao{
 	private DaoFactory daoFactory;
 	private static final String SQL_INSERT = "INSERT INTO user (pwd_user, salt_user, username_user) VALUES (?, ?, ?)";
 	private static final String SQL_SELECT_ALL = "SELECT * FROM user ";
+	private static final String SQL_FIND_USER_BY_LOGIN = "SELECT * FROM user WHERE username_user = ? ";
 	
 	public UserDaoImpl()
 	{
@@ -126,4 +127,32 @@ public class UserDaoImpl implements UserDao{
 
 		 return listOfUser;
 	 }
+	
+	public List<User> findByLogin (String username) throws DaoException
+	{
+		Connection connexion = null;
+		 PreparedStatement preparedStatement = null;
+		 ResultSet resultSet = null;
+		 User user = null;
+		 
+		 List<User> listOfUser = new ArrayList<User>();
+
+		 try {
+		     /* Récupération d'une connexion depuis la Factory */
+		     connexion = daoFactory.getConnection();
+		     preparedStatement = initialisationRequetePreparee( connexion, SQL_FIND_USER_BY_LOGIN, true , username);
+		     resultSet = preparedStatement.executeQuery();
+		     /* Parcours de la ligne de données de l'éventuel ResulSet retourné */
+		     while ( resultSet.next() ) {
+		         user = map( resultSet );
+		         listOfUser.add(user);
+		     }
+		 } catch ( SQLException e ) {
+		     throw new DaoException( e );
+		 } finally {
+		     fermeturesSilencieuses( resultSet, preparedStatement, connexion );
+		 }
+
+		 return listOfUser;
+	}
 }

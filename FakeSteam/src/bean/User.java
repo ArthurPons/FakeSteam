@@ -42,6 +42,16 @@ public class User implements Serializable {
 	private List<Historic> historics;
 	private List<UserOwnsGame> userOwnsGames;
 
+	private String pwd_user;
+	
+	public String getPwd_user() {
+		return pwd_user;
+	}
+
+	public void setPwd_user(String pwd_user) {
+		this.pwd_user = pwd_user;
+	}
+
 	public User() {
 	}
 

@@ -81,11 +81,11 @@ public class Comment implements Serializable {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
-
-	
+		
 	public void submit() {
 		 	
+		//recuperer via session
+		
 		idGame=2;
 		idUser=2;
         System.out.println("Submitted idGame : "+ idGame +"\n");

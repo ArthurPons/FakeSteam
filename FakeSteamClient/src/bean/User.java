@@ -10,6 +10,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.json.JsonArray;
 import javax.persistence.*;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -44,6 +45,16 @@ public class User implements Serializable {
 	private List<Comment> comments;
 	private List<Historic> historics;
 	private List<Game> listOfGame;
+	
+	private String pwd_user;
+
+	public String getPwd_user() {
+		return pwd_user;
+	}
+
+	public void setPwd_user(String pwd_user) {
+		this.pwd_user = pwd_user;
+	}
 
 	public User() {
 	}
@@ -203,6 +214,111 @@ public class User implements Serializable {
     }
 	
 	
+    public void login(){
+    	
+    	//recuperation login/mdp du formulaire
+    	System.out.print("passe user login\n");
+    	System.out.println("Submitted username : "+ usernameUser +"\n");
+        System.out.println("Submitted pwd : "+ pwdUser +"\n");   
+        
+        //recuperation du hash
+        try {
+			saltUser = getSalt();
+		} catch (NoSuchAlgorithmException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target("http://localhost:8080/FakeSteam/rest/user/getUsers/"+usernameUser); 
+		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
+		String jsonString = json.toString();
+		System.out.print("json :"+json+"\n");
+		ObjectMapper mapper = new ObjectMapper();
+		
+		List<User> listOfUser = null;
+		
+		try {
+			listOfUser = mapper.readValue(jsonString, new TypeReference<List<User>>(){});
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		for(User u : listOfUser)
+		{
+			//recuperer salt
+			 byte[] saltUser = u.getSaltUser();
+			 
+			//generer hash, avec le mdp
+			 String pwdHash = get_SHA_256_SecurePassword(pwdUser ,saltUser);
+			 if((pwdHash).equals(u.getPwdUser()) )
+			 {
+				 idUser=u.getIdUser();
+				 break;
+			 }
+			 
+			//si pareil que le hash, alors utilisateur trouve
+		}
+		
+		if(idUser==0)
+		{
+			System.out.print("utilisateur non trouve\n");
+		}
+		else
+		{
+			System.out.print("utilisateur trouve. Id : "+idUser+"\n");//pas bon si 0
+		}
+		
+		
+        //demarrer session avec id.
+		//instantiation d'un objet Sessoin (stock les infos)
+		
+		
+    	//recherche dans la base
+        /*
+         * 
+         * Client client = ClientBuilder.newClient();
+		System.out.print("idutilisateur :"+idUser+"\n");
+		
+		//avoir recuperer l'id du user
+		WebTarget target = client.target("http://localhost:8080/FakeSteam/rest/game/ownedBy/2"); 
+		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
+		String jsonString = json.toString();
+		System.out.print("json :"+json+"\n");
+		ObjectMapper mapper = new ObjectMapper();
+		
+		List<Game> listOfGame = null;
+		try {
+			listOfGame = mapper.readValue(jsonString, new TypeReference<List<Game>>(){});
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+         * 
+         */
+    	
+    	
+    	//si bon, redirige vers accueil + ouverture d'une session
+    	
+    	//sinon, page d'erreur, id/mdp non valide
+    	
+    }
+    
 	public void submit() {
 	 		                
 		System.out.println("Submitted idUser : "+ usernameUser +"\n");
