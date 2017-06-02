@@ -11,9 +11,13 @@ import java.security.NoSuchAlgorithmException;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
+import javax.json.JsonArray;
 import javax.persistence.*;
 import javax.servlet.ServletContext;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Target;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -25,6 +29,10 @@ import org.primefaces.model.UploadedFile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import servlets.FormGame;
 
@@ -53,6 +61,39 @@ public class Game implements Serializable {
 	private List<Console> consoles;
 	private List<Historic> historics;	
 	private List<UserOwnsGame> userOwnsGames;
+	
+	private List<Game> lastThreeGames;
+
+	public List<Game> getLastThreeGames() {
+		Client client = ClientBuilder.newClient();
+//		Target target = client.target("http://localhost:8080/FakeSteam/rest/game/get"); 
+//		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
+//		String jsonString = json.toString();
+//		System.out.print("json :"+json+"\n");
+//		ObjectMapper mapper = new ObjectMapper();
+//		
+//		List<Game> listAllGames = null;
+//		try {
+//			listAllGames = mapper.readValue(jsonString, new TypeReference<List<Game>>(){});
+//		} catch (JsonParseException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (JsonMappingException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		lastThreeGames = listAllGames.subList(listAllGames.size()-4, listAllGames.size()-1);
+		
+		return null;
+	}
+
+	public void setLastThreeGames(List<Game> lastThreeGames) {
+		this.lastThreeGames = lastThreeGames;
+	}
 
 	@JsonIgnore
 	public UploadedFile getUploadedFile() {
