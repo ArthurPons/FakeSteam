@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/core">
+      xmlns:ui="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
   <h:head>
     <meta charset="utf-8"></meta>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
@@ -55,18 +56,23 @@
       </div>
     </div>
 
-	<div class="container">
-    	
-	   <h:form id="adduser" class="form">
-	        <h2 class="form-signin-heading">Please add user</h2>
-	        <label for="inputUsername" class="sr-only">Username</label>
-	        <h:inputText type="text" class="form-control" placeholder="username" value="#{User.usernameUser}"></h:inputText>
-	        <label for="inputPassword" class="sr-only">Password</label>
-	        <h:inputSecret class="form-control" placeholder="password" value="#{User.pwdUser}"></h:inputSecret>
-	        <br></br>
-	        <h:commandButton class="btn btn-lg btn-primary btn-block" type="submit" action="#{User.submit()}" value="Add user"></h:commandButton>
-		</h:form>
+	<div class="jumbotron">
+      <div class="container">
+        <h1>Game Title</h1>
+        <p>Game Description</p>
+        <a class="btn btn-primary btn-lg" href="#" role="button">Buy</a>
+      </div>
     </div>
+    
+    <h:form>
+         <p:rating value="#{Rating.ratingRating}" />	       	        		     		
+    </h:form>
+    
+    <h:form>
+    	 <label for="inputComment" class="sr-only">Comment</label>
+         <h:inputText type="text" id="inputComment" class="form-control" placeholder="comment" value="#{Comment.messageComment}"></h:inputText>
+		 <h:commandButton value="Submit" action="#{Comment.submit()}" />
+    </h:form>
 
 	<div class="container">
       <!-- FOOTER -->

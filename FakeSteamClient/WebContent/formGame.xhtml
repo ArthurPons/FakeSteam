@@ -4,29 +4,85 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      
+      xmlns:ui="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui">
-    <h:body>
+  <h:head>
+    <meta charset="utf-8"></meta>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content=""></meta>
+    <meta name="author" content=""></meta>
+    <link rel="icon" href="../../favicon.ico"></link>
 
-    	<h:form enctype="multipart/form-data">
+    <title>FakeSteam</title>
 
-			 <fieldset>
-                <legend>User</legend>
-                <p>Ajouter un jeu</p>
+    <!-- Bootstrap core CSS -->
+    <link href="./bootstrap/css/bootstrap.css" rel="stylesheet"></link>
 
-                Titre : <h:inputText value="#{Game.titleGame}" />               
-                 <br/>
-                Prix :  <h:inputText value="#{Game.priceGame}" />               
-                <br/>    
-                Image : <p:fileUpload value="#{Game.uploadedFile}" mode="simple" />             
-                <br/>                
-               
-            </fieldset>         	
-         
-	     <br /><br />   	       	        		
-	     		
-	     <h:commandButton value="Submit" action="#{Game.submit()}" />
+    <!-- Custom styles for this template -->
+    <link href="carousel.css" rel="stylesheet"></link>
+  </h:head>
+<!-- NAVBAR
+================================================== -->
+  <body>
+    <div class="navbar-wrapper">
+      <div class="container">
 
-    	</h:form>
-    </h:body>
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href=".">FakeSteam</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li><a href="#">Library</a></li>
+                <li><a href="#about">Account</a></li>
+                <li><a href="#about">Games</a></li>
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+              	<li><a href="#">Log in</a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+
+      </div>
+    </div>
+
+	<div class="container">      
+	   <h:form id="adduser" class="form">
+	        <h2 class="form-heading">Please add game</h2>
+	        <label for="inputUsername" class="sr-only">Title</label>
+	        <h:inputText type="text" class="form-control" placeholder="username" value="#{Game.titleGame}"></h:inputText>
+	        <label for="inputPrice" class="sr-only">Price</label>
+	        <h:inputText class="form-control" placeholder="password" value="#{Game.priceGame}"></h:inputText>
+	        <p:fileUpload value="#{Game.uploadedFile}" mode="simple" /> 
+	        <br></br>
+	        <h:commandButton class="btn btn-lg btn-primary btn-block" type="submit" action="#{Game.submit()}" value="Add game"></h:commandButton>
+		</h:form>
+    </div>
+
+	<div class="container">
+      <!-- FOOTER -->
+      <footer>
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>&copy; 2017 FakeSteam, Inc. &middot; <a href="#noprivacy#sellingyourdata">Privacy</a> &middot; <a href="#">Terms</a></p>
+      </footer>
+
+    </div><!-- /.container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="./bootstrap/js/bootstrap.min.js"></script>
+  </body>
 </html>
