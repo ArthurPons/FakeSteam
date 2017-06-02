@@ -57,15 +57,15 @@
     </div>
 
 	<div class="container">      
-	   <h:form id="adduser" class="form">
+	   <h:form enctype="multipart/form-data">
 	        <h2 class="form-heading">Please add game</h2>
 	        <label for="inputUsername" class="sr-only">Title</label>
 	        <h:inputText type="text" class="form-control" placeholder="username" value="#{Game.titleGame}"></h:inputText>
 	        <label for="inputPrice" class="sr-only">Price</label>
 	        <h:inputText class="form-control" placeholder="password" value="#{Game.priceGame}"></h:inputText>
-	        <p:fileUpload value="#{Game.uploadedFile}" mode="simple" /> 
+	        <p:fileUpload class="form-control" placeholder="upload" value="#{Game.uploadedFile}" mode="simple"></p:fileUpload> 
 	        <br></br>
-	        <h:commandButton class="btn btn-lg btn-primary btn-block" type="submit" action="#{Game.submit()}" value="Add game"></h:commandButton>
+	        <h:commandButton class="btn btn-lg btn-primary btn-block" value="Submit" action="#{Game.submit()}"></h:commandButton>
 		</h:form>
     </div>
 
