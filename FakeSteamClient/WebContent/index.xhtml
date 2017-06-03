@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
   <h:head>
     <meta charset="utf-8"></meta>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
@@ -66,9 +67,9 @@
         <li data-target="#myCarousel" data-slide-to="2"></li>
       </ol>
       <div class="carousel-inner" role="listbox">
-        <ui:repeat value="#{Game.lastThreeGames}" var="game">
-	        <div class="item active">
-	          <img class="third-slide" src="./images/maxresdefault.jpg" alt="Second slide"/>
+        <ui:repeat value="#{Game.lastThreeGames}" var="game" varStatus="status">
+        	<div class="#{status.count == 1 ? 'item active' : 'item'}">
+	        <img class="slide" src="./images/maxresdefault.jpg" alt="Second slide"/>
 	          <div class="container">
 	            <div class="carousel-caption">
 	              <h1>#{game.titleGame}</h1>
