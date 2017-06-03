@@ -4,6 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jboss.resteasy.client.jaxrs.ResteasyClient;
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
+
 import javax.json.JsonArray;
 import javax.json.JsonValue;
 import javax.servlet.ServletException;
@@ -24,8 +28,8 @@ public class GetInfos extends HttpServlet{
     	System.out.print("passe get games\n");
     	System.out.print("passe servlet client\n");
     	List<String> listOfGame = new ArrayList<>();
-		Client client = ClientBuilder.newClient();
-		WebTarget target = client.target("http://localhost:8080/FakeSteam/rest/game/get"); 
+    	ResteasyClient client = new ResteasyClientBuilder().build();
+    	ResteasyWebTarget target = client.target("http://localhost:8080/FakeSteam/rest/game/get"); 
 		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
 		System.out.print(json);	
     	

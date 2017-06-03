@@ -125,6 +125,14 @@
 		<url-pattern>/addGenre</url-pattern>
   	</servlet-mapping>
 	
+	<servlet>
+		<servlet-name>add console</servlet-name>
+		<servlet-class>servlets.FormConsole</servlet-class>
+ 	 </servlet>
+  	<servlet-mapping>
+		<servlet-name>add console</servlet-name>
+		<url-pattern>/addConsole</url-pattern>
+  	</servlet-mapping>
 	
 
   <!--  Client -->

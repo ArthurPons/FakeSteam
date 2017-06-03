@@ -4,6 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jboss.resteasy.client.jaxrs.ResteasyClient;
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
+
 import javax.faces.bean.ManagedBean;
 import javax.json.JsonArray;
 import javax.ws.rs.client.Client;
@@ -38,9 +42,9 @@ public class UserClient {
 
 	public List<bean.Game> getListOfGame() {
 		
-		Client client = ClientBuilder.newClient();
+		ResteasyClient client = new ResteasyClientBuilder().build();
 		System.out.print("idutilisateur :"+idUser+"\n");
-		WebTarget target = client.target("http://localhost:8080/FakeSteam/rest/game/ownedBy/2"); 
+		ResteasyWebTarget target = client.target("http://localhost:8080/FakeSteam/rest/game/ownedBy/2"); 
 		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
 		String jsonString = json.toString();
 		System.out.print("json :"+json+"\n");

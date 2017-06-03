@@ -109,10 +109,10 @@
     <div class="container">
     	<h1> Genres </h1>
 	    <div class="row">
-	      <ui:repeat value="#{Genre.lastThreeGenres}" var="genre">
+	      <ui:repeat var="genre" value="#{Genre.lastThreeGenres}">
 			  <div class="col-md-6 col-md-4">
 			    <div class="thumbnail">
-			      <!-- <img src="./images/maxresdefault.jpg" alt="..."/> -->
+			      <img src="./images/maxresdefault.jpg" alt="..."/>
 			      <div class="caption">
 			        <h3>#{genre.nameGenre}</h3>
 			        <p>See all #{genre.nameGenre} games !</p>
@@ -124,10 +124,10 @@
 
 		<h1> Consoles </h1>
 	    <div class="row">
-	   	  <ui:repeat value="#{Console.lastThreeConsoles}" var="console">
+	   	  <ui:repeat var="console" value="#{Console.lastThreeConsoles}">
 			  <div class="col-md-6 col-md-4">
 			    <div class="thumbnail">
-			      <!-- <img src="./images/maxresdefault.jpg" alt="..."/> -->
+			      <img src="./images/maxresdefault.jpg" alt="..."/>
 			      <div class="caption">
 			        <h3>#{console.nameConsole}</h3>
 			        <p>See all #{console.nameConsole} games !</p>

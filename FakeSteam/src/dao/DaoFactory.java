@@ -107,6 +107,12 @@ public class DaoFactory {
     	return new GenreDaoImpl(this);
     }
     
+    public ConsoleDao getConsoleDao()
+    {
+    	return new ConsoleDaoImpl(this);
+    }
+    
+    
  
     
 }

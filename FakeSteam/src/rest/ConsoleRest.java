@@ -15,25 +15,23 @@ import javax.ws.rs.core.Response;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-import bean.Genre;
-
-
+import bean.Console;
 import dao.DaoFactory;
 
-@Path("genre")
-public class GenreRest {
+@Path("console")
+public class ConsoleRest {
 		
 	@GET
 	@Path("/get/{i}")
 	@Produces(MediaType.APPLICATION_JSON)	
-	public Genre printGenreByid(@PathParam("i") int i) {
+	public Console printConsoleByid(@PathParam("i") int i) {
 		
 		System.out.print("valeur :"+i+"\n");
 		DaoFactory fact = DaoFactory.getInstance();
-        dao.GenreDao genreDao = fact.getGenreDao();
+        dao.ConsoleDao consoleDao = fact.getConsoleDao();
 		
-		Genre g = genreDao.find(i);
-		return g;
+		Console c = consoleDao.find(i);
+		return c;
 		
 	}	
 
@@ -41,36 +39,36 @@ public class GenreRest {
 	@GET
 	@Path("/get")
 	@Produces(MediaType.APPLICATION_JSON)	
-	public List<Genre> printAllGenre() {
+	public List<Console> printAllConsole() {
 		
 		
 		DaoFactory fact = DaoFactory.getInstance();
-        dao.GenreDao genreDao = fact.getGenreDao();
+		dao.ConsoleDao consoleDao = fact.getConsoleDao();
 		
-        List<Genre> g = genreDao.findAll();
+        List<Console> c = consoleDao.findAll();
 		
-		return g;
+		return c;
 	}
 	
 	
 	@POST
 	@Path("/receive")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response consumeJson(Genre genre) throws URISyntaxException
+	public Response consumeJson(Console console) throws URISyntaxException
 	{
-		System.out.print("passe GAME REST ************\n");
-		System.out.println(genre);
+		System.out.print("passe CONSOLE REST ************\n");
+		System.out.println(console);
 		
 		DaoFactory fact = DaoFactory.getInstance();
-        dao.GenreDao genreDao = fact.getGenreDao();
+		dao.ConsoleDao consoleDao = fact.getConsoleDao();
 		
         try {
-        	genreDao.create(genre);
+        	consoleDao.create(console);
         }
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		String output = "Objet "+genre+" crée";
+		String output = "Objet "+console+" crée";
 		return Response.status(200).entity(output).build();
 	}
 
