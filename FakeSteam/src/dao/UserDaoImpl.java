@@ -20,7 +20,7 @@ public class UserDaoImpl implements UserDao{
 
 	private static final String SQL_SELECT_BY_ID = "SELECT * FROM user WHERE id_user = ?";
 	private DaoFactory daoFactory;
-	private static final String SQL_INSERT = "INSERT INTO user (pwd_user, salt_user, username_user) VALUES (?, ?, ?)";
+	private static final String SQL_INSERT = "INSERT INTO user (pwd_user, salt_user, username_user,is_admin_user) VALUES (?, ?, ?, false)";
 	private static final String SQL_SELECT_ALL = "SELECT * FROM user ";
 	private static final String SQL_FIND_USER_BY_LOGIN = "SELECT * FROM user WHERE username_user = ? ";
 	

@@ -102,6 +102,11 @@ public class DaoFactory {
     	return new UserOwnsGameDaoImpl(this);
     }
     
+    public GenreDao getGenreDao()
+    {
+    	return new GenreDaoImpl(this);
+    }
+    
  
     
 }

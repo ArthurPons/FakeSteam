@@ -115,6 +115,15 @@
 		<servlet-name>login test</servlet-name>
 		<url-pattern>/connexion</url-pattern>
   	</servlet-mapping>
+  	
+  	<servlet>
+		<servlet-name>add genre</servlet-name>
+		<servlet-class>servlets.FormGenre</servlet-class>
+ 	 </servlet>
+  	<servlet-mapping>
+		<servlet-name>add genre</servlet-name>
+		<url-pattern>/addGenre</url-pattern>
+  	</servlet-mapping>
 	
 	
 
