@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Target;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -152,7 +153,7 @@ public class User implements Serializable {
 		System.out.print("idutilisateur :"+idUser+"\n");
 		
 		//avoir recuperer l'id du user
-		WebTarget target = client.target("http://localhost:8080/FakeSteam/rest/game/ownedBy/2"); 
+		Target target = client.target("http://localhost:8080/FakeSteam/rest/game/ownedBy/2"); 
 		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
 		String jsonString = json.toString();
 		System.out.print("json :"+json+"\n");
@@ -173,7 +174,7 @@ public class User implements Serializable {
 		}
 		
 		
-		return listOfGame;	
+		return null;	
 		
 	}
 
@@ -230,7 +231,7 @@ public class User implements Serializable {
 		}
         
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target("http://localhost:8080/FakeSteam/rest/user/getUsers/"+usernameUser); 
+        Target target = client.target("http://localhost:8080/FakeSteam/rest/user/getUsers/"+usernameUser); 
 		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
 		String jsonString = json.toString();
 		System.out.print("json :"+json+"\n");

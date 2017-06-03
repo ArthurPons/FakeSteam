@@ -47,7 +47,8 @@
                 <li><a href="#about">Games</a></li>
               </ul>
               <ul class="nav navbar-nav navbar-right">
-              	<li><a href="#">Log in</a></li>
+                <li><a href="/FakeSteamClient/addUser">New User</a></li>
+              	<li><a href="/FakeSteamClient/logUser">Log in</a></li>
               </ul>
             </div>
           </div>
@@ -92,34 +93,17 @@
     <div class="container">
     	<h1> Genres </h1>
 	    <div class="row">
-	   	  <!-- <h1>Genres</h1> -->
-		  <div class="col-md-6 col-md-4">
-		    <div class="thumbnail">
-		      <img src="./images/maxresdefault.jpg" alt="..."/>
-		      <div class="caption">
-		        <h3>Action</h3>
-		        <p>See all action games !</p>
-		      </div>
-		    </div>
-		  </div>
-		  <div class="col-sm-6 col-md-4">
-		    <div class="thumbnail">
-		      <img src="./images/maxresdefault.jpg" alt="..."/>
-		      <div class="caption">
-		        <h3>Action</h3>
-		        <p>See all action games !</p>
-		      </div>
-		    </div>
-		  </div>
-		  <div class="col-sm-6 col-md-4">
-		    <div class="thumbnail">
-		      <img src="./images/maxresdefault.jpg" alt="..."/>
-		      <div class="caption">
-		        <h3>Action</h3>
-		        <p>See all action games !</p>
-		      </div>
-		    </div>
-		  </div>
+	      <ui:repeat value="#{Genre.lastThreeGenres}" var="genre">
+			  <div class="col-md-6 col-md-4">
+			    <div class="thumbnail">
+			      <img src="./images/maxresdefault.jpg" alt="..."/>
+			      <div class="caption">
+			        <h3>#{genre.nameGenre}</h3>
+			        <p>See all #{genre.nameGenre} games !</p>
+			      </div>
+			    </div>
+			  </div>
+		  </ui:repeat>
 		</div>
 
 		<h1> Consoles </h1>
