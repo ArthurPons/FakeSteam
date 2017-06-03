@@ -90,9 +90,12 @@ public class Game implements Serializable {
 			e.printStackTrace();
 		}
 		
-		lastThreeGames = listAllGames.subList(listAllGames.size()-4, listAllGames.size()-1);
-		
-		return lastThreeGames;
+		if (listAllGames.size() <= 3) {
+			return listAllGames;
+		} 
+		else {
+			return listAllGames.subList(listAllGames.size()-4, listAllGames.size()-1);
+		}
 	}
 
 	public void setLastThreeGames(List<Game> lastThreeGames) {

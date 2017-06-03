@@ -57,9 +57,12 @@ public class Console implements Serializable {
 			e.printStackTrace();
 		}
 		
-		lastThreeConsoles = listAllConsoles.subList(listAllConsoles.size()-4, listAllConsoles.size()-1);
-		
-		return lastThreeConsoles;
+		if (listAllConsoles.size() <= 3) {
+			return listAllConsoles;
+		} 
+		else {
+			return listAllConsoles.subList(listAllConsoles.size()-4, listAllConsoles.size()-1);
+		}
 	}
 
 	public void setLastThreeConsoles(List<Console> lastThreeConsoles) {

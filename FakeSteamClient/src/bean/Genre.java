@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 
+import javax.json.JsonArray;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.persistence.*;
@@ -20,6 +21,10 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
 
@@ -61,9 +66,13 @@ public class Genre implements Serializable {
 			e.printStackTrace();
 		}
 		
-		lastThreeGenres = listAllGenres.subList(listAllGenres.size()-4, listAllGenres.size()-1);
+		if (listAllGenres.size() <= 3) {
+			return listAllGenres;
+		} 
+		else {
+			return listAllGenres.subList(listAllGenres.size()-4, listAllGenres.size()-1);
+		}
 
-		return lastThreeGenres;
 	}
 
 	public void setLastThreeGenres(List<Genre> lastThreeGenres) {

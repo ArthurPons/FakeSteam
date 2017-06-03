@@ -68,17 +68,33 @@
         <li data-target="#myCarousel" data-slide-to="2"></li>
       </ol>
       <div class="carousel-inner" role="listbox">
-        <ui:repeat value="#{Game.lastThreeGames}" var="game" varStatus="status">
-        	<div class="#{status.count == 1 ? 'item active' : 'item'}">
-	        <img class="slide" src="./images/maxresdefault.jpg" alt="Second slide"/>
-	          <div class="container">
-	            <div class="carousel-caption">
-	              <h1>#{game.titleGame}</h1>
-	              <p><a class="btn btn-lg btn-primary" href="#" role="button">Buy</a></p>
-	            </div>
-	          </div>
-	        </div>
-        </ui:repeat>
+       	<div class="item active">
+        <img class="slide" src="./images/maxresdefault.jpg" alt="First slide"/>
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>#{Game.lastThreeGames[1].titleGame}</h1>
+              <p><a class="btn btn-lg btn-primary" href="#" role="button">Buy</a></p>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+        <img class="second-slide" src="./images/maxresdefault.jpg" alt="Second slide"/>
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>#{Game.lastThreeGames[2].titleGame}</h1>
+              <p><a class="btn btn-lg btn-primary" href="#" role="button">Buy</a></p>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+        <img class="third-slide" src="./images/maxresdefault.jpg" alt="Third slide"/>
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>#{Game.lastThreeGames[3].titleGame}</h1>
+              <p><a class="btn btn-lg btn-primary" href="#" role="button">Buy</a></p>
+            </div>
+          </div>
+        </div>
       </div>
       <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
         <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
@@ -96,7 +112,7 @@
 	      <ui:repeat value="#{Genre.lastThreeGenres}" var="genre">
 			  <div class="col-md-6 col-md-4">
 			    <div class="thumbnail">
-			      <img src="./images/maxresdefault.jpg" alt="..."/>
+			      <!-- <img src="./images/maxresdefault.jpg" alt="..."/> -->
 			      <div class="caption">
 			        <h3>#{genre.nameGenre}</h3>
 			        <p>See all #{genre.nameGenre} games !</p>
@@ -108,34 +124,17 @@
 
 		<h1> Consoles </h1>
 	    <div class="row">
-	   	  <!-- <h1>Genres</h1> -->
-		  <div class="col-md-6 col-md-4">
-		    <div class="thumbnail">
-		      <img src="./images/maxresdefault.jpg" alt="..."/>
-		      <div class="caption">
-		        <h3>PS4</h3>
-		        <p>See all PS4 games !</p>
-		      </div>
-		    </div>
-		  </div>
-		  <div class="col-sm-6 col-md-4">
-		    <div class="thumbnail">
-		      <img src="./images/maxresdefault.jpg" alt="..."/>
-		      <div class="caption">
-		        <h3>PS4</h3>
-		        <p>See all PS4 games !</p>
-		      </div>
-		    </div>
-		  </div>
-		  <div class="col-sm-6 col-md-4">
-		    <div class="thumbnail">
-		      <img src="./images/maxresdefault.jpg" alt="..."/>
-		      <div class="caption">
-		        <h3>PS4</h3>
-		        <p>See all PS4 games !</p>
-		      </div>
-		    </div>
-		  </div>
+	   	  <ui:repeat value="#{Console.lastThreeConsoles}" var="console">
+			  <div class="col-md-6 col-md-4">
+			    <div class="thumbnail">
+			      <!-- <img src="./images/maxresdefault.jpg" alt="..."/> -->
+			      <div class="caption">
+			        <h3>#{console.nameConsole}</h3>
+			        <p>See all #{console.nameConsole} games !</p>
+			      </div>
+			    </div>
+			  </div>
+		  </ui:repeat>
 		</div>
 
 	</div>
