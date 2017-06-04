@@ -16,8 +16,8 @@ import bean.Genre;
 public class GameIsOfGenreDaoImpl implements GameIsOfGenreDao{
 
 	private static DaoFactory daoFactory;
-	private static final String SQL_SELECT_BY_ID = "SELECT * FROM game_is_of_genre WHERE id_game_is_of_genre = ?";
-	private static final String SQL_INSERT = "INSERT INTO game_is_of_genre (fk_game_user_owns_game, fk_genre_user_owns_game) VALUES (?, ?)";
+	private static final String SQL_SELECT_BY_GAMEID = "SELECT name_genre FROM game_is_of_genre, genre WHERE fk_game_game_is_of_genre = ? AND fk_genre_game_is_of_genre=id_genre ";
+	private static final String SQL_INSERT = "INSERT INTO game_is_of_genre (fk_game_game_is_of_genre, fk_genre_game_is_of_genre) VALUES (?, ?)";
 	private static final String SQL_SELECT_ALL = "SELECT * FROM game_is_of_genre";
 	
 	public GameIsOfGenreDaoImpl()
@@ -61,22 +61,64 @@ public class GameIsOfGenreDaoImpl implements GameIsOfGenreDao{
 	    }
 	}
 	
+	
+	
+	public void createSeveral (int idGame, List<Integer> listGenre) throws DaoException
+	{
+		System.out.print("id du jeu pour associe un genre a celui ci : "+idGame+"\n");
+		Connection connexion = null;
+	    PreparedStatement preparedStatement = null;
+	    ResultSet valeursAutoGenerees = null;
+
+	    try {
+	        /* Récupération d'une connexion depuis la Factory */
+	        connexion = daoFactory.getConnection();
+	        
+	        for (Integer g:listGenre)
+	        {
+	        	System.out.print("id du genre :"+g+"\n");
+	        	preparedStatement = initialisationRequetePreparee( connexion, SQL_INSERT, true, idGame, g );
+	        	
+	 	        int statut = preparedStatement.executeUpdate();
+	 	        /* Analyse du statut retourné par la requête d'insertion */
+	 	        if ( statut == 0 ) {
+	 	            throw new DaoException( "Échec de la création de l'association d'un jeu à un genre, aucune ligne ajoutée dans la table." );
+	 	        }
+	 	        /* Récupération de l'id auto-généré par la requête d'insertion */
+	 	        valeursAutoGenerees = preparedStatement.getGeneratedKeys();
+	 	       
+	        }
+	        
+	       
+	    } catch ( SQLException e ) {
+	        throw new DaoException( e );
+	    } finally {
+	        fermeturesSilencieuses( valeursAutoGenerees, preparedStatement, connexion );
+	    }
+	}
+	
+	
 	@Override
-	public GameIsOfGenre find( int id ) throws DaoException
+	public List<String> find( int id ) throws DaoException
 	{
 		 Connection connexion = null;
 		 PreparedStatement preparedStatement = null;
 		 ResultSet resultSet = null;
 		 GameIsOfGenre gameIsOfGenre = null;
-
+		 String genreName=null;
+		 List<String> listOfGenreName = new ArrayList<String>();
+		 
 		 try {
 		     /* Récupération d'une connexion depuis la Factory */
 		     connexion = daoFactory.getConnection();
-		     preparedStatement = initialisationRequetePreparee( connexion, SQL_SELECT_BY_ID, false, id );
+		     preparedStatement = initialisationRequetePreparee( connexion, SQL_SELECT_BY_GAMEID, false, id );
 		     resultSet = preparedStatement.executeQuery();
 		     /* Parcours de la ligne de données de l'éventuel ResulSet retourné */
-		     if ( resultSet.next() ) {
-		         gameIsOfGenre = map( resultSet );
+		     while ( resultSet.next() ) {
+		         //gameIsOfGenre = map( resultSet );		    	 
+		    	 genreName = resultSet.getString("name_genre");
+		    	 System.out.print("le jeu est de type "+genreName+"\n");
+		    	 listOfGenreName.add(genreName);
 		     }
 		 } catch ( SQLException e ) {
 		     throw new DaoException( e );
@@ -84,7 +126,7 @@ public class GameIsOfGenreDaoImpl implements GameIsOfGenreDao{
 		     fermeturesSilencieuses( resultSet, preparedStatement, connexion );
 		 }
 
-		 return gameIsOfGenre;
+		 return listOfGenreName;
 	}
 	
 	 public List<GameIsOfGenre> findAll () throws DaoException

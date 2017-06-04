@@ -16,8 +16,8 @@ import bean.User;
 public class GameIsOnConsoleDaoImpl implements GameIsOnConsoleDao{
 
 	private static DaoFactory daoFactory;
-	private static final String SQL_SELECT_BY_ID = "SELECT * FROM game_is_on_console WHERE id_game_is_on_console = ?";
-	private static final String SQL_INSERT = "INSERT INTO game_is_on_console (fk_game_game_is_on_console, fk_console_game_is_on_console) VALUES (?, ?)";
+	private static final String SQL_SELECT_BY_GAMEID = "select name_console from console, game_is_on_console where game_is_on_console.fk_game=? AND game_is_on_console.fk_console=console.id_console";
+	private static final String SQL_INSERT = "INSERT INTO game_is_on_console (fk_game, fk_console) VALUES (?, ?)";
 	private static final String SQL_SELECT_ALL = "SELECT * FROM game_is_on_console";
 	
 	public GameIsOnConsoleDaoImpl()
@@ -61,22 +61,64 @@ public class GameIsOnConsoleDaoImpl implements GameIsOnConsoleDao{
 	    }
 	}
 	
+	 public void createSeveral(int idGame, List<Integer> listConsoles) throws DaoException
+	 {
+		 System.out.print("id du jeu pour associe un genre a celui ci : "+idGame+"\n");
+			Connection connexion = null;
+		    PreparedStatement preparedStatement = null;
+		    ResultSet valeursAutoGenerees = null;
+
+		    try {
+		        /* Récupération d'une connexion depuis la Factory */
+		        connexion = daoFactory.getConnection();
+		        
+		        for (Integer c:listConsoles)
+		        {
+		        	System.out.print("id du genre :"+c+"\n");
+		        	preparedStatement = initialisationRequetePreparee( connexion, SQL_INSERT, true, idGame, c );
+		        	
+		 	        int statut = preparedStatement.executeUpdate();
+		 	        /* Analyse du statut retourné par la requête d'insertion */
+		 	        if ( statut == 0 ) {
+		 	            throw new DaoException( "Échec de la création de l'association d'un jeu à un genre, aucune ligne ajoutée dans la table." );
+		 	        }
+		 	        /* Récupération de l'id auto-généré par la requête d'insertion */
+		 	        valeursAutoGenerees = preparedStatement.getGeneratedKeys();
+		 	       
+		        }
+		        
+		       
+		    } catch ( SQLException e ) {
+		        throw new DaoException( e );
+		    } finally {
+		        fermeturesSilencieuses( valeursAutoGenerees, preparedStatement, connexion );
+		    }
+	 }
+	 
+	 
 	@Override
-	public GameIsOnConsole find( int id ) throws DaoException
+	public List<String> find( int id ) throws DaoException
 	{
 		 Connection connexion = null;
 		 PreparedStatement preparedStatement = null;
 		 ResultSet resultSet = null;
-		 GameIsOnConsole game_is_on_console = null;
+		
+		 String consoleName = null;
+		 List<String> listConsoleName = new ArrayList<String>();
 
 		 try {
 		     /* Récupération d'une connexion depuis la Factory */
 		     connexion = daoFactory.getConnection();
-		     preparedStatement = initialisationRequetePreparee( connexion, SQL_SELECT_BY_ID, false, id );
+		     preparedStatement = initialisationRequetePreparee( connexion, SQL_SELECT_BY_GAMEID, false, id );
 		     resultSet = preparedStatement.executeQuery();
+		     
 		     /* Parcours de la ligne de données de l'éventuel ResulSet retourné */
-		     if ( resultSet.next() ) {
-		         game_is_on_console = map( resultSet );
+		    while ( resultSet.next() ) {
+		    	
+		    	 consoleName = resultSet.getString("name_console");
+		    	 System.out.print("le jeu est present sur "+consoleName+"\n");
+		    	 listConsoleName.add(consoleName);
+		    	 System.out.print("ajout dans la liste de  "+consoleName+"\n");
 		     }
 		 } catch ( SQLException e ) {
 		     throw new DaoException( e );
@@ -84,7 +126,7 @@ public class GameIsOnConsoleDaoImpl implements GameIsOnConsoleDao{
 		     fermeturesSilencieuses( resultSet, preparedStatement, connexion );
 		 }
 
-		 return game_is_on_console;
+		 return listConsoleName;
 	}
 	
 	 public List<GameIsOnConsole> findAll () throws DaoException

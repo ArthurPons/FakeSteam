@@ -21,6 +21,7 @@ import bean.Rating;
 import bean.User;
 
 import dao.DaoFactory;
+import dao.GameIsOfGenreDao;
 
 @Path("game")
 public class GameRest {
@@ -28,14 +29,36 @@ public class GameRest {
 	@GET
 	@Path("/get/{i}")
 	@Produces(MediaType.APPLICATION_JSON)	
-	public Game printGameById(@PathParam("i") int i) {
+	public List<Game> printGameById(@PathParam("i") int i) {
 		
 		System.out.print("valeur :"+i+"\n");
 		DaoFactory fact = DaoFactory.getInstance();
         dao.GameDao gameDao = fact.getGameDao();
 		
 		Game g = gameDao.find(i);
-		return g;
+		List<Game> lg = new ArrayList<Game>();
+		lg.add(g);
+		lg.add(new Game());
+		return lg;
+
+		
+	}
+	
+	@GET
+	@Path("/getbyName/{s}")
+	@Produces(MediaType.APPLICATION_JSON)	
+	public List<Game> printGameById(@PathParam("s") String s) {
+		
+		System.out.print("nom du jeu :"+s+"\n");
+		DaoFactory fact = DaoFactory.getInstance();
+        dao.GameDao gameDao = fact.getGameDao();
+		
+		Game g = gameDao.findByName(s);
+		System.out.print("id du jeu trouve :"+g.getIdGame()+"\n" );
+		List<Game> listGame = new ArrayList<Game>();
+		listGame.add(g);
+		listGame.add(new Game());
+		return listGame;
 
 		
 	}
@@ -68,6 +91,10 @@ public class GameRest {
 	}
 	
 	
+	
+	
+	
+	
 	@POST
 	@Path("/receive")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -79,8 +106,56 @@ public class GameRest {
 		DaoFactory fact = DaoFactory.getInstance();
         dao.GameDao gameDao = fact.getGameDao();
 		
+        int idGame=0;
         try {
-        	gameDao.create(game);
+        	idGame = gameDao.create(game);
+        }
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		String output = "Objet "+game+" créé";
+		
+		
+		//ajouts dans game_is_of_genre
+		
+		
+        dao.GameIsOfGenreDao gameIsOfGenreDao = fact.getGameIsOfGenreDao();
+        try {        	
+        	gameIsOfGenreDao.createSeveral(idGame, game.getListOfGenreId());
+        	//gameDao.create(game);
+        }
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+        
+		//ajouts dans game_is_on_console
+        dao.GameIsOnConsoleDao gameIsOnConsoleDao = fact.getGameIsOnConsoleDao();
+        try {        	
+        	gameIsOnConsoleDao.createSeveral(idGame, game.getListOfConsoleId());
+        	//gameDao.create(game);
+        }
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+        
+        return Response.status(200).entity(output).build();
+	}
+	
+	@POST
+	@Path("/receiveGenres")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response consumeJsonGenre(Game game) throws URISyntaxException
+	{
+		System.out.print("passe GAME RECEIVE GENRE ************\n");
+		System.out.println(game);
+		
+		DaoFactory fact = DaoFactory.getInstance();
+        dao.GameIsOfGenreDao gameIsOfGenreDao = fact.getGameIsOfGenreDao();
+		
+        try {
+        	
+        	gameIsOfGenreDao.createSeveral(game.getIdGame(), game.getListOfGenreId());
+        	//gameDao.create(game);
         }
 		catch (Exception e) {
 			e.printStackTrace();
@@ -88,5 +163,7 @@ public class GameRest {
 		String output = "Objet "+game+" créé";
 		return Response.status(200).entity(output).build();
 	}
+	
+	
 
 }

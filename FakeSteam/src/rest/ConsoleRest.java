@@ -41,7 +41,7 @@ public class ConsoleRest {
 	@Produces(MediaType.APPLICATION_JSON)	
 	public List<Console> printAllConsole() {
 		
-		
+		System.out.print("passe console rest\n");
 		DaoFactory fact = DaoFactory.getInstance();
 		dao.ConsoleDao consoleDao = fact.getConsoleDao();
 		

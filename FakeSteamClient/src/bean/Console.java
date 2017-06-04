@@ -3,8 +3,10 @@ package bean;
 import java.io.IOException;
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
+import javax.json.JsonArray;
 import javax.persistence.*;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
@@ -14,7 +16,12 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
 
@@ -27,13 +34,52 @@ public class Console implements Serializable {
 	private int idConsole;
 
 	private String nameConsole;
+	
+	@JsonIgnore
+	private List<Console> listOfAllConsoles;
 
-	private String  typeConsole;
-
-	private List<Game> games;
+	
 
 	public Console() {
 	}
+
+	public void findListConsoles()
+	{
+		ResteasyClient client = new ResteasyClientBuilder().build();
+		ResteasyWebTarget target = client.target("http://localhost:8080/FakeSteam/rest/console/get");
+		
+		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
+		String jsonString = json.toString();
+		System.out.print("json :"+json+"\n");
+		ObjectMapper mapper = new ObjectMapper();
+		
+		listOfAllConsoles = null;
+		try {
+			listOfAllConsoles = mapper.readValue(jsonString, new TypeReference<List<Console>>(){});
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public List<Console> getListOfAllConsoles() {	
+		findListConsoles();
+		return listOfAllConsoles;				
+	}
+
+
+	public void setListOfAllConsoles(List<Console> listOfAllConsoles) {
+		this.listOfAllConsoles = listOfAllConsoles;
+	}
+
+
 
 	public int getIdConsole() {
 		return this.idConsole;
@@ -47,34 +93,16 @@ public class Console implements Serializable {
 		return this.nameConsole;
 	}
 
-	public String getTypeConsole() {
-		return typeConsole;
-	}
-
-	public void setTypeConsole(String typeConsole) {
-		this.typeConsole = typeConsole;
-	}
 
 	public void setNameConsole(String nameConsole) {
 		this.nameConsole = nameConsole;
 	}
 
-
-	public List<Game> getGames() {
-		return this.games;
-	}
-
-	public void setGames(List<Game> games) {
-		this.games = games;
-	}
-	
-	public void submit() {	  
-	       
+	public void submit() {	  	       
 		
 		
 		//ajout dans la table Console
 		System.out.println("Submitted NameGenre : "+ nameConsole +"\n");
-		System.out.println("Submitted TypeConsole : "+ typeConsole +"\n");
 
         try {
         	

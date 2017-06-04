@@ -1,11 +1,14 @@
 package bean;
 
+import java.util.List;
+
 import javax.faces.bean.SessionScoped;
 
 @SessionScoped
 public class Session {	
 	private String username;
-    private String password;
+    
+	private List<Game> panier; 
     
     
     public int login()
