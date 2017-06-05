@@ -21,6 +21,7 @@ public class GameDaoImpl implements GameDao{
 	private static final String SQL_INSERT = "INSERT INTO game (picture_url_game, price_game, title_game) VALUES (?, ?, ?)";
 	private static final String SQL_SELECT_ALL = "SELECT * FROM game";
 	private static final String SQL_SELECT_ALL_USER_GAMES = "SELECT  g.id_game, g.title_game, g.price_game, g.picture_url_game FROM game AS g, user_owns_game as u WHERE g.id_game=u.fk_game_own and u.fk_user_own=?";
+	private static final String SQL_SELECT_BY_NAME ="SELECT * FROM game WHERE title_game = ?";
 	
 	public GameDaoImpl()
 	{
@@ -34,7 +35,7 @@ public class GameDaoImpl implements GameDao{
 	}
 	
 	@Override
-	 public void create( Game game ) throws DaoException
+	 public int create( Game game ) throws DaoException
 	 {
 		 Connection connexion = null;
 		 PreparedStatement preparedStatement = null;
@@ -63,8 +64,34 @@ public class GameDaoImpl implements GameDao{
 		 } finally {
 		     fermeturesSilencieuses( valeursAutoGenerees, preparedStatement, connexion );
 		 }
+		 return game.getIdGame();
 	 }
 	 
+	public Game findByName (String gameName) throws DaoException
+	{
+		Connection connexion = null;
+		 PreparedStatement preparedStatement = null;
+		 ResultSet resultSet = null;
+		 Game game = null;
+
+		 try {
+		     /* Récupération d'une connexion depuis la Factory */
+		     connexion = daoFactory.getConnection();
+		     preparedStatement = initialisationRequetePreparee( connexion, SQL_SELECT_BY_NAME, true, gameName);
+		     resultSet = preparedStatement.executeQuery();
+		     /* Parcours de la ligne de données de l'éventuel ResulSet retourné */
+		     if ( resultSet.next() ) {
+		         game = map( resultSet );
+		     }
+		 } catch ( SQLException e ) {
+		     throw new DaoException( e );
+		 } finally {
+		     fermeturesSilencieuses( resultSet, preparedStatement, connexion );
+		 }
+
+		 return game;
+	}
+	
 	@Override
 	 public Game find( int id ) throws DaoException
 	 {

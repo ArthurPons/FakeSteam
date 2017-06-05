@@ -8,9 +8,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 
-import javax.json.JsonArray;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
+import javax.json.JsonArray;
 import javax.persistence.*;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
@@ -20,6 +20,7 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -37,24 +38,27 @@ public class Genre implements Serializable {
 
 
 	private String nameGenre;
-
-	private List<GameIsOfGenre> gameIsOfGenres;
 	
-	private List<Genre> lastThreeGenres;
+	@JsonIgnore
+	private List<Genre> listOfAllGenres;
 
-	public List<Genre> getLastThreeGenres() {
+	public Genre() {
+	}
+
+	public List<Genre> getListOfAllGenres() {			
+	
+		
 		ResteasyClient client = new ResteasyClientBuilder().build();
 		ResteasyWebTarget target = client.target("http://localhost:8080/FakeSteam/rest/genre/get");
-//		Client client = ClientBuilder.newClient();
-//		Target target = client.target("http://localhost:8080/FakeSteam/rest/game/get"); 
+		
 		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
 		String jsonString = json.toString();
 		System.out.print("json :"+json+"\n");
 		ObjectMapper mapper = new ObjectMapper();
 		
-		List<Genre> listAllGenres = null;
+		listOfAllGenres = null;
 		try {
-			listAllGenres = mapper.readValue(jsonString, new TypeReference<List<Genre>>(){});
+			listOfAllGenres = mapper.readValue(jsonString, new TypeReference<List<Genre>>(){});
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -66,21 +70,14 @@ public class Genre implements Serializable {
 			e.printStackTrace();
 		}
 		
-		if (listAllGenres.size() <= 3) {
-			return listAllGenres;
-		} 
-		else {
-			return listAllGenres.subList(listAllGenres.size()-4, listAllGenres.size()-1);
-		}
-
+		
+		return listOfAllGenres;					
+	}
+	
+	public void setListOfAllGenres(List<Genre> listOfAllGenres) {
+		this.listOfAllGenres = listOfAllGenres;
 	}
 
-	public void setLastThreeGenres(List<Genre> lastThreeGenres) {
-		this.lastThreeGenres = lastThreeGenres;
-	}
-
-	public Genre() {
-	}
 
 	public int getIdGenre() {
 		return this.idGenre;
@@ -98,27 +95,7 @@ public class Genre implements Serializable {
 		this.nameGenre = nameGenre;
 	}
 
-	public List<GameIsOfGenre> getGameIsOfGenres() {
-		return this.gameIsOfGenres;
-	}
 
-	public void setGameIsOfGenres(List<GameIsOfGenre> gameIsOfGenres) {
-		this.gameIsOfGenres = gameIsOfGenres;
-	}
-
-	public GameIsOfGenre addGameIsOfGenre(GameIsOfGenre gameIsOfGenre) {
-		getGameIsOfGenres().add(gameIsOfGenre);
-		gameIsOfGenre.setGenre(this);
-
-		return gameIsOfGenre;
-	}
-
-	public GameIsOfGenre removeGameIsOfGenre(GameIsOfGenre gameIsOfGenre) {
-		getGameIsOfGenres().remove(gameIsOfGenre);
-		gameIsOfGenre.setGenre(null);
-
-		return gameIsOfGenre;
-	}
 	
 public void submit() {	  
        

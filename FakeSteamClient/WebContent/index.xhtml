@@ -67,34 +67,48 @@
         <li data-target="#myCarousel" data-slide-to="1"></li>
         <li data-target="#myCarousel" data-slide-to="2"></li>
       </ol>
-      <div class="carousel-inner" role="listbox">
-       	<div class="item active">
-        <img class="slide" src="./images/maxresdefault.jpg" alt="First slide"/>
-          <div class="container">
-            <div class="carousel-caption">
-              <h1>#{Game.lastThreeGames[1].titleGame}</h1>
-              <p><a class="btn btn-lg btn-primary" href="#" role="button">Buy</a></p>
-            </div>
-          </div>
-        </div>
-        <div class="item">
-        <img class="second-slide" src="./images/maxresdefault.jpg" alt="Second slide"/>
-          <div class="container">
-            <div class="carousel-caption">
-              <h1>#{Game.lastThreeGames[2].titleGame}</h1>
-              <p><a class="btn btn-lg btn-primary" href="#" role="button">Buy</a></p>
-            </div>
-          </div>
-        </div>
-        <div class="item">
-        <img class="third-slide" src="./images/maxresdefault.jpg" alt="Third slide"/>
-          <div class="container">
-            <div class="carousel-caption">
-              <h1>#{Game.lastThreeGames[3].titleGame}</h1>
-              <p><a class="btn btn-lg btn-primary" href="#" role="button">Buy</a></p>
-            </div>
-          </div>
-        </div>
+      <div class="carousel-inner" role="listbox">       
+        	<div class="item active">
+	        <img class="slide" src="./images/maxresdefault.jpg" alt="Second slide"/>
+	          <div class="container">
+	            <div class="carousel-caption">
+	              <h1>#{Game.firstGameCarroussel.titleGame}</h1>
+	              <p>
+	              		<h:link value="Go" outcome="game" >
+	              			<f:param name="idGame" value="#{Game.firstGameCarroussel.idGame}" />
+						</h:link>
+				  </p>
+	              
+	            </div>
+	          </div>
+	        </div>
+	        <div class="item">
+	        <img class="slide" src="./images/maxresdefault.jpg" alt="Second slide"/>
+	          <div class="container">
+	            <div class="carousel-caption">
+	              <h1>#{Game.secondGameCarroussel.titleGame}</h1>
+	              <p>
+	              		<h:link value="Go" outcome="game" >
+	              			<f:param name="idGame" value="#{Game.secondGameCarroussel.idGame}" />
+						</h:link>
+				  </p>
+	            </div>
+	          </div>
+	        </div>
+	        <div class="item">
+	        <img class="slide" src="./images/maxresdefault.jpg" alt="Second slide"/>
+	          <div class="container">
+	            <div class="carousel-caption">
+	              <h1>#{Game.thirdGameCarroussel.titleGame}</h1>
+	              <p>
+	              		<h:link value="Go" outcome="game" >
+	              			<f:param name="idGame" value="#{Game.thirdGameCarroussel.idGame}" />
+						</h:link>
+				  </p>
+	            </div>
+	          </div>
+	        </div>
+       
       </div>
       <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
         <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
@@ -109,7 +123,7 @@
     <div class="container">
     	<h1> Genres </h1>
 	    <div class="row">
-	      <ui:repeat var="genre" value="#{Genre.lastThreeGenres}">
+	      <ui:repeat var="genre" value="#{Genre.listOfAllGenres}">
 			  <div class="col-md-6 col-md-4">
 			    <div class="thumbnail">
 			      <img src="./images/maxresdefault.jpg" alt="..."/>
@@ -124,7 +138,7 @@
 
 		<h1> Consoles </h1>
 	    <div class="row">
-	   	  <ui:repeat var="console" value="#{Console.lastThreeConsoles}">
+	   	  <ui:repeat var="console" value="#{Console.listOfAllConsoles}">
 			  <div class="col-md-6 col-md-4">
 			    <div class="thumbnail">
 			      <img src="./images/maxresdefault.jpg" alt="..."/>

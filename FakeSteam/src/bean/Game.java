@@ -45,7 +45,15 @@ public class Game implements Serializable {
 	private String titleGame;
 		
 	private UploadedFile uploadedFile;	
+	private int consoleId;
+	private List<Genre> listOfGenre;
+	private List<Integer> listOfGenreId;
+	private List<Integer> listOfConsoleId;
 
+	private List<String> listOfGenreName;
+	private List<String> listOfConsoleName;
+	
+	
 	//@JsonIgnore
 	private Rating rating;
 	
@@ -54,6 +62,56 @@ public class Game implements Serializable {
 	private List<Console> consoles;
 	private List<Historic> historics;	
 	private List<UserOwnsGame> userOwnsGames;
+
+	
+	
+	public List<String> getListOfGenreName() {
+		return listOfGenreName;
+	}
+
+	public void setListOfGenreName(List<String> listOfGenreName) {
+		this.listOfGenreName = listOfGenreName;
+	}
+
+	public List<String> getListOfConsoleName() {
+		return listOfConsoleName;
+	}
+
+	public void setListOfConsoleName(List<String> listOfConsoleName) {
+		this.listOfConsoleName = listOfConsoleName;
+	}
+
+	public List<Integer> getListOfConsoleId() {
+		return listOfConsoleId;
+	}
+
+	public void setListOfConsoleId(List<Integer> listOfConsoleId) {
+		this.listOfConsoleId = listOfConsoleId;
+	}
+
+	public int getConsoleId() {
+		return consoleId;
+	}
+
+	public void setConsoleId(int consoleId) {
+		this.consoleId = consoleId;
+	}
+
+	public List<Integer> getListOfGenreId() {
+		return listOfGenreId;
+	}
+
+	public void setListOfGenreId(List<Integer> listOfGenreId) {
+		this.listOfGenreId = listOfGenreId;
+	}
+
+	public List<Genre> getListOfGenre() {
+		return listOfGenre;
+	}
+
+	public void setListOfGenre(List<Genre> listOfGenre) {
+		this.listOfGenre = listOfGenre;
+	}
 
 	@JsonIgnore
 	public UploadedFile getUploadedFile() {

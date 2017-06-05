@@ -112,6 +112,16 @@ public class DaoFactory {
     	return new ConsoleDaoImpl(this);
     }
     
+    public GameIsOfGenreDao getGameIsOfGenreDao()
+    {
+    	return new GameIsOfGenreDaoImpl(this);
+    }
+    
+    public GameIsOnConsoleDao getGameIsOnConsoleDao()
+    {
+    	return new GameIsOnConsoleDaoImpl(this);
+    }
+    
     
  
     

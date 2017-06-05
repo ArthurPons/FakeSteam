@@ -2,9 +2,10 @@ package bean;
 
 import java.io.IOException;
 import java.io.Serializable;
-import javax.json.JsonArray;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
+import javax.json.JsonArray;
 import javax.persistence.*;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
@@ -14,6 +15,8 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -31,26 +34,28 @@ public class Console implements Serializable {
 	private int idConsole;
 
 	private String nameConsole;
-
-	private String  typeConsole;
-
-	private List<Game> games;
 	
-	private List<Console> lastThreeConsoles;
+	@JsonIgnore
+	private List<Console> listOfAllConsoles;
 
-	public List<Console> getLastThreeConsoles() {
+	
+
+	public Console() {
+	}
+
+	public void findListConsoles()
+	{
 		ResteasyClient client = new ResteasyClientBuilder().build();
 		ResteasyWebTarget target = client.target("http://localhost:8080/FakeSteam/rest/console/get");
-//		Client client = ClientBuilder.newClient();
-//		Target target = client.target("http://localhost:8080/FakeSteam/rest/game/get"); 
+		
 		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
 		String jsonString = json.toString();
 		System.out.print("json :"+json+"\n");
 		ObjectMapper mapper = new ObjectMapper();
 		
-		List<Console> listAllConsoles = null;
+		listOfAllConsoles = null;
 		try {
-			listAllConsoles = mapper.readValue(jsonString, new TypeReference<List<Console>>(){});
+			listOfAllConsoles = mapper.readValue(jsonString, new TypeReference<List<Console>>(){});
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -61,21 +66,20 @@ public class Console implements Serializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		if (listAllConsoles.size() <= 3) {
-			return listAllConsoles;
-		} 
-		else {
-			return listAllConsoles.subList(listAllConsoles.size()-4, listAllConsoles.size()-1);
-		}
+	}
+	
+	
+	public List<Console> getListOfAllConsoles() {	
+		findListConsoles();
+		return listOfAllConsoles;				
 	}
 
-	public void setLastThreeConsoles(List<Console> lastThreeConsoles) {
-		this.lastThreeConsoles = lastThreeConsoles;
+
+	public void setListOfAllConsoles(List<Console> listOfAllConsoles) {
+		this.listOfAllConsoles = listOfAllConsoles;
 	}
 
-	public Console() {
-	}
+
 
 	public int getIdConsole() {
 		return this.idConsole;
@@ -89,34 +93,16 @@ public class Console implements Serializable {
 		return this.nameConsole;
 	}
 
-	public String getTypeConsole() {
-		return typeConsole;
-	}
-
-	public void setTypeConsole(String typeConsole) {
-		this.typeConsole = typeConsole;
-	}
 
 	public void setNameConsole(String nameConsole) {
 		this.nameConsole = nameConsole;
 	}
 
-
-	public List<Game> getGames() {
-		return this.games;
-	}
-
-	public void setGames(List<Game> games) {
-		this.games = games;
-	}
-	
-	public void submit() {	  
-	       
+	public void submit() {	  	       
 		
 		
 		//ajout dans la table Console
 		System.out.println("Submitted NameGenre : "+ nameConsole +"\n");
-		System.out.println("Submitted TypeConsole : "+ typeConsole +"\n");
 
         try {
         	

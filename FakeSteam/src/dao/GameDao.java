@@ -9,8 +9,9 @@ import bean.Game;
 
 
 public interface GameDao {
-	 void create( Game game ) throws DaoException;
+	 int create( Game game ) throws DaoException;
 	 Game find( int id ) throws DaoException;
+	 Game findByName (String gameName) throws DaoException;
 	 List<Game> findAll () throws DaoException;
 	 List<Game> findAllUserGame(int idUser) throws DaoException;
 

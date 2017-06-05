@@ -59,14 +59,37 @@
 
 	<div class="jumbotron">
       <div class="container">
-        <h1>Game Title</h1>
-        <p>Game Description</p>
-        <a class="btn btn-primary btn-lg" href="#" role="button">Buy</a>
+      
+      	<f:metadata>
+    		<f:viewParam name="idGame" value="#{Game.idGame}" />
+		</f:metadata>      
+       
+         <h1>Game id : "#{Game.idGame}"</h1>     
+         
+        <p>Nom :"#{Game.titleGame}"</p>
+        <p>Prix :"#{Game.priceGame}"</p>
+        <p>nom image : "#{Game.pictureUrlGame}"</p>
+        
+        <p>Genre : </p>
+        
+        <h:dataTable value="#{Game.listOfGenreName}" var="genre">
+    		<h:column>#{genre}</h:column>
+		</h:dataTable>
+    		
+        
+        <p>Consoles : </p>
+        <h:dataTable value="#{Game.listOfConsoleName}" var="console">
+    		<h:column>#{console}</h:column>
+		</h:dataTable>
+        
+        
+       	<p>Ajouter au panier</p>
+
       </div>
     </div>
     
     <h:form>
-         <p:rating value="#{Rating.ratingRating}" />	       	        		     		
+         <p:rating value="#{Game.rating}" />	       	        		     		
     </h:form>
     
     <h:form>
