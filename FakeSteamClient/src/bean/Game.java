@@ -143,7 +143,7 @@ public class Game implements Serializable {
 	{
 		System.out.print("recherche du jeu, grace a son id.\n");
 		ResteasyClient client = new ResteasyClientBuilder().build();
-		ResteasyWebTarget target = client.target("http://localhost:8080/FakeSteam/rest/game/get"+idGame);
+		ResteasyWebTarget target = client.target("http://localhost:8080/FakeSteam/rest/game/get/"+idGame);
 		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
 		String jsonString = json.toString();
 		System.out.print("json :"+json+"\n");
