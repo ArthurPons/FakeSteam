@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static dao.DaoTools.*;
 
@@ -16,6 +18,9 @@ public class RatingDaoImpl implements RatingDao{
 	private static DaoFactory daoFactory;
 	private static final String SQL_SELECT_BY_ID = "SELECT * FROM rating WHERE id_rating = ?";
 	private static final String SQL_INSERT = "INSERT INTO rating (fk_game_rating, fk_user_rating, rating_rating) VALUES (?, ?, ?)";
+	private static final String SQL_SELECT_BY_USER_GAME = "SELECT * FROM rating WHERE  fk_user_rating = ? AND fk_game_rating = ? ";
+	private static final String SQL_SELECT_BY_GAME = "SELECT * FROM rating WHERE  fk_game_rating = ? ";
+	
 	
 	public RatingDaoImpl()
 	{
@@ -28,7 +33,7 @@ public class RatingDaoImpl implements RatingDao{
 	}
 	
 	@Override
-	public void create( Rating rating ) throws DaoException
+	public void create( User user ) throws DaoException
 	{
 		Connection connexion = null;
 	    PreparedStatement preparedStatement = null;
@@ -37,7 +42,7 @@ public class RatingDaoImpl implements RatingDao{
 	    try {
 	        /* Récupération d'une connexion depuis la Factory */
 	        connexion = daoFactory.getConnection();
-	        preparedStatement = initialisationRequetePreparee( connexion, SQL_INSERT, true, rating.getGameId(), rating.getUserId(),rating.getRatingRating() );
+	        preparedStatement = initialisationRequetePreparee( connexion, SQL_INSERT, true, user.getTempGame() , user.getIdUser(), user.getTempRate());
 	        int statut = preparedStatement.executeUpdate();
 	        /* Analyse du statut retourné par la requête d'insertion */
 	        if ( statut == 0 ) {
@@ -45,17 +50,66 @@ public class RatingDaoImpl implements RatingDao{
 	        }
 	        /* Récupération de l'id auto-généré par la requête d'insertion */
 	        valeursAutoGenerees = preparedStatement.getGeneratedKeys();
-	        if ( valeursAutoGenerees.next() ) {
-	            /* Puis initialisation de la propriété id du bean Utilisateur avec sa valeur */
-	            rating.setIdRating((int) valeursAutoGenerees.getLong( 1 ) );
-	        } else {
-	            throw new DaoException( "Échec de la création de l'historique en base, aucun ID auto-généré retourné." );
-	        }
+	        
 	    } catch ( SQLException e ) {
 	        throw new DaoException( e );
 	    } finally {
 	        fermeturesSilencieuses( valeursAutoGenerees, preparedStatement, connexion );
 	    }
+	}
+	
+	public List<Integer> findGameRating (int gameId) throws DaoException
+	{
+		Connection connexion = null;
+		 PreparedStatement preparedStatement = null;
+		 ResultSet resultSet = null;
+		 int rating = 0;
+
+		 List<Integer> listOfInteger = new ArrayList<Integer>();
+		 try {
+		     /* Récupération d'une connexion depuis la Factory */
+		     connexion = daoFactory.getConnection();
+		     preparedStatement = initialisationRequetePreparee( connexion, SQL_SELECT_BY_GAME, false, gameId );
+		     resultSet = preparedStatement.executeQuery();
+		     /* Parcours de la ligne de données de l'éventuel ResulSet retourné */
+		     while ( resultSet.next() ) {
+		    	 //resultSet.getInt("fk_game");
+		         rating = resultSet.getInt("rating_rating");
+		         listOfInteger.add(rating);
+		     }
+		 } catch ( SQLException e ) {
+		     throw new DaoException( e );
+		 } finally {
+		     fermeturesSilencieuses( resultSet, preparedStatement, connexion );
+		 }
+		 
+		 return listOfInteger;
+	}
+	
+	public int findUserRating (int userId, int gameId) throws DaoException
+	{
+		Connection connexion = null;
+		 PreparedStatement preparedStatement = null;
+		 ResultSet resultSet = null;
+		 int rating = -1;
+
+		 try {
+		     /* Récupération d'une connexion depuis la Factory */
+		     connexion = daoFactory.getConnection();
+		     preparedStatement = initialisationRequetePreparee( connexion, SQL_SELECT_BY_USER_GAME, false, userId, gameId );
+		     resultSet = preparedStatement.executeQuery();
+		     /* Parcours de la ligne de données de l'éventuel ResulSet retourné */
+		     if ( resultSet.next() ) {
+		    	 //resultSet.getInt("fk_game");
+		         rating = resultSet.getInt("rating_rating");
+		     }
+		 } catch ( SQLException e ) {
+		     throw new DaoException( e );
+		 } finally {
+		     fermeturesSilencieuses( resultSet, preparedStatement, connexion );
+		 }
+		 
+		 return rating;
 	}
 	
 	@Override
@@ -86,6 +140,7 @@ public class RatingDaoImpl implements RatingDao{
 	
 	
 	private static Rating map( ResultSet resultSet ) throws SQLException {
+		/*
 	    Rating rating = new Rating();
 	    rating.setIdRating(resultSet.getInt( "id_rating" ) );
 	    rating.setRatingRating( resultSet.getInt("rating_rating") );
@@ -104,6 +159,8 @@ public class RatingDaoImpl implements RatingDao{
 	    
 	   	 
 	    return rating;
+	    */
+		return null;
 	}
 	
 }

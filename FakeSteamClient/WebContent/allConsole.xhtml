@@ -101,63 +101,15 @@
 
 	<div class="jumbotron">
       <div class="container">
-      
-      	<f:metadata>
-    		<f:viewParam name="idGame" value="#{Game.idGame}" />
-		</f:metadata>      
-       
-         <h1>Game id : "#{Game.idGame}"</h1>     
-         
-        <p>Nom :#{Game.titleGame}</p>
-        <p>Prix :#{Game.priceGame}</p>
-        <p>nom image : #{Game.pictureUrlGameToPrint}</p>
-        <c:if test="#{Game.rate ne 0.0}"> 	
-	       	<h:form>	       	
-	        	<p>Note : #{Game.rate} /5 (#{Game.nbRating})</p>
-	        </h:form>
-        </c:if>
-        
-            
-        <p>Genre : </p>
-        
-        <h:dataTable value="#{Game.listOfGenreName}" var="genre">
-    		<h:column>#{genre}</h:column>
-		</h:dataTable>
+     
+     	<h:dataTable value="#{Console.listOfAllConsoles}" var="console">
+    		<h:column> 
+    			<h:link value="#{console.nameConsole}" outcome="gamesSortedByConsole" >
+	    			<f:param name="idConsole" value="#{console.idConsole}" />
+	    		</h:link>
+    		</h:column>    		
     		
-        
-        <p>Consoles : </p>
-        <h:dataTable value="#{Game.listOfConsoleName}" var="console">
-    		<h:column>#{console}</h:column>
 		</h:dataTable>
-        
-        <h:panelGroup rendered="#{not empty user}">    
-	         <c:if test="#{empty user.ownsGame(Game.idGame)}"> 			
-	    		<h:form>
-	       			<p><h:commandButton class="btn btn-lg btn-primary btn-block" value="Add to cart" action="#{user.addToPanier(Game)}"></h:commandButton></p>
-	    		</h:form>
-			 </c:if>   		
-		</h:panelGroup>
-		
-		<h:panelGroup rendered="#{not empty user}">
-			<p>Rate</p>
-			<c:if test="#{not empty user.ownsGame(Game.idGame)}">
-				<c:if test="#{user.getTempRating() eq -1}">					
-					<h:form>				
-						saisir note<p:rating value="#{user.tempRate}" cancel="false" />
-						<p:commandButton value="Submit" />					
-					
-					</h:form>
-				</c:if>
-				
-				<c:if test="#{user.getTempRating() ne -1}">					
-									
-						Note donne <p:rating value="#{user.tempRating}" disabled="true" />				
-					
-				</c:if>
-				
-				
-			</c:if>
-        </h:panelGroup>
        	
 
       </div>

@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 
+import javax.json.JsonArray;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.json.JsonArray;
@@ -38,12 +39,77 @@ public class Genre implements Serializable {
 
 
 	private String nameGenre;
+	@JsonIgnore
+	private Genre firstGenre;
+	@JsonIgnore
+	private Genre secondGenre;
+	@JsonIgnore
+	private Genre thirdGenre;
 	
 	@JsonIgnore
 	private List<Genre> listOfAllGenres;
 
 	public Genre() {
 	}
+	
+	
+	public void getLastThreeGenre()
+	{
+		getListOfAllGenres();
+		int sizeList = getListOfAllGenres().size();
+		firstGenre=listOfAllGenres.get(sizeList-1);
+		secondGenre=listOfAllGenres.get(sizeList-2);
+		thirdGenre=listOfAllGenres.get(sizeList-3);
+		
+	}
+	
+	public Genre getFirstGenre() {
+		if(firstGenre==null)
+		{			
+			getLastThreeGenre();			
+		}
+		return firstGenre;
+	}
+
+
+
+	public void setFirstGenre(Genre firstGenre) {
+		this.firstGenre = firstGenre;
+	}
+
+
+
+	public Genre getSecondGenre() {
+		if(secondGenre==null)
+		{			
+			getLastThreeGenre();			
+		}
+		return secondGenre;
+	}
+
+
+
+	public void setSecondGenre(Genre secondGenre) {
+		this.secondGenre = secondGenre;
+	}
+
+
+
+	public Genre getThirdGenre() {
+		if(thirdGenre==null)
+		{			
+			getLastThreeGenre();			
+		}
+		return thirdGenre;
+	}
+
+
+
+	public void setThirdGenre(Genre thirdGenre) {
+		this.thirdGenre = thirdGenre;
+	}
+
+
 
 	public List<Genre> getListOfAllGenres() {			
 	
@@ -53,10 +119,10 @@ public class Genre implements Serializable {
 		
 		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
 		String jsonString = json.toString();
-		System.out.print("json :"+json+"\n");
+		//System.out.print("json :"+json+"\n");
 		ObjectMapper mapper = new ObjectMapper();
 		
-		listOfAllGenres = null;
+		
 		try {
 			listOfAllGenres = mapper.readValue(jsonString, new TypeReference<List<Genre>>(){});
 		} catch (JsonParseException e) {
@@ -102,7 +168,7 @@ public void submit() {
 		
 				
 		//ajout dans la table Genre
-		System.out.println("Submitted NameGenre : "+ nameGenre +"\n");
+		//System.out.println("Submitted NameGenre : "+ nameGenre +"\n");
 
         try {
         	

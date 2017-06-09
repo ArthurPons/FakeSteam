@@ -20,6 +20,7 @@ import javax.servlet.ServletContext;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Target;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -39,6 +40,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import servlets.FormGame;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -48,12 +50,15 @@ import java.util.regex.Pattern;
 @ViewScoped
 public class Game implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+		
 
 	private int idGame;	
 	private String pictureUrlGame;	
 	private float priceGame;	
 	private String titleGame;
+
+	private float rate;
+	private int nbRating;
 		
 	private UploadedFile uploadedFile;	
 
@@ -64,7 +69,10 @@ public class Game implements Serializable {
 	private List<String> listOfGenreName;
 	@JsonIgnore
 	private List<String> listOfConsoleName;
-	
+	@JsonIgnore
+	private List<Game> listOfGameByGenre;
+	@JsonIgnore
+	private List<Game> listOfGameByConsole;
 	
 
 	private List<Comment> comments;
@@ -73,17 +81,139 @@ public class Game implements Serializable {
 	private List<Historic> historics;	
 	private List<UserOwnsGame> userOwnsGames;
 	
+	@JsonIgnore
 	private Game firstGameCarroussel;
+	@JsonIgnore
 	private Game secondGameCarroussel;
+	@JsonIgnore
 	private Game thirdGameCarroussel;
 	
 	private List<Integer> listOfGenreId;
 	private List<Integer> listOfConsoleId;
+	
+	@JsonIgnore
+	private int tempGenreId;
+	
+	@JsonIgnore
+	private int tempConsoleId;
+	
 
+	private String pictureUrlGameToPrint;
+
+	
+	
+	
+	public void setPictureUrlGameToPrint(String pictureUrlGameToPrint) {
+		this.pictureUrlGameToPrint = pictureUrlGameToPrint;
+	}
+
+	public int getTempConsoleId() {
+		return tempConsoleId;
+	}
+
+	public void setTempConsoleId(int tempConsoleId) {
+		this.tempConsoleId = tempConsoleId;
+	}
+
+	public int getTempGenreId() {
+		return tempGenreId;
+	}
+
+	public void setTempGenreId(int tempGenreId) {
+		this.tempGenreId = tempGenreId;
+	}
+
+	public List<Game> getListOfGameByConsole() {
+		System.out.print("passe getlistofgamebyconsole\n");
+		ResteasyClient client = new ResteasyClientBuilder().build();
+		ResteasyWebTarget target = client.target("http://localhost:8080/FakeSteam/rest/game/gameByConsole/"+tempConsoleId);
 		
+		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
+		String jsonString = json.toString();
+		//System.out.print("json :"+json+"\n");
+		ObjectMapper mapper = new ObjectMapper();
+		
+		
+		try {
+			listOfGameByConsole = mapper.readValue(jsonString, new TypeReference<List<Game>>(){});
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	
+		
+		return listOfGameByConsole;
+	}
+	
+	public List<Game> getListOfGameByGenre() {
+		//recuperer liste
+		
+		System.out.print("passe getlistofgamebygenre\n");
+		ResteasyClient client = new ResteasyClientBuilder().build();
+		ResteasyWebTarget target = client.target("http://localhost:8080/FakeSteam/rest/game/gameByGenre/"+tempGenreId);
+		
+		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
+		String jsonString = json.toString();
+		//System.out.print("json :"+json+"\n");
+		ObjectMapper mapper = new ObjectMapper();
+		
+		
+		try {
+			listOfGameByGenre = mapper.readValue(jsonString, new TypeReference<List<Game>>(){});
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	
+		
+		return listOfGameByGenre;
+	}
+
+	public void setListOfGameByGenre(List<Game> listOfGameByGenre) {
+		this.listOfGameByGenre = listOfGameByGenre;
+	}
+
+	public int getNbRating() {
+		return nbRating;
+	}
+
+	public void setNbRating(int nbRating) {
+		this.nbRating = nbRating;
+	}
+
+	public float getRate() {
+		
+		if ((idGame!=0) && (rate==0.0))
+		{
+			getTotalRatingGame();
+			
+		}
+		
+		return rate;
+	}
+
+	public void setRate(float rate) {
+		this.rate = rate;
+	}
 
 	public Game getFirstGameCarroussel() {
-		System.out.print("passe premier car\n");
+		//System.out.print("passe premier car\n");
 		if(firstGameCarroussel==null)
 		{
 			getLastThreeGames();
@@ -139,14 +269,67 @@ public class Game implements Serializable {
 		this.listOfGenreName = listOfGenreName;
 	}
 	
-	public void findGameById()
-	{
-		System.out.print("recherche du jeu, grace a son id.\n");
-		ResteasyClient client = new ResteasyClientBuilder().build();
-		ResteasyWebTarget target = client.target("http://localhost:8080/FakeSteam/rest/game/get/"+idGame);
+	
+	public void getTotalRatingGame() {
+		
+		Client client = ClientBuilder.newClient();	
+		WebTarget target = client.target("http://localhost:8080/FakeSteam/rest/game/getRating/"+idGame); 
 		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
 		String jsonString = json.toString();
 		System.out.print("json :"+json+"\n");
+		ObjectMapper mapper = new ObjectMapper();
+		
+		List<Integer> listInt = new ArrayList<Integer>();
+		
+		try {
+			
+			listInt = mapper.readValue(jsonString, new TypeReference<List<Integer>>(){});
+			int total=0;
+			int cpt=0;
+			float moyenne=0;
+			//parcourir liste de rating
+			for(Integer i:listInt)
+			{
+				total=total + i;
+				System.out.print("note :"+i+"\n");
+				cpt++;
+			}
+			
+			moyenne = (float) total/cpt;
+			//arrondi a un chiffre apres la virgule
+			moyenne =  (float) Math.round(moyenne * 10) / 10;
+			
+			System.out.print("total :"+total+"\n");
+			System.out.print("moyenne :"+moyenne+"\n");
+			System.out.print("cpt :"+cpt+"\n");
+			
+			rate=moyenne;
+			
+			nbRating=cpt;
+			
+			
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
+	public void findGameById()
+	{
+		//System.out.print("recherche du jeu, grace a son id.\n");
+		Client client = ClientBuilder.newClient();
+		WebTarget target = client.target("http://localhost:8080/FakeSteam/rest/game/get/"+idGame); 
+		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
+		String jsonString = json.toString();
+		//System.out.print("json :"+json+"\n");
 		ObjectMapper mapper = new ObjectMapper();
 		
 		Game g = new Game();
@@ -156,7 +339,9 @@ public class Game implements Serializable {
 			g=lg.get(0);
 			
 			titleGame=g.getTitleGame();
-			pictureUrlGame=g.getPictureUrlGame();
+			//String path= System.getProperty("user.home")+"/images";
+			pictureUrlGame = g.getPictureUrlGame();
+			//pictureUrlGame=  System.getProperty("user.home")+"\\images\\"+g.getPictureUrlGame();
 			priceGame=g.getPriceGame();
 			
 			//stockage des attributs
@@ -176,12 +361,12 @@ public class Game implements Serializable {
 	}
 
 	public List<String> getListOfGenreName() {
-		System.out.print("passe list genre\n");
-		ResteasyClient client = new ResteasyClientBuilder().build();
-		ResteasyWebTarget target = client.target("http://localhost:8080/FakeSteam/rest/gameIsOfGenre/get/"+idGame);
+		//System.out.print("passe list genre\n");
+		Client client = ClientBuilder.newClient();
+		WebTarget target = client.target("http://localhost:8080/FakeSteam/rest/gameIsOfGenre/get/"+idGame); 
 		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
 		String jsonString = json.toString();
-		System.out.print("jsongenre :"+json+"\n");
+		//System.out.print("jsongenre :"+json+"\n");
 		ObjectMapper mapper = new ObjectMapper();
 		
 		
@@ -210,8 +395,8 @@ public class Game implements Serializable {
 	public List<String > getListOfConsoleName() {		
 		
 		System.out.print("passe list genre\n");
-		ResteasyClient client = new ResteasyClientBuilder().build();
-		ResteasyWebTarget target = client.target("http://localhost:8080/FakeSteam/rest/gameIsOnConsole/get/"+idGame);
+		Client client = ClientBuilder.newClient();
+		WebTarget target = client.target("http://localhost:8080/FakeSteam/rest/gameIsOnConsole/get/"+idGame); 
 		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
 		String jsonString = json.toString();
 		System.out.print("jsonconsole :"+json+"\n");
@@ -241,12 +426,12 @@ public class Game implements Serializable {
 
 	public int getLastThreeGames() {
 		
-		System.out.print("passe last three games\n");
-		ResteasyClient client = new ResteasyClientBuilder().build();
-		ResteasyWebTarget target = client.target("http://localhost:8080/FakeSteam/rest/game/get");
+		//System.out.print("passe last three games\n");
+		Client client = ClientBuilder.newClient();
+		WebTarget target = client.target("http://localhost:8080/FakeSteam/rest/game/get"); 
 		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
 		String jsonString = json.toString();
-		System.out.print("json :"+json+"\n");
+		//System.out.print("json :"+json+"\n");
 		ObjectMapper mapper = new ObjectMapper();
 		
 		List<Game> listAllGames = null;
@@ -257,7 +442,7 @@ public class Game implements Serializable {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
 			// TODO Auto-generated catch block
-		e.printStackTrace();
+			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -267,6 +452,7 @@ public class Game implements Serializable {
 		firstGameCarroussel = listAllGames.get(sizeList-1);
 		secondGameCarroussel = listAllGames.get(sizeList-2);
 		thirdGameCarroussel = listAllGames.get(sizeList-3);
+		
 		return 0;
 		
 	}
@@ -281,8 +467,7 @@ public class Game implements Serializable {
 		this.uploadedFile = uploadedFile;
 	}
 	
-	public Game() {
-	}
+	
 
 	public int getIdGame() {
 		return this.idGame;
@@ -292,11 +477,31 @@ public class Game implements Serializable {
 		this.idGame = idGame;
 	}
 
-	public String getPictureUrlGame() {
-		if(pictureUrlGame == null)
+	public String getPictureUrlGameToPrint()
+	{
+		if ((idGame != 0) && (pictureUrlGame==null))
 		{
+			System.out.print("passPicture\n");
 			findGameById();
 		}
+		System.out.print("image dans la base :"+pictureUrlGame+"\n");
+		if ((pictureUrlGame.indexOf('/')==-1) && (pictureUrlGame.indexOf('\\')==-1))
+		{
+			System.out.print("picture url game :"+pictureUrlGame+"\n");
+			pictureUrlGameToPrint = System.getProperty("user.home")+"\\images\\"+pictureUrlGame;
+		}
+		return pictureUrlGameToPrint;
+	}
+	
+	public String getPictureUrlGame() {
+		if ((idGame != 0) && (pictureUrlGame==null))
+		{
+			//System.out.print("passPicture\n");
+			findGameById();
+		}
+		
+		
+		System.out.print("getpictureUrlGame "+pictureUrlGame+"\n");
 		return this.pictureUrlGame;
 	}
 
@@ -305,8 +510,9 @@ public class Game implements Serializable {
 	}
 
 	public float getPriceGame() {
-		if(priceGame == 0.0)
+		if ((idGame != 0) && (((Float) priceGame) == null) )
 		{
+			//System.out.print("passPrice\n");
 			findGameById();
 		}
 		return this.priceGame;
@@ -317,8 +523,10 @@ public class Game implements Serializable {
 	}
 
 	public String getTitleGame() {
-		if(titleGame == null)
+		if ((idGame != 0) && (titleGame==null))
 		{
+			//System.out.print("passtitle\n");
+			//System.out.print("valeur de idGame :"+idGame+"\n");
 			findGameById();
 		}
 		return this.titleGame;
@@ -437,23 +645,23 @@ public class Game implements Serializable {
 		public String uniqueFile (String path, String filename)    throws IOException
 			  {
 			
-				System.out.print("nom du fichier :"+filename+"\n");
+				//System.out.print("nom du fichier :"+filename+"\n");
 				//le chemin ne doit contenir que des slash
 				path = path.replace("\\", "/");
-				System.out.print("chemin :"+path+"\n");
+				//System.out.print("chemin :"+path+"\n");
 				Pattern p = Pattern.compile("([a-zA-Z0-9_]+)\\.([a-zA-Z0-9_]+)");
 				Matcher m = p.matcher(filename);
 				m.find();
 				
 				String prefix = m.group(1);
-				System.out.print("prefix :"+prefix+"\n");
+				//System.out.print("prefix :"+prefix+"\n");
 				
 				String extension = m.group(2);
-				System.out.print("extension :"+extension+"\n");
+				//System.out.print("extension :"+extension+"\n");
 				
 				
 				File file = new File(path+"/"+ prefix+"."+extension);
-				System.out.print("chemin absolu :"+path+"/"+ prefix+"."+extension+"\n");
+				//System.out.print("chemin absolu :"+path+"/"+ prefix+"."+extension+"\n");
 				
 				boolean wasCreated = false;
 				int i=1;
@@ -461,7 +669,7 @@ public class Game implements Serializable {
 				{
 					if(file.exists())
 					{
-						System.out.print("le fichier existe !");
+						//System.out.print("le fichier existe !");
 						i++;
 						//le fichier existe deja
 						file = new File(path+"/"+ prefix+i+"."+extension);
@@ -499,23 +707,23 @@ public class Game implements Serializable {
 			String fileName = uploadedFile.getFileName();
 			
 			
-			System.out.print("nom de l'image :"+fileName+"\n");
+			//System.out.print("nom de l'image :"+fileName+"\n");
 						
 			//String path = FormGame.contextPath;
 			String path= System.getProperty("user.home")+"/images";
 			
-			System.out.print("chemin de l'image* :"+path);
+			//System.out.print("chemin de l'image* :"+path);
 			
 			
 			//cree repertoire si pas deja cree
 			if (!(new File(path)).exists())
 			{
-				System.out.print("Creation de  "+path+"\n");
+				//System.out.print("Creation de  "+path+"\n");
 				new File(path).mkdir();
 			}
 			else
 			{
-				System.out.print("le repertoire "+path+" existe deja\n");
+				//System.out.print("le repertoire "+path+" existe deja\n");
 			}
 			
 			try {
@@ -535,8 +743,9 @@ public class Game implements Serializable {
                 out.flush();
                 out.close();
                 
-                System.out.println("New file created!");
+                //System.out.println("New file created!");
                 pictureUrlGame= uniqueNameFile;
+                System.out.print("image dans submit"+pictureUrlGame+"\n");
                 
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
@@ -557,8 +766,8 @@ public class Game implements Serializable {
 		//traitement liste de genres
 		if (listOfGenreId != null)
 		{
-			System.out.print("liste de genre non null:\n");
-			System.out.print("premier element :"+listOfGenreId.get(0)+"\n");
+			//System.out.print("liste de genre non null:\n");
+			//System.out.print("premier element :"+listOfGenreId.get(0)+"\n");
 			
 		}
 		else
@@ -567,9 +776,9 @@ public class Game implements Serializable {
 		}
 		
 		//ajout dans la table Game
-		System.out.println("Submitted titleGame : "+ titleGame +"\n");
-        System.out.println("Submitted priceGame : "+ priceGame +"\n");   
-        System.out.println("Submitted pictureUrlGame : "+ pictureUrlGame +"\n"); 
+		//System.out.println("Submitted titleGame : "+ titleGame +"\n");
+        //System.out.println("Submitted priceGame : "+ priceGame +"\n");   
+        //System.out.println("Submitted pictureUrlGame : "+ pictureUrlGame +"\n"); 
         
         
         //ajout du jeu dans Game
@@ -595,12 +804,11 @@ public class Game implements Serializable {
 			e.printStackTrace();
 
 		} 
-        
-          
+                
  
         
         try {
-			FacesContext.getCurrentInstance().getExternalContext().redirect("sucess.html");
+			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -96,6 +96,7 @@ public class UserDaoImpl implements UserDao{
 	    user.setPwdUser( resultSet.getString("pwd_user") );
 	    user.setUsernameUser(resultSet.getString("username_user"));//creer object game
 	    user.setSaltUser(resultSet.getBytes("salt_user"));
+	    user.setIsAdmin(resultSet.getInt( "is_admin_user" ));
 	    
 	    return user;
 	}

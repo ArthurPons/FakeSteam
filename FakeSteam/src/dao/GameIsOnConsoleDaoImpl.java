@@ -19,6 +19,8 @@ public class GameIsOnConsoleDaoImpl implements GameIsOnConsoleDao{
 	private static final String SQL_SELECT_BY_GAMEID = "select name_console from console, game_is_on_console where game_is_on_console.fk_game=? AND game_is_on_console.fk_console=console.id_console";
 	private static final String SQL_INSERT = "INSERT INTO game_is_on_console (fk_game, fk_console) VALUES (?, ?)";
 	private static final String SQL_SELECT_ALL = "SELECT * FROM game_is_on_console";
+	private static final String SQL_SELECT_BY_CONSOLEID = "SELECT id_game,title_game,price_game,picture_url_game FROM game_is_on_console, game WHERE fk_console = ? AND fk_game=id_game";
+	
 	
 	public GameIsOnConsoleDaoImpl()
 	{
@@ -63,7 +65,7 @@ public class GameIsOnConsoleDaoImpl implements GameIsOnConsoleDao{
 	
 	 public void createSeveral(int idGame, List<Integer> listConsoles) throws DaoException
 	 {
-		 System.out.print("id du jeu pour associe un genre a celui ci : "+idGame+"\n");
+		 //System.out.print("id du jeu pour associe un genre a celui ci : "+idGame+"\n");
 			Connection connexion = null;
 		    PreparedStatement preparedStatement = null;
 		    ResultSet valeursAutoGenerees = null;
@@ -74,7 +76,7 @@ public class GameIsOnConsoleDaoImpl implements GameIsOnConsoleDao{
 		        
 		        for (Integer c:listConsoles)
 		        {
-		        	System.out.print("id du genre :"+c+"\n");
+		        	//System.out.print("id du genre :"+c+"\n");
 		        	preparedStatement = initialisationRequetePreparee( connexion, SQL_INSERT, true, idGame, c );
 		        	
 		 	        int statut = preparedStatement.executeUpdate();
@@ -116,9 +118,9 @@ public class GameIsOnConsoleDaoImpl implements GameIsOnConsoleDao{
 		    while ( resultSet.next() ) {
 		    	
 		    	 consoleName = resultSet.getString("name_console");
-		    	 System.out.print("le jeu est present sur "+consoleName+"\n");
+		    	 //System.out.print("le jeu est present sur "+consoleName+"\n");
 		    	 listConsoleName.add(consoleName);
-		    	 System.out.print("ajout dans la liste de  "+consoleName+"\n");
+		    	 //System.out.print("ajout dans la liste de  "+consoleName+"\n");
 		     }
 		 } catch ( SQLException e ) {
 		     throw new DaoException( e );
@@ -129,6 +131,49 @@ public class GameIsOnConsoleDaoImpl implements GameIsOnConsoleDao{
 		 return listConsoleName;
 	}
 	
+	public List<Game> findGamesByConsole(int consoleId) throws DaoException
+	{
+		 Connection connexion = null;
+		 PreparedStatement preparedStatement = null;
+		 ResultSet resultSet = null;
+		
+		 Game g;
+		 List<Game> listGame = new ArrayList<Game>();
+
+		 try {
+		     /* Récupération d'une connexion depuis la Factory */
+		     connexion = daoFactory.getConnection();
+		     preparedStatement = initialisationRequetePreparee( connexion, SQL_SELECT_BY_CONSOLEID, false, consoleId );
+		     resultSet = preparedStatement.executeQuery();
+		     
+		     /* Parcours de la ligne de données de l'éventuel ResulSet retourné */
+		    while ( resultSet.next() ) {
+		    	
+		    	 g= mapGame(resultSet);
+		    	 System.out.print("jeu trouve (console) :"+g.getTitleGame()+"\n");
+		    	 listGame.add(g);
+		    	 
+		     }
+		 } catch ( SQLException e ) {
+		     throw new DaoException( e );
+		 } finally {
+		     fermeturesSilencieuses( resultSet, preparedStatement, connexion );
+		 }
+
+		 return listGame;
+	}
+	
+	 private static Game mapGame( ResultSet resultSet ) throws SQLException {
+		    Game game = new Game();
+		    game.setIdGame( resultSet.getInt( "id_game" ) );
+		    game.setPictureUrlGame( resultSet.getString("picture_url_game") );
+		    game.setPriceGame(resultSet.getFloat("price_game"));//creer object game
+		    game.setTitleGame(resultSet.getString("title_game"));
+		    	 
+		    return game;
+		}
+	 
+	 
 	 public List<GameIsOnConsole> findAll () throws DaoException
 	 {
 		 Connection connexion = null;
@@ -163,7 +208,7 @@ public class GameIsOnConsoleDaoImpl implements GameIsOnConsoleDao{
 	    
 	    //recherche de l'objet game	 (id puis objet)   
 	    int gameId = resultSet.getInt("fk_game_game_is_on_console");
-	    System.out.print("game : "+gameId+"\n");
+	    //System.out.print("game : "+gameId+"\n");
 
 	    
 	    GameDaoImpl g=new GameDaoImpl(daoFactory);
@@ -172,7 +217,7 @@ public class GameIsOnConsoleDaoImpl implements GameIsOnConsoleDao{
 	   
 	    //recherche de l'objet console (id puis objet)  
 	    int consoleId = resultSet.getInt("fk_console_game_is_on_console");
-	    System.out.print("console : "+consoleId+"\n");	   
+	    //System.out.print("console : "+consoleId+"\n");	   
 
 	    ConsoleDaoImpl u = new ConsoleDaoImpl(daoFactory);
 	    game_is_on_console.setConsole(u.find(consoleId));

@@ -47,7 +47,25 @@
                 <li><a href="#about">Games</a></li>
               </ul>
               <ul class="nav navbar-nav navbar-right">
-              	<li><a href="#">Log in</a></li>
+              	<h:panelGroup rendered="#{not empty user}">
+    			#{user.usernameUser}
+    			<h:form>
+       				 <h:commandButton value="logout" action="#{user.logout}" />
+    			</h:form>
+    			
+			  </h:panelGroup>
+			
+			  <h:panelGroup rendered="#{empty user}">
+    			 <li>
+              		<h:link value="Create account" outcome="formUser" >	              			
+					</h:link>
+              	</li>
+              	
+              	<li>
+              		<h:link value="Log in" outcome="login" >	              			
+					</h:link>
+              	</li>
+			  </h:panelGroup>
               </ul>
             </div>
           </div>
@@ -56,30 +74,28 @@
       </div>
     </div>
 
-	<div class="container">      
-	   <h:form enctype="multipart/form-data">
-	        <h2 class="form-heading">Please add game</h2>
-	        <label for="inputUsername" class="sr-only">Title</label>	        
-	        <h:inputText type="text" class="form-control" placeholder="username" value="#{Game.titleGame}"></h:inputText>
-	        <label for="inputPrice" class="sr-only">Price</label>
-	        <h:inputText class="form-control" placeholder="password" value="#{Game.priceGame}"></h:inputText>
-	        <p:fileUpload class="form-control" placeholder="upload" value="#{Game.uploadedFile}" mode="simple"></p:fileUpload> 
-	        <br></br>
-	        
-	        <p:selectManyCheckbox id="checkboxGenre" value="#{Game.listOfGenreId}" converter="javax.faces.Integer">
-   				 <f:selectItems value="#{Genre.listOfAllGenres}" var="genre" itemLabel="#{genre.nameGenre}" itemValue="#{genre.idGenre}" />
-					<br></br>
-			</p:selectManyCheckbox>
-			<br></br>
-			<p:selectManyCheckbox id="checkboxConsole" value="#{Game.listOfConsoleId}" converter="javax.faces.Integer">
-   				 <f:selectItems value="#{Console.listOfAllConsoles}" var="c" itemLabel="#{c.nameConsole}" itemValue="#{c.idConsole}" />
-					<br></br>
-			</p:selectManyCheckbox>
-			   
-			<br></br>
-	        <h:commandButton class="btn btn-lg btn-primary btn-block" value="Submit" action="#{Game.submit()}"></h:commandButton>
-		</h:form>
+	<div class="jumbotron">
+      <div class="container">
+      
+      
+        
+        <h:dataTable value="#{user.panier}" var="game">
+    		<h:column>#{game.titleGame}</h:column>
+    		<h:column>#{game.priceGame}</h:column>
+    		
+		</h:dataTable>
+		total : #{user.totalAmountPanier}
+		
+		<h:panelGroup rendered="#{not empty user}">    			
+    		<h:form>
+       			<p><h:commandButton class="btn btn-lg btn-primary btn-block" value="Buy" action="#{user.buyGamesInPanier}"></h:commandButton></p>
+    		</h:form>
+		</h:panelGroup>
+   
+      </div>
     </div>
+    
+   
 
 	<div class="container">
       <!-- FOOTER -->

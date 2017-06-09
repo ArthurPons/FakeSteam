@@ -45,6 +45,22 @@ public class GameRest {
 	}
 	
 	@GET
+	@Path("/getRating/{i}")
+	@Produces(MediaType.APPLICATION_JSON)	
+	public List<Integer> getRating(@PathParam("i") int i) {
+		
+		System.out.print("valeur :"+i+"\n");
+		DaoFactory fact = DaoFactory.getInstance();
+		dao.RatingDao ratingDao = fact.getRatingDao();
+		
+		List<Integer> li = ratingDao.findGameRating(i);
+		
+		return li;
+
+		
+	}
+	
+	@GET
 	@Path("/getbyName/{s}")
 	@Produces(MediaType.APPLICATION_JSON)	
 	public List<Game> printGameById(@PathParam("s") String s) {
@@ -59,6 +75,43 @@ public class GameRest {
 		listGame.add(g);
 		listGame.add(new Game());
 		return listGame;
+
+		
+	}
+	
+	
+	@GET
+	@Path("/gameByGenre/{g}")
+	@Produces(MediaType.APPLICATION_JSON)	
+	public List<Game> getGameByGenre(@PathParam("g") String g) {
+		
+		System.out.print("id du genre :"+g+"\n");
+		DaoFactory fact = DaoFactory.getInstance();
+		dao.GameIsOfGenreDao gameIsOfGenreDao = fact.getGameIsOfGenreDao();
+        
+		
+		List<Game> lg = gameIsOfGenreDao.findGamesByGenre(Integer.parseInt(g));
+		
+		System.out.print("premier jeu trouve :"+lg.get(0).getTitleGame()+"\n");
+		return lg;
+
+		
+	}
+	
+	@GET
+	@Path("/gameByConsole/{c}")
+	@Produces(MediaType.APPLICATION_JSON)	
+	public List<Game> getGameByConsole(@PathParam("c") String c) {
+		
+		System.out.print("id du genre :"+c+"\n");
+		DaoFactory fact = DaoFactory.getInstance();
+		dao.GameIsOnConsoleDao gameIsOnConsoleDao = fact.getGameIsOnConsoleDao();
+        
+		
+		List<Game> lg = gameIsOnConsoleDao.findGamesByConsole(Integer.parseInt(c));
+		
+		System.out.print("premier jeu trouve :"+lg.get(0).getTitleGame()+"\n");
+		return lg;
 
 		
 	}

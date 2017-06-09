@@ -34,7 +34,7 @@ public class Rating implements Serializable {
 	private int idRating;
 	private int fkGameRating;
 	private int fkUserRating;
-	private int ratingRating;
+	private double ratingRating;
 	private Game game;
 	private User user;
 
@@ -65,11 +65,11 @@ public class Rating implements Serializable {
 		this.fkUserRating = fkUserRating;
 	}
 
-	public int getRatingRating() {
+	public double getRatingRating() {
 		return this.ratingRating;
 	}
 
-	public void setRatingRating(int ratingRating) {
+	public void setRatingRating(double ratingRating) {
 		this.ratingRating = ratingRating;
 	}
 

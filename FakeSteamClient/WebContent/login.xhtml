@@ -4,7 +4,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/core">
+      xmlns:ui="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
   <h:head>
     <meta charset="utf-8"></meta>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
@@ -40,15 +42,29 @@
               <a class="navbar-brand" href=".">FakeSteam</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
-              <ul class="nav navbar-nav">
-                <li><a href="#">Library</a></li>
-                <li><a href="#about">Account</a></li>
-                <li><a href="#about">Games</a></li>
+              <ul class="nav navbar-nav">             	
+             
+             	<c:if test="#{user.isAdmin eq 1}"> 	
+	    			<li>
+	              		<h:link value="add Game" outcome="formGame" ></h:link>
+	              	</li>
+	              	<li>
+	              		<h:link value="add Genre" outcome="formGenre" ></h:link>
+	              	</li>
+	              	<li>
+	              		<h:link value="add Console" outcome="formConsole" ></h:link>
+	              	</li>
+	            </c:if>
+	            <c:if test="#{user.isAdmin ne 1}">
+	            	<li>
+	                <h:panelGroup rendered="#{not empty user}">
+	    				<h:link value="My games" outcome="myGames" ></h:link>
+	    			</h:panelGroup>            
+			  	</li>
+	            </c:if>  
+             
               </ul>
-              <ul class="nav navbar-nav navbar-right">
-                <li><a href="/FakeSteamClient/addUser">New User</a></li>
-              	<li><a href="/FakeSteamClient/logUser">Log in</a></li>
-              </ul>
+              
             </div>
           </div>
         </nav>

@@ -19,25 +19,6 @@ import bean.User;
 public class RatingRest {
 
 	
-	@POST
-	@Path("/receive")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response consumeJson(Rating rating) throws URISyntaxException
-	{
-		System.out.print("passe RATING REST ************\n");
-		System.out.println(rating);
-		
-		DaoFactory fact = DaoFactory.getInstance();
-        dao.RatingDao ratingDao = fact.getRatingDao();
-		
-        try {
-        	ratingDao.create(rating);
-        }
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		String output = "Objet "+rating+" créé";
-		return Response.status(200).entity(output).build();
-	}
+	
 	
 }

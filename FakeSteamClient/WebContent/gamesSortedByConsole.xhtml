@@ -7,7 +7,6 @@
       xmlns:ui="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:c="http://java.sun.com/jsp/jstl/core">
-      
   <h:head>
     <meta charset="utf-8"></meta>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
@@ -44,7 +43,7 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
-                <c:if test="#{user.isAdmin eq 1}"> 	
+               	   <c:if test="#{user.isAdmin eq 1}"> 	
 	    			<li>
 	              		<h:link value="add Game" outcome="formGame" ></h:link>
 	              	</li>
@@ -61,14 +60,15 @@
 	    				<h:link value="My games" outcome="myGames" ></h:link>
 	    			</h:panelGroup>            
 			  	</li>
-	            </c:if>             
-                
+	            </c:if>   
+               	
+               
               </ul>
               <ul class="nav navbar-nav navbar-right">
-          		 <h:panelGroup rendered="#{not empty user}">
-             		 <c:if test="#{user.isAdmin eq 1}">
-              			admin mode
-             		 </c:if>
+              		 <h:panelGroup rendered="#{not empty user}">
+	              <c:if test="#{user.isAdmin eq 1}">
+	              	admin mode
+	              </c:if>
 	    			#{user.usernameUser}
 	    			<h:form>
 	       				 <h:commandButton value="log out" action="#{user.logout}" />
@@ -78,19 +78,21 @@
 		              		<h:link value="Cart" outcome="cart" ></h:link>
 		              	</li>
 		             </c:if>
-			  </h:panelGroup>
-			
-			  <h:panelGroup rendered="#{empty user}">
-    			 <li>
-              		<h:link value="create account" outcome="formUser" >	              			
-					</h:link>
-              	</li>
+				  </h:panelGroup>
+				
+				  <h:panelGroup rendered="#{empty user}">
+	    			 <li>
+	              		<h:link value="create account" outcome="formUser" >	              			
+						</h:link>
+	              	</li>
+	              	
+	              	<li>
+	              		<h:link value="log in" outcome="login" >	              			
+						</h:link>
+	              	</li>
+				  </h:panelGroup>
               	
-              	<li>
-              		<h:link value="log in" outcome="login" >	              			
-					</h:link>
-              	</li>
-			  </h:panelGroup>
+              		
               </ul>
             </div>
           </div>
@@ -101,69 +103,28 @@
 
 	<div class="jumbotron">
       <div class="container">
-      
-      	<f:metadata>
-    		<f:viewParam name="idGame" value="#{Game.idGame}" />
-		</f:metadata>      
-       
-         <h1>Game id : "#{Game.idGame}"</h1>     
-         
-        <p>Nom :#{Game.titleGame}</p>
-        <p>Prix :#{Game.priceGame}</p>
-        <p>nom image : #{Game.pictureUrlGameToPrint}</p>
-        <c:if test="#{Game.rate ne 0.0}"> 	
-	       	<h:form>	       	
-	        	<p>Note : #{Game.rate} /5 (#{Game.nbRating})</p>
-	        </h:form>
-        </c:if>
-        
-            
-        <p>Genre : </p>
-        
-        <h:dataTable value="#{Game.listOfGenreName}" var="genre">
-    		<h:column>#{genre}</h:column>
-		</h:dataTable>
-    		
-        
-        <p>Consoles : </p>
-        <h:dataTable value="#{Game.listOfConsoleName}" var="console">
-    		<h:column>#{console}</h:column>
-		</h:dataTable>
-        
-        <h:panelGroup rendered="#{not empty user}">    
-	         <c:if test="#{empty user.ownsGame(Game.idGame)}"> 			
-	    		<h:form>
-	       			<p><h:commandButton class="btn btn-lg btn-primary btn-block" value="Add to cart" action="#{user.addToPanier(Game)}"></h:commandButton></p>
-	    		</h:form>
-			 </c:if>   		
-		</h:panelGroup>
+          
+        <f:metadata>
+    		<f:viewParam name="idConsole" value="#{Game.tempConsoleId}" />
+		</f:metadata>
 		
-		<h:panelGroup rendered="#{not empty user}">
-			<p>Rate</p>
-			<c:if test="#{not empty user.ownsGame(Game.idGame)}">
-				<c:if test="#{user.getTempRating() eq -1}">					
-					<h:form>				
-						saisir note<p:rating value="#{user.tempRate}" cancel="false" />
-						<p:commandButton value="Submit" />					
-					
-					</h:form>
-				</c:if>
-				
-				<c:if test="#{user.getTempRating() ne -1}">					
-									
-						Note donne <p:rating value="#{user.tempRating}" disabled="true" />				
-					
-				</c:if>
-				
-				
-			</c:if>
-        </h:panelGroup>
+        <h:dataTable value="#{Game.listOfGameByConsole}" var="game">
+    		<h:column> 
+    			<h:link value="#{game.titleGame}" outcome="game" >
+	    			<f:param name="idGame" value="#{game.idGame}" />
+	    		</h:link>
+    		</h:column>    		
+    		
+		</h:dataTable>
+          
+
        	
 
       </div>
     </div>
     
-  
+   
+
 	<div class="container">
       <!-- FOOTER -->
       <footer>
