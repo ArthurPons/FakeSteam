@@ -20,7 +20,6 @@ import javax.servlet.ServletContext;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.Target;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -38,7 +37,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import servlets.FormGame;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -394,12 +392,12 @@ public class Game implements Serializable {
 	
 	public List<String > getListOfConsoleName() {		
 		
-		System.out.print("passe list genre\n");
+		//System.out.print("passe list genre\n");
 		Client client = ClientBuilder.newClient();
 		WebTarget target = client.target("http://localhost:8080/FakeSteam/rest/gameIsOnConsole/get/"+idGame); 
 		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
 		String jsonString = json.toString();
-		System.out.print("jsonconsole :"+json+"\n");
+		//System.out.print("jsonconsole :"+json+"\n");
 		ObjectMapper mapper = new ObjectMapper();
 		
 		
@@ -442,7 +440,7 @@ public class Game implements Serializable {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+		e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -452,6 +450,7 @@ public class Game implements Serializable {
 		firstGameCarroussel = listAllGames.get(sizeList-1);
 		secondGameCarroussel = listAllGames.get(sizeList-2);
 		thirdGameCarroussel = listAllGames.get(sizeList-3);
+		
 		
 		return 0;
 		
