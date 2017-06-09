@@ -39,72 +39,10 @@ public class Console implements Serializable {
 	private List<Console> listOfAllConsoles;
 
 	
-	@JsonIgnore
-	private Console firstConsole;
-	@JsonIgnore
-	private Console secondConsole;
-	@JsonIgnore
-	private Console thirdConsole;
-	
-	
 
 	public Console() {
 	}
 
-	
-	public Console getFirstConsole() {
-		if(firstConsole==null)
-		{			
-			getLastThreeConsole();			
-		}
-		return firstConsole;
-	}
-
-
-	public void setFirstConsole(Console firstConsole) {
-		
-		this.firstConsole = firstConsole;
-	}
-
-
-	public Console getSecondConsole() {
-		if(secondConsole==null)
-		{			
-			getLastThreeConsole();			
-		}
-		return secondConsole;
-	}
-
-
-	public void setSecondConsole(Console secondConsole) {
-		this.secondConsole = secondConsole;
-	}
-
-
-	public Console getThirdConsole() {
-		if(thirdConsole==null)
-		{			
-			getLastThreeConsole();			
-		}
-		return thirdConsole;
-	}
-
-
-	public void setThirdConsole(Console thirdConsole) {
-		this.thirdConsole = thirdConsole;
-	}
-
-
-	public void getLastThreeConsole()
-	{
-		findListConsoles();
-		int sizeList = listOfAllConsoles.size();
-		firstConsole=listOfAllConsoles.get(sizeList-1);
-		secondConsole=listOfAllConsoles.get(sizeList-2);
-		thirdConsole=listOfAllConsoles.get(sizeList-3);
-	}
-		
-	
 	public void findListConsoles()
 	{
 		ResteasyClient client = new ResteasyClientBuilder().build();
@@ -112,7 +50,7 @@ public class Console implements Serializable {
 		
 		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
 		String jsonString = json.toString();
-		//System.out.print("json :"+json+"\n");
+		System.out.print("json :"+json+"\n");
 		ObjectMapper mapper = new ObjectMapper();
 		
 		listOfAllConsoles = null;
@@ -164,7 +102,7 @@ public class Console implements Serializable {
 		
 		
 		//ajout dans la table Console
-		//System.out.println("Submitted NameGenre : "+ nameConsole +"\n");
+		System.out.println("Submitted NameGenre : "+ nameConsole +"\n");
 
         try {
         	

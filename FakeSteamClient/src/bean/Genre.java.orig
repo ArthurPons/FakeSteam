@@ -1,9 +1,13 @@
 package bean;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 
-import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.json.JsonArray;
@@ -25,99 +29,101 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
 
-
 @JsonIgnoreProperties(ignoreUnknown=true)
-@ManagedBean(name = "Console")
-public class Console implements Serializable {
+@ManagedBean(name = "Genre")
+public class Genre implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private int idConsole;
+	private int idGenre;
 
-	private String nameConsole;
+
+	private String nameGenre;
+	@JsonIgnore
+	private Genre firstGenre;
+	@JsonIgnore
+	private Genre secondGenre;
+	@JsonIgnore
+	private Genre thirdGenre;
 	
 	@JsonIgnore
-	private List<Console> listOfAllConsoles;
+	private List<Genre> listOfAllGenres;
 
-	
-	@JsonIgnore
-	private Console firstConsole;
-	@JsonIgnore
-	private Console secondConsole;
-	@JsonIgnore
-	private Console thirdConsole;
+	public Genre() {
+	}
 	
 	
-
-	public Console() {
-	}
-
-	
-	public Console getFirstConsole() {
-		if(firstConsole==null)
-		{			
-			getLastThreeConsole();			
-		}
-		return firstConsole;
-	}
-
-
-	public void setFirstConsole(Console firstConsole) {
-		
-		this.firstConsole = firstConsole;
-	}
-
-
-	public Console getSecondConsole() {
-		if(secondConsole==null)
-		{			
-			getLastThreeConsole();			
-		}
-		return secondConsole;
-	}
-
-
-	public void setSecondConsole(Console secondConsole) {
-		this.secondConsole = secondConsole;
-	}
-
-
-	public Console getThirdConsole() {
-		if(thirdConsole==null)
-		{			
-			getLastThreeConsole();			
-		}
-		return thirdConsole;
-	}
-
-
-	public void setThirdConsole(Console thirdConsole) {
-		this.thirdConsole = thirdConsole;
-	}
-
-
-	public void getLastThreeConsole()
+	public void getLastThreeGenre()
 	{
-		findListConsoles();
-		int sizeList = listOfAllConsoles.size();
-		firstConsole=listOfAllConsoles.get(sizeList-1);
-		secondConsole=listOfAllConsoles.get(sizeList-2);
-		thirdConsole=listOfAllConsoles.get(sizeList-3);
-	}
+		getListOfAllGenres();
+		int sizeList = getListOfAllGenres().size();
+		firstGenre=listOfAllGenres.get(sizeList-1);
+		secondGenre=listOfAllGenres.get(sizeList-2);
+		thirdGenre=listOfAllGenres.get(sizeList-3);
 		
+	}
 	
-	public void findListConsoles()
-	{
+	public Genre getFirstGenre() {
+		if(firstGenre==null)
+		{			
+			getLastThreeGenre();			
+		}
+		return firstGenre;
+	}
+
+
+
+	public void setFirstGenre(Genre firstGenre) {
+		this.firstGenre = firstGenre;
+	}
+
+
+
+	public Genre getSecondGenre() {
+		if(secondGenre==null)
+		{			
+			getLastThreeGenre();			
+		}
+		return secondGenre;
+	}
+
+
+
+	public void setSecondGenre(Genre secondGenre) {
+		this.secondGenre = secondGenre;
+	}
+
+
+
+	public Genre getThirdGenre() {
+		if(thirdGenre==null)
+		{			
+			getLastThreeGenre();			
+		}
+		return thirdGenre;
+	}
+
+
+
+	public void setThirdGenre(Genre thirdGenre) {
+		this.thirdGenre = thirdGenre;
+	}
+
+
+
+	public List<Genre> getListOfAllGenres() {			
+	
+		
 		ResteasyClient client = new ResteasyClientBuilder().build();
-		ResteasyWebTarget target = client.target("http://localhost:8080/FakeSteam/rest/console/get");
+		ResteasyWebTarget target = client.target("http://localhost:8080/FakeSteam/rest/genre/get");
 		
 		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
 		String jsonString = json.toString();
 		//System.out.print("json :"+json+"\n");
 		ObjectMapper mapper = new ObjectMapper();
 		
-		listOfAllConsoles = null;
+		
 		try {
-			listOfAllConsoles = mapper.readValue(jsonString, new TypeReference<List<Console>>(){});
+			listOfAllGenres = mapper.readValue(jsonString, new TypeReference<List<Genre>>(){});
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -128,49 +134,46 @@ public class Console implements Serializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	
-	
-	public List<Console> getListOfAllConsoles() {	
-		findListConsoles();
-		return listOfAllConsoles;				
-	}
-
-
-	public void setListOfAllConsoles(List<Console> listOfAllConsoles) {
-		this.listOfAllConsoles = listOfAllConsoles;
-	}
-
-
-
-	public int getIdConsole() {
-		return this.idConsole;
-	}
-
-	public void setIdConsole(int idConsole) {
-		this.idConsole = idConsole;
-	}
-
-	public String getNameConsole() {
-		return this.nameConsole;
-	}
-
-
-	public void setNameConsole(String nameConsole) {
-		this.nameConsole = nameConsole;
-	}
-
-	public void submit() {	  	       
 		
 		
-		//ajout dans la table Console
-		//System.out.println("Submitted NameGenre : "+ nameConsole +"\n");
+		return listOfAllGenres;					
+	}
+	
+	public void setListOfAllGenres(List<Genre> listOfAllGenres) {
+		this.listOfAllGenres = listOfAllGenres;
+	}
+
+
+	public int getIdGenre() {
+		return this.idGenre;
+	}
+
+	public void setIdGenre(int idGenre) {
+		this.idGenre = idGenre;
+	}
+
+	public String getNameGenre() {
+		return this.nameGenre;
+	}
+
+	public void setNameGenre(String nameGenre) {
+		this.nameGenre = nameGenre;
+	}
+
+
+	
+public void submit() {	  
+       
+		
+				
+		//ajout dans la table Genre
+		//System.out.println("Submitted NameGenre : "+ nameGenre +"\n");
 
         try {
         	
 			ResteasyClient client = new ResteasyClientBuilder().build();
 
-			ResteasyWebTarget target = client.target("http://localhost:8080/FakeSteam/rest/console/receive");
+			ResteasyWebTarget target = client.target("http://localhost:8080/FakeSteam/rest/genre/receive");
 			
 			Response response = target.request().post(Entity.entity(this,MediaType.APPLICATION_JSON));			
 			
@@ -200,5 +203,7 @@ public class Console implements Serializable {
 		}
                    
     }
+	
+	
 
 }
