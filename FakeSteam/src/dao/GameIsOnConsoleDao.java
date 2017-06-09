@@ -2,6 +2,7 @@ package dao;
 
 import java.util.List;
 
+import bean.Game;
 import bean.GameIsOnConsole;
 
 public interface GameIsOnConsoleDao {
@@ -10,5 +11,7 @@ public interface GameIsOnConsoleDao {
 	  List<String> find( int id ) throws DaoException;
 	  List<GameIsOnConsole> findAll () throws DaoException;
 	  void createSeveral(int idGame, List<Integer> listConsoles) throws DaoException;
+	  List<Game> findGamesByConsole(int consoleId) throws DaoException;
+	  
 	
 }

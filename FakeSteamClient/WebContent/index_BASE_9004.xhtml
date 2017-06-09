@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <h:head>
+    <meta charset="utf-8"></meta>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content=""></meta>
+    <meta name="author" content=""></meta>
+    <link rel="icon" href="../../favicon.ico"></link>
+
+    <title>FakeSteam</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="./bootstrap/css/bootstrap.css" rel="stylesheet"></link>
+
+    <!-- Custom styles for this template -->
+    <link href="carousel.css" rel="stylesheet"></link>
+  </h:head>
+<!-- NAVBAR
+================================================== -->
+  <body>
+    <div class="navbar-wrapper">
+      <div class="container">
+
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href=".">FakeSteam</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li><a href="#">Library</a></li>
+                <li><a href="#about">Account</a></li>
+                <li><a href="#about">Games</a></li>
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+              	<li><a href="#">Log in</a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+
+      </div>
+    </div>
+
+
+    <!-- Carousel
+    ================================================== -->
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+      <!-- Indicators -->
+      <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+      </ol>
+      <div class="carousel-inner" role="listbox">
+        <ui:repeat value="#{Game.lastThreeGames}" var="game" varStatus="status">
+        	<div class="#{status.count == 1 ? 'item active' : 'item'}">
+	        <img class="slide" src="./images/maxresdefault.jpg" alt="Second slide"/>
+	          <div class="container">
+	            <div class="carousel-caption">
+	              <h1>#{game.titleGame}</h1>
+	              <p><a class="btn btn-lg btn-primary" href="#" role="button">Buy</a></p>
+	            </div>
+	          </div>
+	        </div>
+        </ui:repeat>
+      </div>
+      <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+
+    <div class="container">
+    	<h1> Genres </h1>
+	    <div class="row">
+	   	  <!-- <h1>Genres</h1> -->
+		  <div class="col-md-6 col-md-4">
+		    <div class="thumbnail">
+		      <img src="./images/maxresdefault.jpg" alt="..."/>
+		      <div class="caption">
+		        <h3>Action</h3>
+		        <p>See all action games !</p>
+		      </div>
+		    </div>
+		  </div>
+		  <div class="col-sm-6 col-md-4">
+		    <div class="thumbnail">
+		      <img src="./images/maxresdefault.jpg" alt="..."/>
+		      <div class="caption">
+		        <h3>Action</h3>
+		        <p>See all action games !</p>
+		      </div>
+		    </div>
+		  </div>
+		  <div class="col-sm-6 col-md-4">
+		    <div class="thumbnail">
+		      <img src="./images/maxresdefault.jpg" alt="..."/>
+		      <div class="caption">
+		        <h3>Action</h3>
+		        <p>See all action games !</p>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+
+		<h1> Consoles </h1>
+	    <div class="row">
+	   	  <!-- <h1>Genres</h1> -->
+		  <div class="col-md-6 col-md-4">
+		    <div class="thumbnail">
+		      <img src="./images/maxresdefault.jpg" alt="..."/>
+		      <div class="caption">
+		        <h3>PS4</h3>
+		        <p>See all PS4 games !</p>
+		      </div>
+		    </div>
+		  </div>
+		  <div class="col-sm-6 col-md-4">
+		    <div class="thumbnail">
+		      <img src="./images/maxresdefault.jpg" alt="..."/>
+		      <div class="caption">
+		        <h3>PS4</h3>
+		        <p>See all PS4 games !</p>
+		      </div>
+		    </div>
+		  </div>
+		  <div class="col-sm-6 col-md-4">
+		    <div class="thumbnail">
+		      <img src="./images/maxresdefault.jpg" alt="..."/>
+		      <div class="caption">
+		        <h3>PS4</h3>
+		        <p>See all PS4 games !</p>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+
+	</div>
+	<div class="container">
+      <!-- FOOTER -->
+      <footer>
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>2017 FakeSteam, Inc. <a href="#noprivacy#sellingyourdata">Privacy</a>  <a href="#">Terms</a></p>
+      </footer>
+
+    </div>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="./bootstrap/js/bootstrap.min.js"></script>
+  </body>
+</html>

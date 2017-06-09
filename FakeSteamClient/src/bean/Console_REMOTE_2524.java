@@ -2,11 +2,9 @@ package bean;
 
 import java.io.IOException;
 import java.io.Serializable;
-
-import javax.annotation.PostConstruct;
+import javax.json.JsonArray;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
-import javax.json.JsonArray;
 import javax.persistence.*;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
@@ -16,12 +14,11 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.List;
 
@@ -34,90 +31,26 @@ public class Console implements Serializable {
 	private int idConsole;
 
 	private String nameConsole;
+
+	private String  typeConsole;
+
+	private List<Game> games;
 	
-	@JsonIgnore
-	private List<Console> listOfAllConsoles;
+	private List<Console> lastThreeConsoles;
 
-	
-	@JsonIgnore
-	private Console firstConsole;
-	@JsonIgnore
-	private Console secondConsole;
-	@JsonIgnore
-	private Console thirdConsole;
-	
-	
-
-	public Console() {
-	}
-
-	
-	public Console getFirstConsole() {
-		if(firstConsole==null)
-		{			
-			getLastThreeConsole();			
-		}
-		return firstConsole;
-	}
-
-
-	public void setFirstConsole(Console firstConsole) {
-		
-		this.firstConsole = firstConsole;
-	}
-
-
-	public Console getSecondConsole() {
-		if(secondConsole==null)
-		{			
-			getLastThreeConsole();			
-		}
-		return secondConsole;
-	}
-
-
-	public void setSecondConsole(Console secondConsole) {
-		this.secondConsole = secondConsole;
-	}
-
-
-	public Console getThirdConsole() {
-		if(thirdConsole==null)
-		{			
-			getLastThreeConsole();			
-		}
-		return thirdConsole;
-	}
-
-
-	public void setThirdConsole(Console thirdConsole) {
-		this.thirdConsole = thirdConsole;
-	}
-
-
-	public void getLastThreeConsole()
-	{
-		findListConsoles();
-		int sizeList = listOfAllConsoles.size();
-		firstConsole=listOfAllConsoles.get(sizeList-1);
-		secondConsole=listOfAllConsoles.get(sizeList-2);
-		thirdConsole=listOfAllConsoles.get(sizeList-3);
-	}
-		
-	
-	public void findListConsoles()
-	{
+	public List<Console> getLastThreeConsoles() {
 		ResteasyClient client = new ResteasyClientBuilder().build();
 		ResteasyWebTarget target = client.target("http://localhost:8080/FakeSteam/rest/console/get");
-		
+//		Client client = ClientBuilder.newClient();
+//		Target target = client.target("http://localhost:8080/FakeSteam/rest/game/get"); 
 		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
 		String jsonString = json.toString();
-		//System.out.print("json :"+json+"\n");
+		System.out.print("json :"+json+"\n");
 		ObjectMapper mapper = new ObjectMapper();
 		
-		listOfAllConsoles = null;
+		List<Console> listAllConsoles = null;
 		try {
-			listOfAllConsoles = mapper.readValue(jsonString, new TypeReference<List<Console>>(){});
+			listAllConsoles = mapper.readValue(jsonString, new TypeReference<List<Console>>(){});
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -128,20 +61,21 @@ public class Console implements Serializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	
-	
-	public List<Console> getListOfAllConsoles() {	
-		findListConsoles();
-		return listOfAllConsoles;				
-	}
-
-
-	public void setListOfAllConsoles(List<Console> listOfAllConsoles) {
-		this.listOfAllConsoles = listOfAllConsoles;
+		
+		if (listAllConsoles.size() <= 3) {
+			return listAllConsoles;
+		} 
+		else {
+			return listAllConsoles.subList(listAllConsoles.size()-4, listAllConsoles.size()-1);
+		}
 	}
 
+	public void setLastThreeConsoles(List<Console> lastThreeConsoles) {
+		this.lastThreeConsoles = lastThreeConsoles;
+	}
 
+	public Console() {
+	}
 
 	public int getIdConsole() {
 		return this.idConsole;
@@ -155,16 +89,34 @@ public class Console implements Serializable {
 		return this.nameConsole;
 	}
 
+	public String getTypeConsole() {
+		return typeConsole;
+	}
+
+	public void setTypeConsole(String typeConsole) {
+		this.typeConsole = typeConsole;
+	}
 
 	public void setNameConsole(String nameConsole) {
 		this.nameConsole = nameConsole;
 	}
 
-	public void submit() {	  	       
+
+	public List<Game> getGames() {
+		return this.games;
+	}
+
+	public void setGames(List<Game> games) {
+		this.games = games;
+	}
+	
+	public void submit() {	  
+	       
 		
 		
 		//ajout dans la table Console
-		//System.out.println("Submitted NameGenre : "+ nameConsole +"\n");
+		System.out.println("Submitted NameGenre : "+ nameConsole +"\n");
+		System.out.println("Submitted TypeConsole : "+ typeConsole +"\n");
 
         try {
         	

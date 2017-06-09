@@ -70,30 +70,5 @@ public class UserOwnsGame implements Serializable {
 		this.user = user;
 	}
 	
-	public void submit() {
-	 	
-        System.out.println("Submitted idGame : "+ idGame +"\n");
-        System.out.println("Submitted idUser : "+ idUser +"\n");
-                        
-        DaoFactory fact = DaoFactory.getInstance();
-        UserOwnsGameDao userOwnsGameDao = fact.getUserOwnsGameDao();
-        
-      
-    	
-    	try {          
-    		userOwnsGameDao.create( this );            
-        
-	    } catch ( DaoException e ) {	        
-	        e.printStackTrace();
-	    }
-
-    	try {
-			FacesContext.getCurrentInstance().getExternalContext().redirect("sucess.html");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-       
-    }
 
 }

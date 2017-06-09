@@ -31,7 +31,7 @@ public class UserOwnsGameDaoImpl implements UserOwnsGameDao{
 	}
 	
 	@Override
-	public void create( UserOwnsGame userOwnsGame ) throws DaoException
+	public void create( User user ) throws DaoException
 	{
 		Connection connexion = null;
 	    PreparedStatement preparedStatement = null;
@@ -40,20 +40,20 @@ public class UserOwnsGameDaoImpl implements UserOwnsGameDao{
 	    try {
 	        /* Récupération d'une connexion depuis la Factory */
 	        connexion = daoFactory.getConnection();
-	        preparedStatement = initialisationRequetePreparee( connexion, SQL_INSERT, true, userOwnsGame.getIdGame(), userOwnsGame.getIdUser() );
-	        int statut = preparedStatement.executeUpdate();
-	        /* Analyse du statut retourné par la requête d'insertion */
-	        if ( statut == 0 ) {
-	            throw new DaoException( "Échec de la création de la possession d'un jeu par un utilisateur, aucune ligne ajoutée dans la table." );
+	        for(Game g : user.getPanier())
+	        {
+	        	preparedStatement = initialisationRequetePreparee( connexion, SQL_INSERT, true, g.getIdGame(), user.getIdUser() );
+	        	System.out.print("ajout du jeu"+g.getTitleGame()+" dans les jeux appartenant a "+user.getUsernameUser()+"\n");
+		        int statut = preparedStatement.executeUpdate();
+		        /* Analyse du statut retourné par la requête d'insertion */
+		        if ( statut == 0 ) {
+		            throw new DaoException( "Échec de la création de la possession d'un jeu par un utilisateur, aucune ligne ajoutée dans la table." );
+		        }
+		        /* Récupération de l'id auto-généré par la requête d'insertion */
+		        valeursAutoGenerees = preparedStatement.getGeneratedKeys();
+		       
 	        }
-	        /* Récupération de l'id auto-généré par la requête d'insertion */
-	        valeursAutoGenerees = preparedStatement.getGeneratedKeys();
-	        if ( valeursAutoGenerees.next() ) {
-	            /* Puis initialisation de la propriété id du bean Utilisateur avec sa valeur */
-	            userOwnsGame.setIdUserOwnsGame((int) valeursAutoGenerees.getLong( 1 ) );
-	        } else {
-	            throw new DaoException( "Échec de la création de la possession d'un jeu par un utilisateur, aucun ID auto-généré retourné." );
-	        }
+	        
 	    } catch ( SQLException e ) {
 	        throw new DaoException( e );
 	    } finally {

@@ -28,6 +28,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -41,11 +42,138 @@ public class User implements Serializable {
 	private String usernameUser;
 	
 	private Rating rating;
+	private Double tempRate;
+	
+	private List<Game> panier; 
+	private float totalAmountPanier;
 	
 	private List<Comment> comments;
 	private List<Historic> historics;
 	private List<Game> listOfGame;
 	
+	private int tempGame;
+	private int tempRating;
+	
+	private int isAdmin;
+	
+	
+	
+	public int getIsAdmin() {
+		
+		return isAdmin;
+	}
+
+	public void setIsAdmin(int isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+
+	public void setTempRating(int tempRating) {
+		this.tempRating = tempRating;
+	}
+
+	public int getTempGame() {
+		return tempGame;
+	}
+
+	public void setTempGame(int tempGame) {
+		this.tempGame = tempGame;
+	}
+
+	public Double getTempRate() {
+		return tempRate;
+	}
+
+	public int getTempRating() {
+		//recherche si l'utilisateur a deja mis une note pour ce jeu (si oui, renvoie la note, sinon renvoie -1 (pas 0, car 0 peut etre une note)
+		
+		if(tempGame!=0)
+		{
+			System.out.print("recherche de la note\n");
+			Client client = ClientBuilder.newClient();			
+			
+			WebTarget target = client.target("http://localhost:8080/FakeSteam/rest/user/getRating/"+idUser+"-"+tempGame); 
+			JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
+			String jsonString = json.toString();
+			System.out.print("json :"+json+"\n");
+			ObjectMapper mapper = new ObjectMapper();
+			
+			List<Integer> listInt = new ArrayList<Integer>();
+			
+			try {
+				
+				listInt = mapper.readValue(jsonString, new TypeReference<List<Integer>>(){});
+				
+				
+			} catch (JsonParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if(listInt==null)
+			{
+				tempRating = -1;
+				return  -1;
+			}
+			else
+			{
+				System.out.print("note donne par le user :"+listInt.get(0)+"\n");
+				tempRating = listInt.get(0);
+				return listInt.get(0);
+			}
+			
+			
+			
+			
+		}
+		return -1;
+	}
+	
+	public void setTempRate(Double tempRate) {
+		//sauvegarde de la note dans Rating (pour que le user ne puisse pas noter deux fois le meme jeu)
+		this.tempRate=tempRate;
+		System.out.print("ajout de la note "+tempRate+"\n");
+		System.out.print("id du jeu (rating)"+tempGame+"\n");
+		
+		if(tempGame!=0)
+		{
+			try {
+		      	
+				ResteasyClient client = new ResteasyClientBuilder().build();
+
+				ResteasyWebTarget target = client.target("http://localhost:8080/FakeSteam/rest/user/addRating");
+					
+				Response response = target.request().post(Entity.entity(this,MediaType.APPLICATION_JSON));			
+					
+				if (response.getStatus() != 200) {
+					throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+				}
+
+				System.out.println("Server response : \n");
+				System.out.println(response.readEntity(String.class));
+
+				response.close();
+				
+				
+				
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+
+			}
+		}		
+		
+		
+		
+		
+	}
+
 	private String pwd_user;
 
 	public String getPwd_user() {
@@ -56,7 +184,27 @@ public class User implements Serializable {
 		this.pwd_user = pwd_user;
 	}
 
+	public List<Game> getPanier() {
+		return panier;
+	}
+
+	public void setPanier(List<Game> panier) {
+		this.panier = panier;
+	}
+
 	public User() {
+		//initialisationdu prix du panier
+		totalAmountPanier = 0;
+		
+	}
+
+	
+	public float getTotalAmountPanier() {
+		return totalAmountPanier;
+	}
+
+	public void setTotalAmountPanier(float totalAmountPanier) {
+		this.totalAmountPanier = totalAmountPanier;
 	}
 
 	public int getIdUser() {
@@ -144,21 +292,59 @@ public class User implements Serializable {
 		this.rating = rating;
 	}
 
-
+	public int isCartEmpty()
+	{
+		if((panier != null) && (panier.size()!=0))
+		{
+			return 0;
+		}
+		else
+		{
+			return 1;
+		}
+	}
+	
+	//si user possede le jeu, renvoi le jeu. null sinon.
+	public Game ownsGame(int idOfGame)
+	{
+		System.out.print("id du jeu a recherche:"+idOfGame+"\n");
+		tempGame=idOfGame;
+		
+		if(listOfGame==null)
+		{
+			getListOfGame();
+		}
+		
+		if(listOfGame==null)
+		{
+			System.out.print("game toujours nul !\n");
+		}
+		
+		for(Game g:listOfGame)
+		{
+			if(g.getIdGame()==idOfGame)
+			{
+				return g;
+			}
+		}
+		
+		return null;
+	}
+	
 
 	public List<Game> getListOfGame() {
 		
-		Client client = ClientBuilder.newClient();
-		System.out.print("idutilisateur :"+idUser+"\n");
+		System.out.print("recherche des jeux\n");
+		Client client = ClientBuilder.newClient();	
 		
 		//avoir recuperer l'id du user
-		WebTarget target = client.target("http://localhost:8080/FakeSteam/rest/game/ownedBy/2"); 
+		WebTarget target = client.target("http://localhost:8080/FakeSteam/rest/game/ownedBy/"+idUser); 
 		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
 		String jsonString = json.toString();
 		System.out.print("json :"+json+"\n");
 		ObjectMapper mapper = new ObjectMapper();
 		
-		List<Game> listOfGame = null;
+		
 		try {
 			listOfGame = mapper.readValue(jsonString, new TypeReference<List<Game>>(){});
 		} catch (JsonParseException e) {
@@ -212,9 +398,111 @@ public class User implements Serializable {
         sr.nextBytes(salt);
         return salt;
     }
+    
+    //recuperer l'objet id associe a l'id
+    
+    public void getUserFromId(int idOfUser)
+    {
+    	System.out.print("recherche du user, grace a son id.\n");
+		Client client = ClientBuilder.newClient();
+		WebTarget target = client.target("http://localhost:8080/FakeSteam/rest/user/get/"+idOfUser); 
+		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
+		String jsonString = json.toString();
+		System.out.print("json :"+json+"\n");
+		ObjectMapper mapper = new ObjectMapper();
+		
+		User u = new User();
+		
+		try {
+			List<User> lu = mapper.readValue(jsonString, new TypeReference<List<User>>(){});
+			u=lu.get(0);
+			
+			usernameUser=u.getUsernameUser();
+			isAdmin = u.getIsAdmin();
+			System.out.print("valeur de usernma** :"+usernameUser+"\n");
+			System.out.print("valeur de isAdmin :"+isAdmin+"\n");
+			
+			//stockage des attributs
+			
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+		e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
 	
+    public void buyGamesInPanier()
+    {    	
+    	try {
+    	      	
+    			ResteasyClient client = new ResteasyClientBuilder().build();
+
+    			ResteasyWebTarget target = client.target("http://localhost:8080/FakeSteam/rest/user/buyGame");
+    				
+    			Response response = target.request().post(Entity.entity(this,MediaType.APPLICATION_JSON));			
+    				
+    			if (response.getStatus() != 200) {
+    				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+    			}
+
+    			System.out.println("Server response : \n");
+    			System.out.println(response.readEntity(String.class));
+
+    			response.close();
+    			
+    			//on vide la panier
+    			panier=null;
+    			
+    			try {
+    				FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+    			} catch (IOException e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    			}
+    			
+
+    		} catch (Exception e) {
+
+    			e.printStackTrace();
+
+    		} 
+    	
+    }
+    
+    public void addToPanier(Game gamePanier)
+    {
+    	System.out.print("tentative d'ajout au panier du jeu"+gamePanier.getTitleGame()+"\n");
+    	int isAlreadyinPanier=0;
+    	if (panier==null)
+    	{
+    		panier = new ArrayList<Game>();
+    	}
+    	for(Game g:panier)
+    	{
+    		if(g.getIdGame()== gamePanier.getIdGame())
+    		{
+    			isAlreadyinPanier=1;
+    		}
+    	}
+    	
+    	if(isAlreadyinPanier==0)
+    	{
+    		System.out.print("ajout du jeu "+gamePanier.getTitleGame()+" dans le panier\n");
+    		panier.add(gamePanier);
+    		totalAmountPanier = totalAmountPanier + gamePanier.getPriceGame();
+    		System.out.print("total amount :"+totalAmountPanier+"\n");
+    	}    	
+    	
+    }
 	
-    public void login(){
+ 
+    
+    public String login(){
     	
     	//recuperation login/mdp du formulaire
     	System.out.print("passe user login\n");
@@ -271,52 +559,44 @@ public class User implements Serializable {
 		if(idUser==0)
 		{
 			System.out.print("utilisateur non trouve\n");
+			return null;
 		}
 		else
 		{
 			System.out.print("utilisateur trouve. Id : "+idUser+"\n");//pas bon si 0
+			getUserFromId(idUser);
+			
+			//demarre session 
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.getExternalContext().getSessionMap().put("user", this);
+			try {
+				FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			 return "userhome?faces-redirect=true";
+			 
 		}
-		
-		
-        //demarrer session avec id.
-		//instantiation d'un objet Sessoin (stock les infos)
-		
-		
-    	//recherche dans la base
-        /*
-         * 
-         * Client client = ClientBuilder.newClient();
-		System.out.print("idutilisateur :"+idUser+"\n");
-		
-		//avoir recuperer l'id du user
-		WebTarget target = client.target("http://localhost:8080/FakeSteam/rest/game/ownedBy/2"); 
-		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
-		String jsonString = json.toString();
-		System.out.print("json :"+json+"\n");
-		ObjectMapper mapper = new ObjectMapper();
-		
-		List<Game> listOfGame = null;
-		try {
-			listOfGame = mapper.readValue(jsonString, new TypeReference<List<Game>>(){});
-		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		   	
+    	
+    }
+    
+    public String logout()
+    {
+    	System.out.print("logout\n");
+    	FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+    	//raffraichit la page
+    	/*try {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-         * 
-         */
-    	
-    	
-    	//si bon, redirige vers accueil + ouverture d'une session
-    	
-    	//sinon, page d'erreur, id/mdp non valide
-    	
+    	*/
+        return "index?faces-redirect=true";
+        
     }
     
 	public void submit() {
@@ -350,18 +630,25 @@ public class User implements Serializable {
 			System.out.println(response.readEntity(String.class));
 
 			response.close();
+			//le compte du user a ete cree
+			
+			//ouverture d'une session, et renvoie vers la page d'accueil
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.getExternalContext().getSessionMap().put("user", this);
+			try {
+				FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
 
 		} catch (Exception e) {
 
 			e.printStackTrace();
 
-		}
+		}        
         
-        try {
-			FacesContext.getCurrentInstance().getExternalContext().redirect("sucess.html");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
     }
 }
