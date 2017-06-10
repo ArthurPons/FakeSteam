@@ -2,86 +2,101 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/core">
-  <h:head>
-    <meta charset="utf-8"></meta>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
-    <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content=""></meta>
-    <meta name="author" content=""></meta>
-    <link rel="icon" href="../../favicon.ico"></link>
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta charset="utf-8" content="" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+	<meta name="description" content="" />
+	<meta name="author" content="" />
+	<link rel="icon" href="../../favicon.ico" />
 
-    <title>FakeSteam</title>
+	<title>FakeSteam</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="./bootstrap/css/bootstrap.css" rel="stylesheet"></link>
+	<!-- Bootstrap core CSS -->
+	<link href="./bootstrap/css/bootstrap.css" rel="stylesheet" />
 
-    <!-- Custom styles for this template -->
-    <link href="carousel.css" rel="stylesheet"></link>
-  </h:head>
+	<!-- Custom styles for this template -->
+	<link href="carousel.css" rel="stylesheet" />
+</h:head>
 <!-- NAVBAR
 ================================================== -->
-  <body>
-    <div class="navbar-wrapper">
-      <div class="container">
+<body>
+	<div class="navbar-wrapper">
+		<div class="container">
 
-        <nav class="navbar navbar-inverse navbar-fixed-top">
-          <div class="container">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <a class="navbar-brand" href=".">FakeSteam</a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
-              <ul class="nav navbar-nav">
-                <li><a href="#">Library</a></li>
-                <li><a href="#about">Account</a></li>
-                <li><a href="#about">Games</a></li>
-              </ul>
-              <ul class="nav navbar-nav navbar-right">
-              	<li><a href="#">Log in</a></li>
-              </ul>
-            </div>
-          </div>
-        </nav>
+			<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed"
+						data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+						aria-controls="navbar">
+						<span class="sr-only">Toggle navigation</span> <span
+							class="icon-bar" /> <span class="icon-bar" /> <span
+							class="icon-bar" />
+					</button>
+					<a class="navbar-brand" href=".">FakeSteam</a>
+				</div>
+				<div id="navbar" class="navbar-collapse collapse">
+					<ul class="nav navbar-nav navbar-right">
+						<li><h:link value="Create account" outcome="formUser" /></li>
+						<li><h:link value="Log in" outcome="login" /></li>
+					</ul>
+				</div>
+			</div>
+			</nav>
 
-      </div>
-    </div>
+		</div>
+	</div>
+
+	<h:form id="signin">
+		<h:panelGrid columns="2" id="formUserGrid" cellpadding="5"
+			style="margin:0 auto">
+			<f:facet name="header">
+				<h2>Please create your account</h2>
+				<br />
+			</f:facet>
+			<p:outputLabel colspan="1" for="username" value="Username :" />
+			<p:inputText id="username" required="true"
+				value="#{User.usernameUser}" />
+			<p:outputLabel colspan="1" for="password" value="Password :" />
+			<p:password id="password" required="true" value="#{User.pwdUser}" />
+			<br />
+			<f:facet name="footer">
+				<p:commandButton update="formUserGrid"
+					class="btn btn-lg btn-primary btn-block" type="submit"
+					action="#{User.submit()}" value="Add user" validateClient="true" />
+			</f:facet>
+
+		</h:panelGrid>
+	</h:form>
 
 	<div class="container">
-    	
-	   <h:form enctype="multipart/form-data">
-	        <h2 class="form-signin-heading">Please add user</h2>
-	        <label for="inputUsername" class="sr-only">Username</label>
-	        <h:inputText type="text" class="form-control" placeholder="username" value="#{User.usernameUser}"></h:inputText>
-	        <label for="inputPassword" class="sr-only">Password</label>
-	        <h:inputSecret class="form-control" placeholder="password" value="#{User.pwdUser}"></h:inputSecret>
-	        <br></br>
-	        <h:commandButton class="btn btn-lg btn-primary btn-block" type="submit" action="#{User.submit()}" value="Add user"></h:commandButton>
-		</h:form>
-    </div>
+		<!-- FOOTER -->
+		<footer>
+		<p class="pull-right">
+			<a href="#">Back to top</a>
+		</p>
+		<p>
+			&copy; 2017 FakeSteam, Inc. &middot; <a
+				href="#noprivacy#sellingyourdata">Privacy</a> &middot; <a href="#">Terms</a>
+		</p>
+		</footer>
 
-	<div class="container">
-      <!-- FOOTER -->
-      <footer>
-        <p class="pull-right"><a href="#">Back to top</a></p>
-        <p>&copy; 2017 FakeSteam, Inc. &middot; <a href="#noprivacy#sellingyourdata">Privacy</a> &middot; <a href="#">Terms</a></p>
-      </footer>
-
-    </div><!-- /.container -->
+	</div>
+	<!-- /.container -->
 
 
-    <!-- Bootstrap core JavaScript
+	<!-- Bootstrap core JavaScript
     ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="./bootstrap/js/bootstrap.min.js"></script>
-  </body>
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"
+		type="" />
+	<script src="./bootstrap/js/bootstrap.min.js" type="" />
+</body>
 </html>

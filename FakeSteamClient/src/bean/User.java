@@ -6,6 +6,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
+import javax.faces.event.ActionEvent;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.json.JsonArray;
@@ -89,7 +90,7 @@ public class User implements Serializable {
 		if(tempGame!=0)
 		{
 			System.out.print("recherche de la note\n");
-			Client client = ClientBuilder.newClient();			
+			ResteasyClient client = new ResteasyClientBuilder().build();
 			
 			WebTarget target = client.target("http://localhost:8080/FakeSteam/rest/user/getRating/"+idUser+"-"+tempGame); 
 			JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
@@ -335,7 +336,7 @@ public class User implements Serializable {
 	public List<Game> getListOfGame() {
 		
 		System.out.print("recherche des jeux\n");
-		Client client = ClientBuilder.newClient();	
+		ResteasyClient client = new ResteasyClientBuilder().build();	
 		
 		//avoir recuperer l'id du user
 		WebTarget target = client.target("http://localhost:8080/FakeSteam/rest/game/ownedBy/"+idUser); 
@@ -404,7 +405,7 @@ public class User implements Serializable {
     public void getUserFromId(int idOfUser)
     {
     	System.out.print("recherche du user, grace a son id.\n");
-		Client client = ClientBuilder.newClient();
+		ResteasyClient client = new ResteasyClientBuilder().build();
 		WebTarget target = client.target("http://localhost:8080/FakeSteam/rest/user/get/"+idOfUser); 
 		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
 		String jsonString = json.toString();
@@ -517,7 +518,7 @@ public class User implements Serializable {
 			e1.printStackTrace();
 		}
         
-        Client client = ClientBuilder.newClient();
+        ResteasyClient client = new ResteasyClientBuilder().build();
         WebTarget target = client.target("http://localhost:8080/FakeSteam/rest/user/getUsers/"+usernameUser); 
 		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
 		String jsonString = json.toString();
@@ -583,7 +584,7 @@ public class User implements Serializable {
     	
     }
     
-    public String logout()
+    public String logout(ActionEvent actionEvent)
     {
     	System.out.print("logout\n");
     	FacesContext.getCurrentInstance().getExternalContext().invalidateSession();

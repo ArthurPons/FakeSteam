@@ -117,7 +117,9 @@ public class ConsoleDaoImpl implements ConsoleDao{
 	    Console console = new Console();
 	    console.setIdConsole( resultSet.getInt( "id_console" ) );
 
-	    console.setNameConsole( resultSet.getString("name_console") );	   
+	    console.setNameConsole( resultSet.getString("name_console") );	
+	    
+	    console.setTypeConsole(resultSet.getString("type_console"));;
 	    
 	    //recherche de l'objet game	 (id puis objet)   
 	    int consoleId = resultSet.getInt("id_console");

@@ -123,7 +123,7 @@ public class Game implements Serializable {
 
 	public List<Game> getListOfGameByConsole() {
 		System.out.print("passe getlistofgamebyconsole\n");
-		ResteasyClient client = new ResteasyClientBuilder().build();
+		ResteasyClient client= new ResteasyClientBuilder().build();
 		ResteasyWebTarget target = client.target("http://localhost:8080/FakeSteam/rest/game/gameByConsole/"+tempConsoleId);
 		
 		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
@@ -270,8 +270,8 @@ public class Game implements Serializable {
 	
 	public void getTotalRatingGame() {
 		
-		Client client = ClientBuilder.newClient();	
-		WebTarget target = client.target("http://localhost:8080/FakeSteam/rest/game/getRating/"+idGame); 
+		ResteasyClient client= new ResteasyClientBuilder().build();	
+		ResteasyWebTarget target = client.target("http://localhost:8080/FakeSteam/rest/game/getRating/"+idGame); 
 		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
 		String jsonString = json.toString();
 		System.out.print("json :"+json+"\n");
@@ -323,8 +323,8 @@ public class Game implements Serializable {
 	public void findGameById()
 	{
 		//System.out.print("recherche du jeu, grace a son id.\n");
-		Client client = ClientBuilder.newClient();
-		WebTarget target = client.target("http://localhost:8080/FakeSteam/rest/game/get/"+idGame); 
+		ResteasyClient client = new ResteasyClientBuilder().build();
+		ResteasyWebTarget target = client.target("http://localhost:8080/FakeSteam/rest/game/get/"+idGame); 
 		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
 		String jsonString = json.toString();
 		//System.out.print("json :"+json+"\n");
@@ -360,8 +360,8 @@ public class Game implements Serializable {
 
 	public List<String> getListOfGenreName() {
 		//System.out.print("passe list genre\n");
-		Client client = ClientBuilder.newClient();
-		WebTarget target = client.target("http://localhost:8080/FakeSteam/rest/gameIsOfGenre/get/"+idGame); 
+		ResteasyClient client = new ResteasyClientBuilder().build();
+		ResteasyWebTarget target = client.target("http://localhost:8080/FakeSteam/rest/gameIsOfGenre/get/"+idGame); 
 		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
 		String jsonString = json.toString();
 		//System.out.print("jsongenre :"+json+"\n");
@@ -393,7 +393,7 @@ public class Game implements Serializable {
 	public List<String > getListOfConsoleName() {		
 		
 		//System.out.print("passe list genre\n");
-		Client client = ClientBuilder.newClient();
+		ResteasyClient client = new ResteasyClientBuilder().build();
 		WebTarget target = client.target("http://localhost:8080/FakeSteam/rest/gameIsOnConsole/get/"+idGame); 
 		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
 		String jsonString = json.toString();
@@ -425,7 +425,7 @@ public class Game implements Serializable {
 	public int getLastThreeGames() {
 		
 		//System.out.print("passe last three games\n");
-		Client client = ClientBuilder.newClient();
+		ResteasyClient client = new ResteasyClientBuilder().build();
 		WebTarget target = client.target("http://localhost:8080/FakeSteam/rest/game/get"); 
 		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
 		String jsonString = json.toString();
@@ -784,7 +784,6 @@ public class Game implements Serializable {
         try {
         	
 			ResteasyClient client = new ResteasyClientBuilder().build();
-
 			ResteasyWebTarget target = client.target("http://localhost:8080/FakeSteam/rest/game/receive");
 			
 			Response response = target.request().post(Entity.entity(this,MediaType.APPLICATION_JSON));			

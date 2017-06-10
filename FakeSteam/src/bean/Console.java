@@ -13,7 +13,7 @@ public class Console implements Serializable {
 
 	private String nameConsole;
 
-
+	private String typeConsole;
 
 	private List<Game> games;
 
@@ -43,6 +43,14 @@ public class Console implements Serializable {
 
 	public void setGames(List<Game> games) {
 		this.games = games;
+	}
+
+	public String getTypeConsole() {
+		return typeConsole;
+	}
+
+	public void setTypeConsole(String typeConsole) {
+		this.typeConsole = typeConsole;
 	}
 
 }
