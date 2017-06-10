@@ -57,11 +57,30 @@
 						</c:if>
 
 					</ul>
-					<ul class="nav navbar-nav navbar-right">
-						<li><h:link value="Create account" outcome="formUser" /></li>
-						<li><h:link value="Log in" outcome="login" /></li>
-					</ul>
 
+					<ul class="nav navbar-nav navbar-right">
+
+						<h:panelGroup rendered="#{not empty user}">
+							<c:if test="#{user.isAdmin eq 1}">
+              	admin mode
+              </c:if>
+							<li><h:link value="#{user.usernameUser}" /></li>
+							<li><h:form>
+									<h:commandButton value="log out" action="#{user.logout}" />
+								</h:form></li>
+							<c:if test="#{user.isCartEmpty() eq 0}">
+								<li><h:link value="Cart" outcome="cart" /></li>
+							</c:if>
+						</h:panelGroup>
+
+						<h:panelGroup rendered="#{empty user}">
+							<ul class="nav navbar-nav navbar-right">
+								<li><h:link value="Create account" outcome="formUser" /></li>
+								<li><h:link value="Log in" outcome="login" /></li>
+							</ul>
+						</h:panelGroup>
+
+					</ul>
 				</div>
 			</div>
 			</nav>
@@ -70,11 +89,11 @@
 	</div>
 
 	<h:form enctype="multipart/form-data">
-
 		<h:panelGrid id="grid" columns="2"
 			style="margin:0 auto;margin-top:20px;padding:20px">
 			<f:facet name="header">
 				<h2>Add Game</h2>
+				<br />
 			</f:facet>
 			<p:outputLabel colspan="1" for="title" value="Title :" />
 			<p:inputText id="title" colspan="1" required="true"
@@ -99,11 +118,13 @@
 				<f:selectItems value="#{Console.listOfAllConsoles}" var="c"
 					itemLabel="#{c.nameConsole}" itemValue="#{c.idConsole}" />
 			</p:selectManyButton>
-			<p:commandButton class="btn btn-lg btn-primary btn-block"
-				value="Submit" action="#{Game.submit()}" update="grid"
-				validateClient="true" />
+			<br />
+			<f:facet name="footer">
+				<p:commandButton class="btn btn-lg btn-primary btn-block"
+					value="Submit" action="#{Game.submit()}" update="grid"
+					validateClient="true" />
+			</f:facet>
 		</h:panelGrid>
-
 	</h:form>
 
 	<div class="container">

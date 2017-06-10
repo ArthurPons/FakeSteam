@@ -74,10 +74,8 @@
 						</h:panelGroup>
 
 						<h:panelGroup rendered="#{empty user}">
-							<ul class="nav navbar-nav navbar-right">
 								<li><h:link value="Create account" outcome="formUser" /></li>
 								<li><h:link value="Log in" outcome="login" /></li>
-							</ul>
 						</h:panelGroup>
 
 					</ul>
@@ -235,11 +233,14 @@
 					<img src="./images/maxresdefault.jpg" alt="..." />
 					<div class="caption">
 						<h3>
-							<h1>#{Console.firstConsole.nameConsole}</h1>
+							<h:outputText value="#{Console.firstConsole.nameConsole}" />
 						</h3>
+						<h4>
+							<h:outputText value="#{Console.firstConsole.typeConsole}" />
+						</h4>
 						<p>
 							<h:link
-								value="See all games on #{Console.firstConsole.nameConsole} "
+								value="See all #{Console.firstConsole.nameConsole} #{Console.firstConsole.typeConsole} games"
 								outcome="gamesSortedByConsole">
 								<f:param name="idConsole"
 									value="#{Console.firstConsole.idConsole}" />
@@ -256,11 +257,14 @@
 					<div class="caption">
 
 						<h3>
-							<h1>#{Console.secondConsole.nameConsole}</h1>
+							<h:outputText value="#{Console.secondConsole.nameConsole}" />
 						</h3>
+						<h4>
+							<h:outputText value="#{Console.secondConsole.typeConsole}" />
+						</h4>
 						<p>
 							<h:link
-								value="See all games on #{Console.secondConsole.nameConsole} "
+								value="See all #{Console.secondConsole.nameConsole} #{Console.secondConsole.typeConsole} games"
 								outcome="gamesSortedByConsole">
 								<f:param name="idConsole"
 									value="#{Console.secondConsole.idConsole}" />
@@ -276,11 +280,14 @@
 					<img src="./images/maxresdefault.jpg" alt="..." />
 					<div class="caption">
 						<h3>
-							<h1>#{Console.thirdConsole.nameConsole}</h1>
+							<h:outputText value="#{Console.thirdConsole.nameConsole}" />
 						</h3>
+						<h4>
+							<h:outputText value="#{Console.thirdConsole.typeConsole}" />
+						</h4>
 						<p>
 							<h:link
-								value="See all games on #{Console.thirdConsole.nameConsole} "
+								value="See all #{Console.thirdConsole.nameConsole} #{Console.thirdConsole.typeConsole} games"
 								outcome="gamesSortedByConsole">
 								<f:param name="idConsole"
 									value="#{Console.thirdConsole.idConsole}" />

@@ -15,6 +15,10 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 
+import org.jboss.resteasy.client.jaxrs.ResteasyClient;
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
+
 public class GetInfos extends HttpServlet{
 
 	public static final String VUE  = "/WEB-INF/getGames.jsp";
@@ -24,7 +28,7 @@ public class GetInfos extends HttpServlet{
     	System.out.print("passe get games\n");
     	System.out.print("passe servlet client\n");
     	List<String> listOfGame = new ArrayList<>();
-		Client client = ClientBuilder.newClient();
+		ResteasyClient client = new ResteasyClientBuilder().build();
 		WebTarget target = client.target("http://localhost:8080/FakeSteam/rest/game/get"); 
 		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
 		System.out.print(json);	

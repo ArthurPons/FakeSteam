@@ -2,88 +2,135 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
-  <h:head>
-    <meta charset="utf-8"></meta>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
-    <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content=""></meta>
-    <meta name="author" content=""></meta>
-    <link rel="icon" href="../../favicon.ico"></link>
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+	<meta charset="utf-8" content="" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+	<meta name="description" content="" />
+	<meta name="author" content="" />
+	<link rel="icon" href="../../favicon.ico" />
 
-    <title>FakeSteam</title>
+	<title>FakeSteam</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="./bootstrap/css/bootstrap.css" rel="stylesheet"></link>
+	<!-- Bootstrap core CSS -->
+	<link href="./bootstrap/css/bootstrap.css" rel="stylesheet" />
 
-    <!-- Custom styles for this template -->
-    <link href="carousel.css" rel="stylesheet"></link>
-  </h:head>
+	<!-- Custom styles for this template -->
+	<link href="carousel.css" rel="stylesheet" />
+</h:head>
 <!-- NAVBAR
 ================================================== -->
-  <body>
-    <div class="navbar-wrapper">
-      <div class="container">
+<body>
+	<div class="navbar-wrapper">
+		<div class="container">
 
-        <nav class="navbar navbar-inverse navbar-fixed-top">
-          <div class="container">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <a class="navbar-brand" href=".">FakeSteam</a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
-              <ul class="nav navbar-nav">
-                <li><a href="#">Library</a></li>
-                <li><a href="#about">Account</a></li>
-                <li><a href="#about">Games</a></li>
-              </ul>
-              <ul class="nav navbar-nav navbar-right">
-              	<li><a href="#">Log in</a></li>
-              </ul>
-            </div>
-          </div>
-        </nav>
+			<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed"
+						data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+						aria-controls="navbar">
+						<span class="sr-only">Toggle navigation</span> <span
+							class="icon-bar" /> <span class="icon-bar" /> <span
+							class="icon-bar" />
+					</button>
+					<a class="navbar-brand" href=".">FakeSteam</a>
+				</div>
+				<div id="navbar" class="navbar-collapse collapse">
+					<ul class="nav navbar-nav">
 
-      </div>
-    </div>
+						<c:if test="#{user.isAdmin eq 1}">
+							<li><h:link value="add Game" outcome="formGame" /></li>
+							<li><h:link value="add Genre" outcome="formGenre" /></li>
+							<li><h:link value="add Console" outcome="formConsole" /></li>
+						</c:if>
+						<c:if test="#{user.isAdmin ne 1}">
+							<li><h:panelGroup rendered="#{not empty user}">
+									<h:link value="My games" outcome="myGames" />
+								</h:panelGroup></li>
+						</c:if>
 
-	<div class="container">      
-	   <h:form enctype="multipart/form-data">
-	        <h2 class="form-heading">Please add console</h2>
-	        <label for="inputUsername" class="sr-only">Title</label>
-	        <h:inputText type="text" class="form-control" placeholder="username" value="#{Console.nameConsole}"></h:inputText>
-	        <label for="inputNameConsole" class="sr-only">Nom</label>
-	        
-	    
-	        
-	        <br></br>
-	        <h:commandButton class="btn btn-lg btn-primary btn-block" value="Submit" action="#{Console.submit()}"></h:commandButton>
-		</h:form>
-    </div>
+					</ul>
+
+					<ul class="nav navbar-nav navbar-right">
+
+						<h:panelGroup rendered="#{not empty user}">
+							<c:if test="#{user.isAdmin eq 1}">
+              	admin mode
+              </c:if>
+							<li><h:link value="#{user.usernameUser}" /></li>
+							<li><h:form>
+									<h:commandButton value="log out" action="#{user.logout}" />
+								</h:form></li>
+							<c:if test="#{user.isCartEmpty() eq 0}">
+								<li><h:link value="Cart" outcome="cart" /></li>
+							</c:if>
+						</h:panelGroup>
+
+						<h:panelGroup rendered="#{empty user}">>
+								<li><h:link value="Create account" outcome="formUser" /></li>
+								<li><h:link value="Log in" outcome="login" /></li>
+						</h:panelGroup>
+
+					</ul>
+				</div>
+			</div>
+			</nav>
+
+		</div>
+	</div>
+
+	<h:form enctype="multipart/form-data">
+		<h:panelGrid id="grid" columns="2"
+			style="margin:0 auto;margin-top:20px;padding:20px">
+			<f:facet name="header">
+				<h2 class="form-heading">Add console</h2>
+				<br />
+			</f:facet>
+			<p:outputLabel colspan="1" for="consoleName" value="Name :" />
+			<p:inputText id="consoleName" class="form-control"
+				value="#{Console.nameConsole}" required="true" />
+			<p:outputLabel colspan="1" for="consoleType" value="Type/Version :" />
+			<p:inputText id="consoleType" class="form-control"
+				value="#{Console.typeConsole}" />
+			<br />
+			<f:facet name="footer">
+				<br />
+				<p:commandButton class="btn btn-lg btn-primary btn-block"
+					value="Submit" action="#{Console.submit()}" validateClient="true"
+					update="grid" />
+			</f:facet>
+		</h:panelGrid>
+	</h:form>
 
 	<div class="container">
-      <!-- FOOTER -->
-      <footer>
-        <p class="pull-right"><a href="#">Back to top</a></p>
-        <p>&copy; 2017 FakeSteam, Inc. &middot; <a href="#noprivacy#sellingyourdata">Privacy</a> &middot; <a href="#">Terms</a></p>
-      </footer>
+		<!-- FOOTER -->
+		<footer>
+		<p class="pull-right">
+			<a href="#">Back to top</a>
+		</p>
+		<p>
+			&copy; 2017 FakeSteam, Inc. &middot; <a
+				href="#noprivacy#sellingyourdata">Privacy</a> &middot; <a href="#">Terms</a>
+		</p>
+		</footer>
 
-    </div><!-- /.container -->
+	</div>
+	<!-- /.container -->
 
 
-    <!-- Bootstrap core JavaScript
+	<!-- Bootstrap core JavaScript
     ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="./bootstrap/js/bootstrap.min.js"></script>
-  </body>
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"
+		type="" />
+	<script src="./bootstrap/js/bootstrap.min.js" type="" />
+</body>
 </html>

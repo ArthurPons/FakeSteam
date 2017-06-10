@@ -45,6 +45,7 @@
 				</div>
 				<div id="navbar" class="navbar-collapse collapse">
 					<ul class="nav navbar-nav">
+
 						<c:if test="#{user.isAdmin eq 1}">
 							<li><h:link value="add Game" outcome="formGame" /></li>
 							<li><h:link value="add Genre" outcome="formGenre" /></li>
@@ -57,25 +58,27 @@
 						</c:if>
 
 					</ul>
+
 					<ul class="nav navbar-nav navbar-right">
+
 						<h:panelGroup rendered="#{not empty user}">
 							<c:if test="#{user.isAdmin eq 1}">
-              			admin mode
-             		 </c:if>
-	    			#{user.usernameUser}
-	    			<h:form>
-								<h:commandButton value="log out" action="#{user.logout}" />
-							</h:form>
+              	admin mode
+              </c:if>
+							<li><h:link value="#{user.usernameUser}" /></li>
+							<li><h:form>
+									<h:commandButton value="log out" action="#{user.logout}" />
+								</h:form></li>
 							<c:if test="#{user.isCartEmpty() eq 0}">
 								<li><h:link value="Cart" outcome="cart" /></li>
 							</c:if>
 						</h:panelGroup>
 
 						<h:panelGroup rendered="#{empty user}">
-							<li><h:link value="create account" outcome="formUser" /></li>
-
-							<li><h:link value="log in" outcome="login" /></li>
+							<li><h:link value="Create account" outcome="formUser" /></li>
+							<li><h:link value="Log in" outcome="login" /></li>
 						</h:panelGroup>
+
 					</ul>
 				</div>
 			</div>
@@ -90,14 +93,20 @@
 		</div>
 	</div>
 
-	<p:repeat value="#{Genre.listOfAllGenres}" var="genre">
+	<div class="container">
+		<h2>
+			<h:outputText value="No Genres available"
+				rendered="#{empty Genre.listOfAllGenres}" />
+		</h2>
+	</div>
+
+	<p:repeat value="#{Genre.listOfAllGenres}" var="genre"
+		rendered="#{not empty Genre.listOfAllGenres}">
 		<div class="col-md-6 col-md-4">
 			<div class="thumbnail">
 				<img src="./images/maxresdefault.jpg" alt="..." />
 				<div class="caption">
-					<h3>
-						#{genre.nameGenre}
-					</h3>
+					<h3>#{genre.nameGenre}</h3>
 					<p>
 						<h:link value="See all #{genre.nameGenre} games"
 							outcome="gamesSortedByGenre">
@@ -110,7 +119,6 @@
 			</div>
 		</div>
 	</p:repeat>
-
 
 	<div class="container">
 		<!-- FOOTER -->

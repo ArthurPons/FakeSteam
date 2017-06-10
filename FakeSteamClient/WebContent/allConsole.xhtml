@@ -45,6 +45,7 @@
 				</div>
 				<div id="navbar" class="navbar-collapse collapse">
 					<ul class="nav navbar-nav">
+
 						<c:if test="#{user.isAdmin eq 1}">
 							<li><h:link value="add Game" outcome="formGame" /></li>
 							<li><h:link value="add Genre" outcome="formGenre" /></li>
@@ -57,25 +58,27 @@
 						</c:if>
 
 					</ul>
+
 					<ul class="nav navbar-nav navbar-right">
+
 						<h:panelGroup rendered="#{not empty user}">
 							<c:if test="#{user.isAdmin eq 1}">
-              			admin mode
-             		 </c:if>
-	    			#{user.usernameUser}
-	    			<h:form>
-								<h:commandButton value="log out" action="#{user.logout}" />
-							</h:form>
+              	admin mode
+              </c:if>
+							<li><h:link value="#{user.usernameUser}" /></li>
+							<li><h:form>
+									<h:commandButton value="log out" action="#{user.logout}" />
+								</h:form></li>
 							<c:if test="#{user.isCartEmpty() eq 0}">
 								<li><h:link value="Cart" outcome="cart" /></li>
 							</c:if>
 						</h:panelGroup>
 
 						<h:panelGroup rendered="#{empty user}">
-							<li><h:link value="create account" outcome="formUser" /></li>
-
-							<li><h:link value="log in" outcome="login" /></li>
+							<li><h:link value="Create account" outcome="formUser" /></li>
+							<li><h:link value="Log in" outcome="login" /></li>
 						</h:panelGroup>
+
 					</ul>
 				</div>
 			</div>
@@ -89,15 +92,23 @@
 			<h1>List of all consoles</h1>
 		</div>
 	</div>
+	<div class="container">
+		<h2>
+			<h:outputText value="No Consoles available"
+				rendered="#{empty Console.listOfAllConsoles}" />
+		</h2>
+	</div>
 
-	<p:repeat value="#{Console.listOfAllConsoles}" var="console">
+	<p:repeat value="#{Console.listOfAllConsoles}" var="console"
+		rendered="#{not empty Console.listOfAllConsoles}">
 		<div class="col-md-6 col-md-4">
 			<div class="thumbnail">
 				<img src="./images/maxresdefault.jpg" alt="..." />
 				<div class="caption">
 					<h3>#{conbsole.nameConsole}</h3>
 					<p>
-						<p:link value="See all #{console.nameConsole} #{console.typeConsole} games"
+						<p:link
+							value="See all #{console.nameConsole} #{console.typeConsole} games"
 							outcome="gamesSortedByConsole">
 							<f:param name="idConsole" value="#{console.idConsole}" />
 						</p:link>

@@ -25,9 +25,13 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.jboss.resteasy.client.jaxrs.ResteasyClient;
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
+
 @JsonIgnoreProperties(ignoreUnknown=true)
 @ManagedBean(name = "UserClient")
-public class UserClient {
+public class UserClient{
 	
 	private int idUser;
 	private List<bean.Game> listOfGame;
@@ -38,7 +42,7 @@ public class UserClient {
 
 	public List<bean.Game> getListOfGame() {
 		
-		Client client = ClientBuilder.newClient();
+		ResteasyClient client = new ResteasyClientBuilder().build();
 		System.out.print("idutilisateur :"+idUser+"\n");
 		WebTarget target = client.target("http://localhost:8080/FakeSteam/rest/game/ownedBy/2"); 
 		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 

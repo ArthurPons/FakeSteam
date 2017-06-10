@@ -15,7 +15,7 @@ public class ConsoleDaoImpl implements ConsoleDao{
 
 	private static DaoFactory daoFactory;
 	private static final String SQL_SELECT_BY_ID = "SELECT * FROM console WHERE id_console = ?";
-	private static final String SQL_INSERT = "INSERT INTO console (name_console) VALUES (?)";
+	private static final String SQL_INSERT = "INSERT INTO console (name_console,type_console) VALUES (?,?)";
 	private static final String SQL_SELECT_ALL = "SELECT * FROM console";
 	
 	public ConsoleDaoImpl()
@@ -38,7 +38,7 @@ public class ConsoleDaoImpl implements ConsoleDao{
 	    try {
 	        /* Récupération d'une connexion depuis la Factory */
 	        connexion = daoFactory.getConnection();
-	        preparedStatement = initialisationRequetePreparee( connexion, SQL_INSERT, true, console.getNameConsole());
+	        preparedStatement = initialisationRequetePreparee( connexion, SQL_INSERT, true, console.getNameConsole(), console.getTypeConsole());
 	        int statut = preparedStatement.executeUpdate();
 	        /* Analyse du statut retourné par la requête d'insertion */
 	        if ( statut == 0 ) {
