@@ -4,9 +4,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
 <h:head>
 	<meta charset="utf-8" content="" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -55,29 +55,22 @@
 									<h:link value="My games" outcome="myGames" />
 								</h:panelGroup></li>
 						</c:if>
-
 					</ul>
 
 					<ul class="nav navbar-nav navbar-right">
-
 						<h:panelGroup rendered="#{not empty user}">
-							<c:if test="#{user.isAdmin eq 1}">
-              	admin mode
-              </c:if>
 							<li><h:link value="#{user.usernameUser}" /></li>
-							<li><h:form>
-									<h:commandButton value="log out" action="#{user.logout}" />
-								</h:form></li>
 							<c:if test="#{user.isCartEmpty() eq 0}">
 								<li><h:link value="Cart" outcome="cart" /></li>
 							</c:if>
+							<li><h:form>
+									<h:commandButton value="log out" action="#{user.logout}" />
+								</h:form></li>
 						</h:panelGroup>
 
 						<h:panelGroup rendered="#{empty user}">
-							<ul class="nav navbar-nav navbar-right">
-								<li><h:link value="Create account" outcome="formUser" /></li>
-								<li><h:link value="Log in" outcome="login" /></li>
-							</ul>
+							<li><h:link value="Create account" outcome="formUser" /></li>
+							<li><h:link value="Log in" outcome="login" /></li>
 						</h:panelGroup>
 
 					</ul>
@@ -87,50 +80,13 @@
 
 		</div>
 	</div>
-	<div class="container">
-		<h2>
-			<h:outputText rendered="#{user.isAdmin eq 0}"
-				value="You're not allowed to access this page" />
-		</h2>
+
+	<div class="jumbotron">
+		<div class="container">
+			<h1>500, Internal server error</h1>
+			<a href="." type="button" class="btn btn-primary">Back to home</a>
+		</div>
 	</div>
-	<h:form enctype="multipart/form-data" rendered="#{user.isAdmin eq 1}">
-		<h:panelGrid id="grid" columns="2"
-			style="margin:0 auto;margin-top:20px;padding:20px">
-			<f:facet name="header">
-				<h2>Add Game</h2>
-				<br />
-			</f:facet>
-			<p:outputLabel colspan="1" for="title" value="Title :" />
-			<p:inputText id="title" colspan="1" required="true"
-				value="#{Game.titleGame}" />
-			<p:outputLabel for="price" colspan="1" value="Price :" />
-			<p:spinner id="price" colspan="1" required="true"
-				value="#{Game.priceGame}" min="0" max="100" prefix="€" />
-			<p:outputLabel for="file" colspan="1" value="Image file :" />
-			<p:fileUpload id="file" colspan="1" skinSimple="true"
-				value="#{Game.uploadedFile}" mode="simple" />
-			<p:outputLabel for="checkboxGenre" colspan="1"
-				value="Select genre(s) :" />
-			<p:selectManyButton id="checkboxGenre" colspan="1" required="true"
-				value="#{Game.listOfGenreId}" converter="javax.faces.Integer">
-				<f:selectItems value="#{Genre.listOfAllGenres}" var="genre"
-					itemLabel="#{genre.nameGenre}" itemValue="#{genre.idGenre}" />
-			</p:selectManyButton>
-			<p:outputLabel for="checkboxConsole" colspan="1"
-				value="Select console(s) :" />
-			<p:selectManyButton id="checkboxConsole" colspan="1" required="true"
-				value="#{Game.listOfConsoleId}" converter="javax.faces.Integer">
-				<f:selectItems value="#{Console.listOfAllConsoles}" var="c"
-					itemLabel="#{c.nameConsole}" itemValue="#{c.idConsole}" />
-			</p:selectManyButton>
-			<br />
-			<f:facet name="footer">
-				<p:commandButton class="btn btn-lg btn-primary btn-block"
-					value="Submit" action="#{Game.submit()}" update="grid"
-					validateClient="true" />
-			</f:facet>
-		</h:panelGrid>
-	</h:form>
 
 	<!-- Bootstrap core JavaScript
     ================================================== -->

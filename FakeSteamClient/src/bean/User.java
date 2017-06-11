@@ -585,7 +585,7 @@ public class User implements Serializable {
     	
     }
     
-    public String logout(ActionEvent actionEvent)
+    public String logout()
     {
     	System.out.print("logout\n");
     	FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
