@@ -45,6 +45,7 @@
 				</div>
 				<div id="navbar" class="navbar-collapse collapse">
 					<ul class="nav navbar-nav">
+
 						<c:if test="#{user.isAdmin eq 1}">
 							<li><h:link value="add Game" outcome="formGame" /></li>
 							<li><h:link value="add Genre" outcome="formGenre" /></li>
@@ -57,122 +58,117 @@
 						</c:if>
 
 					</ul>
+
 					<ul class="nav navbar-nav navbar-right">
+
 						<h:panelGroup rendered="#{not empty user}">
-							<c:if test="#{user.isAdmin eq 1}">
-		              			admin mode
-		             		</c:if>
 							<li><h:link value="#{user.usernameUser}" /></li>
-							<h:form>
-								<h:commandButton value="log out" action="#{user.logout}" />
-							</h:form>
+							<li><h:form>
+									<h:commandButton value="log out" action="#{user.logout}" />
+								</h:form></li>
 							<c:if test="#{user.isCartEmpty() eq 0}">
 								<li><h:link value="Cart" outcome="cart" /></li>
 							</c:if>
 						</h:panelGroup>
 
 						<h:panelGroup rendered="#{empty user}">
-							<li><h:link value="create account" outcome="formUser" /></li>
-							<li><h:link value="log in" outcome="login" /></li>
+							<li><h:link value="Create account" outcome="formUser" /></li>
+							<li><h:link value="Log in" outcome="login" /></li>
 						</h:panelGroup>
+
 					</ul>
 				</div>
 			</div>
 			</nav>
 		</div>
 	</div>
-
+	<f:metadata>
+		<f:viewParam name="idGame" value="#{Game.idGame}" />
+	</f:metadata>
 
 	<div class="jumbotron">
 		<div class="container">
-			<f:metadata>
-				<f:viewParam name="idGame" value="#{Game.idGame}" />
-			</f:metadata>
-
 			<h1>#{Game.titleGame}</h1>
 		</div>
 	</div>
 
-	<p:panelGrid styleClass="ui-noborder">
-		<p:row>
-			<p:column colspan="3">
-				<p>Price : #{Game.priceGame}€</p>
-			</p:column>
-			<p:column rowspan="5" colspan="3">
-				<c:if test="#{empty user.ownsGame(Game.idGame)}">
-					<h:form>
-						<h:commandButton class="btn btn-lg btn-primary btn-block"
-							value="Add to cart" action="#{user.addToPanier(Game)}" />
-					</h:form>
-				</c:if>
-			</p:column>
-		</p:row>
-		<p:row>
-			<p:column colspan="3">
-				<p>
-					Genre :
-					<p:repeat value="#{Game.listOfGenreName}" var="genre">
+	<div class="container">
+		<p:panelGrid styleClass="ui-noborder" style="width: 100%">
+			<p:row>
+				<p:column colspan="5">
+					<p>Price : #{Game.priceGame}€</p>
+				</p:column>
+				<p:column rowspan="5" colspan="5" style="margin: 0 auto">
+					<img src="#{Game.pictureUrlGame}" alt=""></img>
+					<c:if test="#{empty user.ownsGame(Game.idGame) or user.isAdmin eq 0}">
+						<h:form>
+							<h:commandButton class="btn btn-lg btn-primary btn-block"
+								value="Add to cart" action="#{user.addToPanier(Game)}" />
+						</h:form>
+					</c:if>
+				</p:column>
+			</p:row>
+			<p:row>
+				<p:column colspan="5">
+					<p>
+						Genre :
+						<p:repeat value="#{Game.listOfGenreName}" var="genre">
 					#{genre}
 				</p:repeat>
-				</p>
-			</p:column>
-		</p:row>
-		<p:row>
-			<p:column colspan="3">
-				<p>
-					Console :
-					<p:repeat value="#{Game.listOfConsoleName}" var="console">
+					</p>
+				</p:column>
+			</p:row>
+			<p:row>
+				<p:column colspan="5">
+					<p>
+						Console :
+						<p:repeat value="#{Game.listOfConsoleName}" var="console">
 					#{console}
 				</p:repeat>
-				</p>
-			</p:column>
-		</p:row>
-		<p:row>
-			<p:column colspan="3">
-				<c:if test="#{Game.rate ne 0.0}">
-					<h:form>
-						<p>Rate : #{Game.rate} /5 (#{Game.nbRating})</p>
-					</h:form>
-				</c:if>
-			</p:column>
-		</p:row>
-		<p:row rendered="#{not empty user}">
-			<c:if test="#{not empty user.ownsGame(Game.idGame)}">
-				<c:if test="#{user.getTempRating() eq -1}">
-					<h:form>
-						<p:column colspan="1">
+					</p>
+				</p:column>
+			</p:row>
+			<p:row>
+				<p:column colspan="3">
+					<c:if test="#{Game.rate ne 0.0}">
+						<h:form>
+							<p>Rate : #{Game.rate} /5 (#{Game.nbRating})</p>
+						</h:form>
+					</c:if>
+				</p:column>
+			</p:row>
+			<p:row rendered="#{not empty user}">
+				<c:if test="#{not empty user.ownsGame(Game.idGame)}">
+					<c:if test="#{user.getTempRating() eq -1}">
+						<h:form>
+							<p:column colspan="1">
 							Rate this game :
-						</p:column>
-						<p:column colspan="1">
 							<p:rating value="#{user.tempRate}" cancel="false" />
-						</p:column>
-						<p:column colspan="1">
 							<h:commandButton value="Submit" />
-						</p:column>
-					</h:form>
-				</c:if>
-				<c:if test="#{user.getTempRating() ne -1}">		
-					<p:row>	
-						<p:column colspan="2">							
+							</p:column>
+						</h:form>
+					</c:if>
+					<c:if test="#{user.getTempRating() ne -1}">
+						<p:row>
+							<p:column colspan="1">							
 							Your rating :
-						</p:column>	
-						<p:column colspan="2">
 							<p:rating value="#{user.tempRating}" disabled="true" />
-						</p:column> 
-					</p:row>	
+						</p:column>
+								
+						</p:row>
+					</c:if>
 				</c:if>
-			</c:if>
-		</p:row>
-		<p:column />
-		<p:row />
-	</p:panelGrid>
-
+			</p:row>
+			<p:column />
+			<p:row />
+		</p:panelGrid>
+	</div>
 
 
 
 	<div class="container">
 		<!-- FOOTER -->
-		<footer>
+		<footer class="footer navbar-bottom">
 		<p class="pull-right">
 			<a href="#">Back to top</a>
 		</p>
@@ -181,7 +177,6 @@
 				href="#noprivacy#sellingyourdata">Privacy</a> &middot; <a href="#">Terms</a>
 		</p>
 		</footer>
-
 	</div>
 	<!-- /.container -->
 

@@ -458,6 +458,7 @@ public class User implements Serializable {
     			
     			//on vide la panier
     			panier=null;
+    			totalAmountPanier=0;
     			
     			try {
     				FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
