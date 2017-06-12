@@ -35,8 +35,6 @@ public class Console implements Serializable {
 
 	private String nameConsole;
 	
-	private String typeConsole;
-	
 	@JsonIgnore
 	private List<Console> listOfAllConsoles;
 
@@ -95,16 +93,6 @@ public class Console implements Serializable {
 	public void setThirdConsole(Console thirdConsole) {
 		this.thirdConsole = thirdConsole;
 	}
-	
-	public String getTypeConsole() {
-		return typeConsole;
-	}
-
-
-	public void setTypeConsole(String typeConsole) {
-		this.typeConsole = typeConsole;
-	}
-
 
 	public void getLastThreeConsole()
 	{
