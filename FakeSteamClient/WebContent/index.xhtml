@@ -55,24 +55,22 @@
 									<h:link value="My games" outcome="myGames" />
 								</h:panelGroup></li>
 						</c:if>
-
 					</ul>
 
 					<ul class="nav navbar-nav navbar-right">
-
 						<h:panelGroup rendered="#{not empty user}">
 							<li><h:link value="#{user.usernameUser}" /></li>
-							<li><h:form>
-									<h:commandButton value="log out" action="#{user.logout}" />
-								</h:form></li>
 							<c:if test="#{user.isCartEmpty() eq 0}">
 								<li><h:link value="Cart" outcome="cart" /></li>
 							</c:if>
+							<li><h:form>
+									<h:commandButton value="log out" action="#{user.logout}" />
+								</h:form></li>
 						</h:panelGroup>
 
 						<h:panelGroup rendered="#{empty user}">
-								<li><h:link value="Create account" outcome="formUser" /></li>
-								<li><h:link value="Log in" outcome="login" /></li>
+							<li><h:link value="Create account" outcome="formUser" /></li>
+							<li><h:link value="Log in" outcome="login" /></li>
 						</h:panelGroup>
 
 					</ul>
@@ -97,8 +95,7 @@
 		</ol>
 		<div class="carousel-inner" role="listbox">
 			<div class="item active">
-				<img class="slide"
-					src="#{Game.firstGameCarroussel.pictureUrlGame}"
+				<img class="slide" src="#{Game.firstGameCarroussel.pictureUrlGame}"
 					alt="First slide" />
 				<div class="container">
 					<div class="carousel-caption">
@@ -158,10 +155,8 @@
 	</div>
 
 	<div class="container">
-		<h1>Genres</h1>
-		<h2>
+			<h1>Genres</h1>
 			<h:link value="See all Genres" outcome="allGenre" />
-		</h2>
 		<div class="row">
 			<!-- <h1>Genres</h1> -->
 			<div class="col-md-6 col-md-4">
@@ -220,9 +215,7 @@
 		</div>
 
 		<h1>Consoles</h1>
-		<h2>
-			<h:link value="See all Consoles" outcome="allConsole" />
-		</h2>
+		<h:link value="See all Consoles" outcome="allConsole" />
 		<div class="row">
 			<!-- <h1>Genres</h1> -->
 			<div class="col-md-6 col-md-4">
@@ -281,25 +274,11 @@
 									value="#{Console.thirdConsole.idConsole}" />
 							</h:link>
 						</p>
-
-
 					</div>
 				</div>
 			</div>
 		</div>
 
-	</div>
-	<div class="container">
-		<!-- FOOTER -->
-		<footer class="footer navbar-bottom">
-		<p class="pull-right">
-			<a href="#">Back to top</a>
-		</p>
-		<p>
-			2017 FakeSteam, Inc. <a href="#noprivacy#sellingyourdata">Privacy</a>
-			<a href="#">Terms</a>
-		</p>
-		</footer>
 	</div>
 
 

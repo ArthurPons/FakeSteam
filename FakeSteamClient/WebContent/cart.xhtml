@@ -61,16 +61,13 @@
 					<ul class="nav navbar-nav navbar-right">
 
 						<h:panelGroup rendered="#{not empty user}">
-							<c:if test="#{user.isAdmin eq 1}">
-              	admin mode
-              </c:if>
 							<li><h:link value="#{user.usernameUser}" /></li>
-							<li><h:form>
-									<h:commandButton value="log out" action="#{user.logout}" />
-								</h:form></li>
 							<c:if test="#{user.isCartEmpty() eq 0}">
 								<li><h:link value="Cart" outcome="cart" /></li>
 							</c:if>
+							<li><h:form>
+									<h:commandButton value="log out" action="#{user.logout}" />
+								</h:form></li>
 						</h:panelGroup>
 
 						<h:panelGroup rendered="#{empty user}">
@@ -87,7 +84,9 @@
 	</div>
 	<br />
 	<h:outputText rendered="#{empty user.panier}" value="Cart is empty !"></h:outputText>
+	
 	<div class="container">
+	
 		<p:repeat value="#{user.panier}" var="game"
 			rendered="#{not empty user.panier}">
 			<div class="col-md-6 col-md-4">
@@ -103,35 +102,21 @@
 				</div>
 			</div>
 		</p:repeat>
+		
 	</div>
-	total : #{user.totalAmountPanier}
-
-	<h:panelGroup rendered="#{not empty user}">
-		<h:form>
-			<p>
-				<h:commandButton class="btn btn-lg btn-primary btn-block"
-					value="Buy" action="#{user.buyGamesInPanier}"></h:commandButton>
-			</p>
-		</h:form>
-	</h:panelGroup>
-
-
-
+	
 	<div class="container">
-		<!-- FOOTER -->
-		<footer class="navbar-bottom">
-		<p class="pull-right">
-			<a href="#">Back to top</a>
-		</p>
-		<p>
-			&copy; 2017 FakeSteam, Inc. &middot; <a
-				href="#noprivacy#sellingyourdata">Privacy</a> &middot; <a href="#">Terms</a>
-		</p>
-		</footer>
-
+		<p:panelGrid rendered="#{not empty user}" columns="2" class="ui-noborder">
+			Total : #{user.totalAmountPanier} €
+			<br />
+			<h:form>
+				<p>
+					<h:commandButton class="btn btn-lg btn-primary btn-block"
+						value="Buy" action="#{user.buyGamesInPanier}"></h:commandButton>
+				</p>
+			</h:form>
+		</p:panelGrid>
 	</div>
-	<!-- /.container -->
-
 
 	<!-- Bootstrap core JavaScript
     ================================================== -->
