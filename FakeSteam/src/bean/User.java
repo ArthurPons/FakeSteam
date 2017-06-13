@@ -42,16 +42,44 @@ public class User implements Serializable {
 	private List<Comment> comments;
 	private List<Historic> historics;
 	private List<UserOwnsGame> userOwnsGames;
+	private String tempComment;
 
 	private String pwd_user;
 	
 	private int tempGame;
-	private Double tempRate;
+	private int tempRating;
 	
 	private int isAdmin;
+	private int tempRate;
 	
 	
 	
+	
+	
+	public int getTempRate() {
+		return tempRate;
+	}
+
+	public void setTempRate(int tempRate) {
+		this.tempRate = tempRate;
+	}
+
+	public int getTempRating() {
+		return tempRating;
+	}
+
+	public void setTempRating(int tempRating) {
+		this.tempRating = tempRating;
+	}
+
+	public String getTempComment() {
+		return tempComment;
+	}
+
+	public void setTempComment(String tempComment) {
+		this.tempComment = tempComment;
+	}
+
 	public int getIsAdmin() {
 		return isAdmin;
 	}
@@ -68,13 +96,6 @@ public class User implements Serializable {
 		this.tempGame = tempGame;
 	}
 
-	public Double getTempRate() {
-		return tempRate;
-	}
-
-	public void setTempRate(Double tempRate) {
-		this.tempRate = tempRate;
-	}
 
 	public List<Game> getPanier() {
 		return panier;

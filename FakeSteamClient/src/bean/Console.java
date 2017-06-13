@@ -94,6 +94,7 @@ public class Console implements Serializable {
 		this.thirdConsole = thirdConsole;
 	}
 
+
 	public void getLastThreeConsole()
 	{
 		findListConsoles();

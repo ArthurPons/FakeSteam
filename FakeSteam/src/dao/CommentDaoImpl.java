@@ -19,6 +19,7 @@ public class CommentDaoImpl implements CommentDao{
 	private static final String SQL_SELECT_BY_ID = "SELECT * FROM comment WHERE id_comment = ?";
 	private static final String SQL_INSERT = "INSERT INTO comment (message_comment, fk_game_comment, fk_user_comment) VALUES (?, ?, ?)";
 	private static final String SQL_SELECT_ALL = "SELECT * FROM comment";
+	private static final String SQL_SELECT_BY_GAME_ID = "SELECT * FROM comment WHERE fk_game_comment = ?";
 	
 	public CommentDaoImpl()
 	{
@@ -30,17 +31,53 @@ public class CommentDaoImpl implements CommentDao{
 		daoFactory=dao;
 	}
 	
-	@Override
-	public void create( Comment comment ) throws DaoException
+	public List<Comment> findGameComments(int gameId) throws DaoException
 	{
+		Connection connexion = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		
+		List<Comment> listOfComments= new ArrayList<Comment>();
+		Comment comment = null;
+		
+		 try {
+		      
+		     connexion = daoFactory.getConnection();
+		     preparedStatement = initialisationRequetePreparee( connexion, SQL_SELECT_BY_GAME_ID, false, gameId );
+		     resultSet = preparedStatement.executeQuery();
+		     
+		     
+		     while ( resultSet.next() ) {
+		         comment = map( resultSet );
+		         listOfComments.add(comment);
+		         System.out.print("commentaire trouve : "+comment.getMessageComment()+"\n");
+		     }
+		 } catch ( SQLException e ) {
+		     throw new DaoException( e );
+		 } finally {
+		     fermeturesSilencieuses( resultSet, preparedStatement, connexion );
+		 }
+		 
+		 return listOfComments;		
+		
+	}
+	
+	
+	
+	@Override
+	public void create( User user ) throws DaoException
+	{
+	
+		
 		Connection connexion = null;
 	    PreparedStatement preparedStatement = null;
 	    ResultSet valeursAutoGenerees = null;
 
 	    try {
+	    	System.out.print("ajout d'un nouveau commentaire "+user.getTempComment()+" , "+user.getTempGame()+" , "+user.getIdUser()+"\n");
 	        /* Récupération d'une connexion depuis la Factory */
 	        connexion = daoFactory.getConnection();
-	        preparedStatement = initialisationRequetePreparee( connexion, SQL_INSERT, true, comment.getMessageComment(), comment.getIdGame(), comment.getIdUser() );
+	        preparedStatement = initialisationRequetePreparee( connexion, SQL_INSERT, true, user.getTempComment(), user.getTempGame(), user.getIdUser() );
 	        int statut = preparedStatement.executeUpdate();
 	        /* Analyse du statut retourné par la requête d'insertion */
 	        if ( statut == 0 ) {
@@ -48,12 +85,7 @@ public class CommentDaoImpl implements CommentDao{
 	        }
 	        /* Récupération de l'id auto-généré par la requête d'insertion */
 	        valeursAutoGenerees = preparedStatement.getGeneratedKeys();
-	        if ( valeursAutoGenerees.next() ) {
-	            /* Puis initialisation de la propriété id du bean Utilisateur avec sa valeur */
-	            comment.setIdComment((int) valeursAutoGenerees.getLong( 1 ) );
-	        } else {
-	            throw new DaoException( "Échec de la création de l'utilisateur en base, aucun ID auto-généré retourné." );
-	        }
+	        
 	    } catch ( SQLException e ) {
 	        throw new DaoException( e );
 	    } finally {
@@ -115,6 +147,14 @@ public class CommentDaoImpl implements CommentDao{
 		 return listOfComment;
 	 }
 	
+	 private Comment map (ResultSet resultSet ) throws SQLException {
+		 Comment c = new Comment();
+		 c.setMessageComment( resultSet.getString("message_comment") );
+		 c.setIdGame(resultSet.getInt("fk_game_comment") );
+		 c.setIdUser(resultSet.getInt("fk_user_comment") );
+		 return c;
+	 }
+	 /*
 	private static Comment map( ResultSet resultSet ) throws SQLException {
 	    Comment comment = new Comment();
 	    comment.setIdComment( resultSet.getInt( "id_comment" ) );
@@ -142,5 +182,6 @@ public class CommentDaoImpl implements CommentDao{
 	 
 	    return comment;
 	}
+	*/
 	
 }

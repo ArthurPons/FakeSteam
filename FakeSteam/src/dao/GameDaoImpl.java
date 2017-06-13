@@ -175,6 +175,7 @@ public class GameDaoImpl implements GameDao{
 		     /* Parcours de la ligne de données de l'éventuel ResulSet retourné */
 		     while ( resultSet.next() ) {
 		         game = map( resultSet );
+		         System.out.print("jeu appartenu : "+game.getTitleGame()+"\n");
 		         listOfGame.add(game);
 		     }
 		 } catch ( SQLException e ) {

@@ -42,6 +42,11 @@ public class RatingDaoImpl implements RatingDao{
 	    try {
 	        /* Récupération d'une connexion depuis la Factory */
 	        connexion = daoFactory.getConnection();
+	        
+	        System.out.print("addrating2 userid :"+user.getIdUser()+"\n");
+			System.out.print("addrating2 gameid :"+user.getTempGame()+"\n");
+			System.out.print("addrating2 rate :"+user.getTempRate()+"\n");
+			
 	        preparedStatement = initialisationRequetePreparee( connexion, SQL_INSERT, true, user.getTempGame() , user.getIdUser(), user.getTempRate());
 	        int statut = preparedStatement.executeUpdate();
 	        /* Analyse du statut retourné par la requête d'insertion */

@@ -15,7 +15,7 @@ import javax.ws.rs.core.Response;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-
+import bean.Comment;
 import bean.Game;
 import bean.Rating;
 import bean.User;
@@ -103,7 +103,7 @@ public class GameRest {
 	@Produces(MediaType.APPLICATION_JSON)	
 	public List<Game> getGameByConsole(@PathParam("c") String c) {
 		
-		System.out.print("id du genre :"+c+"\n");
+		System.out.print("id de la console :"+c+"\n");
 		DaoFactory fact = DaoFactory.getInstance();
 		dao.GameIsOnConsoleDao gameIsOnConsoleDao = fact.getGameIsOnConsoleDao();
         
@@ -112,6 +112,28 @@ public class GameRest {
 		
 		System.out.print("premier jeu trouve :"+lg.get(0).getTitleGame()+"\n");
 		return lg;
+
+		
+	}
+	
+	@GET
+	@Path("/comments/{i}")
+	@Produces(MediaType.APPLICATION_JSON)	
+	public List<Comment> getComments(@PathParam("i") int i) {
+		
+		System.out.print("game :"+i+"\n");
+		DaoFactory fact = DaoFactory.getInstance();
+        dao.CommentDao commentDao = fact.getCommentDao();
+		
+        List<Comment> listOfComment = commentDao.findGameComments(i);
+		
+        System.out.print("reaffichage des commentaires\n");
+        for(Comment c: listOfComment)
+        {
+        	System.out.print("reaffichage :"+c.getMessageComment()+"\n");
+        }
+		
+		return listOfComment;
 
 		
 	}

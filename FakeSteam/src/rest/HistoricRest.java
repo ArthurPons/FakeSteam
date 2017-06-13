@@ -18,25 +18,6 @@ import bean.Historic;
 public class HistoricRest {
 
 	
-	@POST
-	@Path("/receive")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response consumeJson(Historic historic) throws URISyntaxException
-	{
-		System.out.print("passe Historic REST ************\n");
-		System.out.println(historic);
-		
-		DaoFactory fact = DaoFactory.getInstance();
-        dao.HistoricDao historicDao = fact.getHistoricDao();
-		
-        try {
-        	historicDao.create(historic);
-        }
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		String output = "Objet "+historic+" créé";
-		return Response.status(200).entity(output).build();
-	}
+	
 	
 }

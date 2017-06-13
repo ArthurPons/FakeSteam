@@ -18,6 +18,7 @@ import javax.ws.rs.core.Response;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import bean.Game;
+import bean.Historic;
 import bean.User;
 import dao.DaoFactory;
 
@@ -60,6 +61,23 @@ public class UserRest {
 	}
 	
 	@GET
+	@Path("/getHistoric/{u}")
+	@Produces(MediaType.APPLICATION_JSON)	
+	public List<Historic> getHistoric(@PathParam("u") int u) {
+		
+		
+		DaoFactory fact = DaoFactory.getInstance();
+        dao.UserDao userDao = fact.getUserDao();
+        dao.HistoricDao historicDao = fact.getHistoricDao();
+        
+        List<Historic> lh = historicDao.find(u);
+		
+		return lh;			
+
+	}
+	
+	
+	@GET
 	@Path("/getRating/{s}")
 	@Produces(MediaType.APPLICATION_JSON)	
 	public List<Integer> getRating(@PathParam("s") String s) {		
@@ -89,6 +107,9 @@ public class UserRest {
 		return listRating;			
 
 	}
+	
+	
+	
 	
 	
 	@GET
@@ -123,6 +144,18 @@ public class UserRest {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+        
+        //sauvegarde des jeux dans l'historique
+        
+        dao.HistoricDao historicDao = fact.getHistoricDao();
+        try {
+        	historicDao.create(user);
+        }
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+        
+        
 		String output = "Objet "+user+" créé";
 		return Response.status(200).entity(output).build();
 	}
@@ -133,7 +166,9 @@ public class UserRest {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addRating(User user) throws URISyntaxException
 	{
-		
+		System.out.print("addrating userid :"+user.getIdUser()+"\n");
+		System.out.print("addrating gameid :"+user.getTempGame()+"\n");
+		System.out.print("addrating rate :"+user.getTempRate()+"\n");
 		
 		DaoFactory fact = DaoFactory.getInstance();
         dao.RatingDao ratingDao = fact.getRatingDao();

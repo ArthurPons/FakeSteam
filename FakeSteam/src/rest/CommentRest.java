@@ -59,21 +59,21 @@ public class CommentRest {
 	@POST
 	@Path("/receive")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response consumeJson(Comment comment) throws URISyntaxException
+	public Response consumeJson(User user) throws URISyntaxException
 	{
 		System.out.print("passe COMMENT REST ************\n");
-		System.out.println(comment);
+		System.out.println(user);
 		
 		DaoFactory fact = DaoFactory.getInstance();
         dao.CommentDao commentDao = fact.getCommentDao();
 		
         try {
-        	commentDao.create(comment);
+        	commentDao.create(user);
         }
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		String output = "Objet "+comment+" créé";
+		String output = "Objet "+user+" créé";
 		return Response.status(200).entity(output).build();
 	}
 	

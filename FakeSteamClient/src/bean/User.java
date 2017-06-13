@@ -6,7 +6,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-import javax.faces.event.ActionEvent;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.json.JsonArray;
@@ -23,6 +22,7 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -30,6 +30,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -43,22 +44,129 @@ public class User implements Serializable {
 	private String usernameUser;
 	
 	private Rating rating;
-	private Double tempRate;
+	private int tempRate;
 	
 	private List<Game> panier; 
 	private float totalAmountPanier;
 	
 	private List<Comment> comments;
 	private List<Historic> historics;
+	
 	private List<Game> listOfGame;
 	
 	private int tempGame;
+	@JsonIgnore
 	private int tempRating;
+	
+	@JsonIgnore
+	private List<List<Object>> listHistoric;
+	
+	private String tempComment;
 	
 	private int isAdmin;
 	
 	
 	
+	
+	public List<List<Object>> getListHistoric() {
+		
+		ResteasyClient client = new ResteasyClientBuilder().build();
+		ResteasyWebTarget target = client.target("http://localhost:8080/FakeSteam/rest/user/getHistoric/"+idUser);
+		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
+		String jsonString = json.toString();
+		//System.out.print("json :"+json+"\n");
+		ObjectMapper mapper = new ObjectMapper();
+		listHistoric = new ArrayList<List<Object>>();
+		
+		try {
+			List<Historic> listOfHistory = mapper.readValue(jsonString, new TypeReference<List<Historic>>(){});
+			
+			for(Historic h :listOfHistory)
+			{
+				//date
+				Date dateFromHistory = h.getDateHistoric();
+				
+				List<Object> sousList = new ArrayList<Object>();
+				//id du jeu
+				int gameIdFromHistory=h.getGameId();
+				
+				//recherche du jeu
+				Game tempGame = new Game();
+				tempGame = tempGame.findGameWithId(gameIdFromHistory);
+				
+				sousList.add(tempGame.getIdGame());
+				sousList.add(tempGame.getTitleGame());
+				sousList.add(dateFromHistory);
+				listHistoric.add(sousList);			
+				
+				
+			}			
+			
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		return listHistoric;
+	}
+
+
+	public void setListHistoric(List<List<Object>> listHistoric) {
+		this.listHistoric = listHistoric;
+	}
+
+
+	public String getTempComment() {
+		return tempComment;
+	}
+	
+	
+	public void setTempComment(String tempComment) {
+		
+		this.tempComment = tempComment;
+		System.out.print("ajout du commentaire "+tempComment+".Valeur de tempGame :"+tempGame+"\n");
+		if ((tempGame!=0) && (tempComment != null) )
+		{
+			try {
+		      	
+				ResteasyClient client = new ResteasyClientBuilder().build();
+				ResteasyWebTarget target = client.target("http://localhost:8080/FakeSteam/rest/comment/receive");
+					
+				Response response = target.request().post(Entity.entity(this,MediaType.APPLICATION_JSON));			
+					
+				if (response.getStatus() != 200) {
+					throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+				}
+
+				System.out.println("Server response : \n");
+				System.out.println(response.readEntity(String.class));
+
+				response.close();
+				
+				
+				
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+
+			}
+		}	
+		this.tempComment=null;
+		
+		
+		
+		
+	}
+
 	public int getIsAdmin() {
 		
 		return isAdmin;
@@ -80,7 +188,7 @@ public class User implements Serializable {
 		this.tempGame = tempGame;
 	}
 
-	public Double getTempRate() {
+	public int getTempRate() {
 		return tempRate;
 	}
 
@@ -90,7 +198,7 @@ public class User implements Serializable {
 		if(tempGame!=0)
 		{
 			System.out.print("recherche de la note\n");
-			ResteasyClient client = new ResteasyClientBuilder().build();
+			Client client = ClientBuilder.newClient();			
 			
 			WebTarget target = client.target("http://localhost:8080/FakeSteam/rest/user/getRating/"+idUser+"-"+tempGame); 
 			JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
@@ -135,7 +243,7 @@ public class User implements Serializable {
 		return -1;
 	}
 	
-	public void setTempRate(Double tempRate) {
+	public void setTempRate(int tempRate) {
 		//sauvegarde de la note dans Rating (pour que le user ne puisse pas noter deux fois le meme jeu)
 		this.tempRate=tempRate;
 		System.out.print("ajout de la note "+tempRate+"\n");
@@ -159,7 +267,7 @@ public class User implements Serializable {
 				System.out.println(response.readEntity(String.class));
 
 				response.close();
-				
+				this.tempRate=0;
 				
 				
 
@@ -169,9 +277,7 @@ public class User implements Serializable {
 
 			}
 		}		
-		
-		
-		
+						
 		
 	}
 
@@ -311,14 +417,13 @@ public class User implements Serializable {
 		System.out.print("id du jeu a recherche:"+idOfGame+"\n");
 		tempGame=idOfGame;
 		
-		if(listOfGame==null)
-		{
-			getListOfGame();
-		}
+		getListOfGame();
 		
-		if(listOfGame==null)
+		
+		System.out.print("Jeu posse par le joueur\n");
+		for(Game g:listOfGame)
 		{
-			System.out.print("game toujours nul !\n");
+			System.out.print("nom du jeu possede : "+g.getTitleGame()+"\n");
 		}
 		
 		for(Game g:listOfGame)
@@ -336,7 +441,7 @@ public class User implements Serializable {
 	public List<Game> getListOfGame() {
 		
 		System.out.print("recherche des jeux\n");
-		ResteasyClient client = new ResteasyClientBuilder().build();	
+		Client client = ClientBuilder.newClient();	
 		
 		//avoir recuperer l'id du user
 		WebTarget target = client.target("http://localhost:8080/FakeSteam/rest/game/ownedBy/"+idUser); 
@@ -402,39 +507,46 @@ public class User implements Serializable {
     
     //recuperer l'objet id associe a l'id
     
-    public void getUserFromId(int idOfUser)
+    public User getUserFromId(int idOfUser)
     {
-    	System.out.print("recherche du user, grace a son id.\n");
-		ResteasyClient client = new ResteasyClientBuilder().build();
-		WebTarget target = client.target("http://localhost:8080/FakeSteam/rest/user/get/"+idOfUser); 
-		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
-		String jsonString = json.toString();
-		System.out.print("json :"+json+"\n");
-		ObjectMapper mapper = new ObjectMapper();
+    	if(idOfUser!=0)
+    	{
+    		System.out.print("recherche du user, grace a son id (qui est "+idOfUser+"\n");
+    		Client client = ClientBuilder.newClient();
+    		WebTarget target = client.target("http://localhost:8080/FakeSteam/rest/user/get/"+idOfUser); 
+    		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
+    		String jsonString = json.toString();
+    		System.out.print("json :"+json+"\n");
+    		ObjectMapper mapper = new ObjectMapper();
+    		
+    		User u = new User();
+    		
+    		try {
+    			List<User> lu = mapper.readValue(jsonString, new TypeReference<List<User>>(){});
+    			u=lu.get(0);
+    			
+    			usernameUser=u.getUsernameUser();
+    			isAdmin = u.getIsAdmin();
+    			System.out.print("valeur de usernma** :"+usernameUser+"\n");
+    			System.out.print("valeur de isAdmin :"+isAdmin+"\n");
+    			
+    			//stockage des attributs
+    			
+    		} catch (JsonParseException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		} catch (JsonMappingException e) {
+    			// TODO Auto-generated catch block
+    		e.printStackTrace();
+    		} catch (IOException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+    		return u;
+    	}
+    	
+		return null;
 		
-		User u = new User();
-		
-		try {
-			List<User> lu = mapper.readValue(jsonString, new TypeReference<List<User>>(){});
-			u=lu.get(0);
-			
-			usernameUser=u.getUsernameUser();
-			isAdmin = u.getIsAdmin();
-			System.out.print("valeur de usernma** :"+usernameUser+"\n");
-			System.out.print("valeur de isAdmin :"+isAdmin+"\n");
-			
-			//stockage des attributs
-			
-		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-		e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
     }
 	
     public void buyGamesInPanier()
@@ -456,8 +568,10 @@ public class User implements Serializable {
 
     			response.close();
     			
-    			//on vide la panier
+    			//on vide le panier
     			panier=null;
+    			
+    			//on met le total a zero
     			totalAmountPanier=0;
     			
     			try {
@@ -519,7 +633,7 @@ public class User implements Serializable {
 			e1.printStackTrace();
 		}
         
-        ResteasyClient client = new ResteasyClientBuilder().build();
+        Client client = ClientBuilder.newClient();
         WebTarget target = client.target("http://localhost:8080/FakeSteam/rest/user/getUsers/"+usernameUser); 
 		JsonArray json = target.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
 		String jsonString = json.toString();
@@ -634,9 +748,32 @@ public class User implements Serializable {
 			response.close();
 			//le compte du user a ete cree
 			
-			//ouverture d'une session, et renvoie vers la page d'accueil
-			FacesContext context = FacesContext.getCurrentInstance();
-			context.getExternalContext().getSessionMap().put("user", this);
+			
+			
+			//sauvegarde dans user de l'id precedemment cree
+			Client client2 = ClientBuilder.newClient();
+	        WebTarget target2 = client2.target("http://localhost:8080/FakeSteam/rest/user/getUsers/"+usernameUser); 
+			JsonArray json2 = target2.request(MediaType.APPLICATION_JSON).get(JsonArray.class); 
+			String jsonString2 = json2.toString();
+			ObjectMapper mapper2 = new ObjectMapper();
+			List<User> listOfUser = null;
+			
+			try {
+				listOfUser = mapper2.readValue(jsonString2, new TypeReference<List<User>>(){});
+				idUser=listOfUser.get(0).getIdUser();
+				
+			} catch (JsonParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
+			
+			
 			try {
 				FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
 			} catch (IOException e) {
@@ -644,7 +781,9 @@ public class User implements Serializable {
 				e.printStackTrace();
 			}
 			
-			
+			//ouverture d'une session, et renvoie vers la page d'accueil
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.getExternalContext().getSessionMap().put("user", this);
 
 		} catch (Exception e) {
 

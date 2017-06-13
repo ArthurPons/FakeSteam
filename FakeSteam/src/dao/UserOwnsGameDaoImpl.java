@@ -42,6 +42,7 @@ public class UserOwnsGameDaoImpl implements UserOwnsGameDao{
 	        connexion = daoFactory.getConnection();
 	        for(Game g : user.getPanier())
 	        {
+	        	System.out.print("formOwnsGame ,"+g.getIdGame()+","+user.getIdUser()+"\n");
 	        	preparedStatement = initialisationRequetePreparee( connexion, SQL_INSERT, true, g.getIdGame(), user.getIdUser() );
 	        	System.out.print("ajout du jeu"+g.getTitleGame()+" dans les jeux appartenant a "+user.getUsernameUser()+"\n");
 		        int statut = preparedStatement.executeUpdate();
