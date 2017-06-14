@@ -43,7 +43,33 @@
 				</div>
 				<div id="navbar" class="navbar-collapse collapse">
 					<ul class="nav navbar-nav">
-
+						<li class="dropdown"><a href="#" class="dropdown-toogle"
+							data-toggle="dropdown" role="button" aria-haspopup="true"
+							aria-expanded="false"> Browse library <span class="caret" />
+						</a>
+							<ul class="dropdown-menu">
+								<li><a href="allGame">All Games</a></li>
+								<li role="separator" class="divider"></li>
+								<li class="dropdown-header">By genre</li>
+								<li><a href="allGenre.xhtml">All Genres</a></li>
+								<p:repeat value="#{Genre.listOfAllGenres}" var="genre">
+									<li><p:link value="#{genre.nameGenre}"
+											outcome="gamesSortedByGenre">
+											<f:param name="idGenre" value="#{genre.idGenre}"/>
+										</p:link>
+									</li>
+								</p:repeat>
+								<li role="separator" class="divider"></li>
+								<li class="dropdown-header">By Consoles</li>
+								<li><a href="allConsole.xhtml">All Consoles</a></li>
+								<p:repeat value="#{Console.listOfAllConsoles}" var="console">
+									<li><p:link value="#{console.nameConsole}"
+											outcome="gamesSortedByConsole">
+											<f:param name="idConsole" value="#{console.idConsole}"/>
+										</p:link>
+									</li>
+								</p:repeat>
+							</ul></li>
 						<c:if test="#{user.isAdmin eq 1}">
 							<li><h:link value="add Game" outcome="formGame" /></li>
 							<li><h:link value="add Genre" outcome="formGenre" /></li>
@@ -52,12 +78,10 @@
 						<c:if test="#{user.isAdmin ne 1}">
 							<li><h:panelGroup rendered="#{not empty user}">
 									<h:link value="My games" outcome="myGames" />
-								</h:panelGroup>
-							</li>
+								</h:panelGroup></li>
 							<li><h:panelGroup rendered="#{not empty user}">
 									<h:link value="Historic" outcome="historic" />
-								</h:panelGroup>
-							</li>
+								</h:panelGroup></li>
 						</c:if>
 					</ul>
 

@@ -44,7 +44,33 @@
 				</div>
 				<div id="navbar" class="navbar-collapse collapse">
 					<ul class="nav navbar-nav">
-
+						<li class="dropdown"><a href="#" class="dropdown-toogle"
+							data-toggle="dropdown" role="button" aria-haspopup="true"
+							aria-expanded="false"> Browse library <span class="caret" />
+						</a>
+							<ul class="dropdown-menu">
+								<li><a href="allGame">All Games</a></li>
+								<li role="separator" class="divider"></li>
+								<li class="dropdown-header">By genre</li>
+								<li><a href="allGenre.xhtml">All Genres</a></li>
+								<p:repeat value="#{Genre.listOfAllGenres}" var="genre">
+									<li><p:link value="#{genre.nameGenre}"
+											outcome="gamesSortedByGenre">
+											<f:param name="idGenre" value="#{genre.idGenre}"/>
+										</p:link>
+									</li>
+								</p:repeat>
+								<li role="separator" class="divider"></li>
+								<li class="dropdown-header">By Consoles</li>
+								<li><a href="allConsole.xhtml">All Consoles</a></li>
+								<p:repeat value="#{Console.listOfAllConsoles}" var="console">
+									<li><p:link value="#{console.nameConsole}"
+											outcome="gamesSortedByConsole">
+											<f:param name="idConsole" value="#{console.idConsole}"/>
+										</p:link>
+									</li>
+								</p:repeat>
+							</ul></li>
 						<c:if test="#{user.isAdmin eq 1}">
 							<li><h:link value="add Game" outcome="formGame" /></li>
 							<li><h:link value="add Genre" outcome="formGenre" /></li>
@@ -54,30 +80,26 @@
 							<li><h:panelGroup rendered="#{not empty user}">
 									<h:link value="My games" outcome="myGames" />
 								</h:panelGroup></li>
+							<li><h:panelGroup rendered="#{not empty user}">
+									<h:link value="Historic" outcome="historic" />
+								</h:panelGroup></li>
 						</c:if>
-
 					</ul>
 
 					<ul class="nav navbar-nav navbar-right">
-
 						<h:panelGroup rendered="#{not empty user}">
-							<c:if test="#{user.isAdmin eq 1}">
-              	admin mode
-              </c:if>
 							<li><h:link value="#{user.usernameUser}" /></li>
-							<li><h:form>
-									<h:commandButton value="log out" action="#{user.logout}" />
-								</h:form></li>
 							<c:if test="#{user.isCartEmpty() eq 0}">
 								<li><h:link value="Cart" outcome="cart" /></li>
 							</c:if>
+							<li><h:form>
+									<h:commandButton value="log out" action="#{user.logout}" />
+								</h:form></li>
 						</h:panelGroup>
 
 						<h:panelGroup rendered="#{empty user}">
-							<ul class="nav navbar-nav navbar-right">
-								<li><h:link value="Create account" outcome="formUser" /></li>
-								<li><h:link value="Log in" outcome="login" /></li>
-							</ul>
+							<li><h:link value="Create account" outcome="formUser" /></li>
+							<li><h:link value="Log in" outcome="login" /></li>
 						</h:panelGroup>
 
 					</ul>
