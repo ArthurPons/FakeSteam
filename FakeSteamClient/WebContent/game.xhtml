@@ -50,16 +50,15 @@
 							aria-expanded="false"> Browse library <span class="caret" />
 						</a>
 							<ul class="dropdown-menu">
-								<li><a href="allGame">All Games</a></li>
+								<li><a href="allGame.xhtml">All Games</a></li>
 								<li role="separator" class="divider"></li>
 								<li class="dropdown-header">By genre</li>
 								<li><a href="allGenre.xhtml">All Genres</a></li>
 								<p:repeat value="#{Genre.listOfAllGenres}" var="genre">
 									<li><p:link value="#{genre.nameGenre}"
 											outcome="gamesSortedByGenre">
-											<f:param name="idGenre" value="#{genre.idGenre}"/>
-										</p:link>
-									</li>
+											<f:param name="idGenre" value="#{genre.idGenre}" />
+										</p:link></li>
 								</p:repeat>
 								<li role="separator" class="divider"></li>
 								<li class="dropdown-header">By Consoles</li>
@@ -67,9 +66,8 @@
 								<p:repeat value="#{Console.listOfAllConsoles}" var="console">
 									<li><p:link value="#{console.nameConsole}"
 											outcome="gamesSortedByConsole">
-											<f:param name="idConsole" value="#{console.idConsole}"/>
-										</p:link>
-									</li>
+											<f:param name="idConsole" value="#{console.idConsole}" />
+										</p:link></li>
 								</p:repeat>
 							</ul></li>
 						<c:if test="#{user.isAdmin eq 1}">
@@ -117,7 +115,14 @@
 
 	<div class="jumbotron">
 		<div class="container">
-			<h1>#{Game.titleGame}</h1>
+			<div class="row">
+				<div class="col-md-4">
+					<h1>#{Game.titleGame}</h1>
+				</div>
+				<div class="col-xs-4" style="padding-left: 0px; padding-right: 0px;">
+					<img src="#{Game.pictureUrlGame}" style="width:50%;height:50%" alt="" />
+				</div>
+			</div>
 		</div>
 	</div>
 
@@ -125,10 +130,11 @@
 		<p:panelGrid styleClass="ui-noborder" style="width: 100%">
 			<p:row>
 				<p:column colspan="5">
-					<p><b>Price</b> : #{Game.priceGame}€</p>
+					<p>
+						<b>Price</b> : #{Game.priceGame}€
+					</p>
 				</p:column>
 				<p:column rowspan="5" colspan="5" style="margin: 0 auto">
-					<img src="#{Game.pictureUrlGame}" alt=""></img>
 					<c:if
 						test="#{empty user.ownsGame(Game.idGame) and user.isAdmin eq 0}">
 						<h:form>
@@ -141,7 +147,7 @@
 			<p:row>
 				<p:column colspan="5">
 					<p>
-						<b>Genre</b> : 
+						<b>Genre</b> :
 						<p:repeat value="#{Game.listOfGenreName}" var="genre">
 					#{genre}
 				</p:repeat>
@@ -162,7 +168,9 @@
 				<p:column colspan="3">
 					<c:if test="#{Game.rate ne 0.0}">
 						<h:form>
-							<p><b>Ratings</b> : #{Game.rate} /5 (#{Game.nbRating})</p>
+							<p>
+								<b>Ratings</b> : #{Game.rate} /5 (#{Game.nbRating})
+							</p>
 						</h:form>
 					</c:if>
 				</p:column>
@@ -172,7 +180,7 @@
 					<c:if test="#{user.getTempRating() eq -1}">
 						<h:form>
 							<p:column colspan="1">
-							<b>Rate this game</b> :
+								<b>Rate this game</b> :
 							<p:rating value="#{user.tempRate}" cancel="false" />
 								<h:commandButton value="Submit" />
 							</p:column>
@@ -180,8 +188,8 @@
 					</c:if>
 					<c:if test="#{user.getTempRating() ne -1}">
 						<p:row>
-							<p:column colspan="1">							
-							<b>Your rating</b> :
+							<p:column colspan="1">
+								<b>Your rating</b> :
 							<p:rating value="#{user.tempRating}" disabled="true" />
 							</p:column>
 

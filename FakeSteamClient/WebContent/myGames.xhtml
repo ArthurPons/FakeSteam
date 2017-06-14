@@ -49,7 +49,7 @@
 							aria-expanded="false"> Browse library <span class="caret" />
 						</a>
 							<ul class="dropdown-menu">
-								<li><a href="allGame">All Games</a></li>
+								<li><a href="allGame.xhtml">All Games</a></li>
 								<li role="separator" class="divider"></li>
 								<li class="dropdown-header">By genre</li>
 								<li><a href="allGenre.xhtml">All Genres</a></li>
@@ -124,7 +124,7 @@
 			<div class="col-md-6 col-md-4">
 				<div class="thumbnail">
 					<div class="caption">
-						<img src="#{game.pictureUrlGame}"/>
+						<img src="#{game.pictureUrlGame}" class="img-responsive"/>
 						<h3>
 							<h:link value="#{game.titleGame}" outcome="game">
 								<f:param name="idGame" value="#{game.idGame}"/>
