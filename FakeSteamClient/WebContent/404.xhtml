@@ -53,7 +53,12 @@
 						<c:if test="#{user.isAdmin ne 1}">
 							<li><h:panelGroup rendered="#{not empty user}">
 									<h:link value="My games" outcome="myGames" />
-								</h:panelGroup></li>
+								</h:panelGroup>
+							</li>
+							<li><h:panelGroup rendered="#{not empty user}">
+									<h:link value="Historic" outcome="historic" />
+								</h:panelGroup>
+							</li>
 						</c:if>
 					</ul>
 

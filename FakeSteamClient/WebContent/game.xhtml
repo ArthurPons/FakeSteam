@@ -55,20 +55,21 @@
 							<li><h:panelGroup rendered="#{not empty user}">
 									<h:link value="My games" outcome="myGames" />
 								</h:panelGroup></li>
+							<li><h:panelGroup rendered="#{not empty user}">
+									<h:link value="Historic" outcome="historic" />
+								</h:panelGroup></li>
 						</c:if>
-
 					</ul>
 
 					<ul class="nav navbar-nav navbar-right">
-
 						<h:panelGroup rendered="#{not empty user}">
 							<li><h:link value="#{user.usernameUser}" /></li>
-							<li><h:form>
-									<h:commandButton value="log out" action="#{user.logout}" />
-								</h:form></li>
 							<c:if test="#{user.isCartEmpty() eq 0}">
 								<li><h:link value="Cart" outcome="cart" /></li>
 							</c:if>
+							<li><h:form>
+									<h:commandButton value="log out" action="#{user.logout}" />
+								</h:form></li>
 						</h:panelGroup>
 
 						<h:panelGroup rendered="#{empty user}">
@@ -80,8 +81,10 @@
 				</div>
 			</div>
 			</nav>
+
 		</div>
 	</div>
+
 	<f:metadata>
 		<f:viewParam name="idGame" value="#{Game.idGame}" />
 	</f:metadata>
@@ -96,11 +99,12 @@
 		<p:panelGrid styleClass="ui-noborder" style="width: 100%">
 			<p:row>
 				<p:column colspan="5">
-					<p>Price : #{Game.priceGame}€</p>
+					<p><b>Price</b> : #{Game.priceGame}€</p>
 				</p:column>
 				<p:column rowspan="5" colspan="5" style="margin: 0 auto">
 					<img src="#{Game.pictureUrlGame}" alt=""></img>
-					<c:if test="#{empty user.ownsGame(Game.idGame) and user.isAdmin eq 0}">
+					<c:if
+						test="#{empty user.ownsGame(Game.idGame) and user.isAdmin eq 0}">
 						<h:form>
 							<h:commandButton class="btn btn-lg btn-primary btn-block"
 								value="Add to cart" action="#{user.addToPanier(Game)}" />
@@ -111,7 +115,7 @@
 			<p:row>
 				<p:column colspan="5">
 					<p>
-						Genre :
+						<b>Genre</b> : 
 						<p:repeat value="#{Game.listOfGenreName}" var="genre">
 					#{genre}
 				</p:repeat>
@@ -121,7 +125,7 @@
 			<p:row>
 				<p:column colspan="5">
 					<p>
-						Console :
+						<b>Console</b> :
 						<p:repeat value="#{Game.listOfConsoleName}" var="console">
 					#{console}
 				</p:repeat>
@@ -132,7 +136,7 @@
 				<p:column colspan="3">
 					<c:if test="#{Game.rate ne 0.0}">
 						<h:form>
-							<p>Rate : #{Game.rate} /5 (#{Game.nbRating})</p>
+							<p><b>Ratings</b> : #{Game.rate} /5 (#{Game.nbRating})</p>
 						</h:form>
 					</c:if>
 				</p:column>
@@ -142,43 +146,54 @@
 					<c:if test="#{user.getTempRating() eq -1}">
 						<h:form>
 							<p:column colspan="1">
-							Rate this game :
+							<b>Rate this game</b> :
 							<p:rating value="#{user.tempRate}" cancel="false" />
-							<h:commandButton value="Submit" />
+								<h:commandButton value="Submit" />
 							</p:column>
 						</h:form>
 					</c:if>
 					<c:if test="#{user.getTempRating() ne -1}">
 						<p:row>
 							<p:column colspan="1">							
-							Your rating :
+							<b>Your rating</b> :
 							<p:rating value="#{user.tempRating}" disabled="true" />
-						</p:column>
-								
+							</p:column>
+
 						</p:row>
 					</c:if>
-					
-					add a comment :
-					
-					<h:form enctype="multipart/form-data">				       
-				        
-				        <h:inputTextarea value="#{user.tempComment}" cols="30" rows="10" />				        
-				        <h:commandButton value="Submit" />
-				        
-					</h:form>
-				
-								
-					
+
 				</c:if>
 			</p:row>
-			List of all comments :
-			<p:repeat value="#{Game.listOfComments}" var="comment">
-				user : #{comment[0]}
-				comment : #{comment[1]}
-			</p:repeat>	
-			
-			<p:column />
-			<p:row />
+			<p:row rendered="#{not empty user.ownsGame(Game.idGame)}">
+				<br />
+				<p:column colspan="1">
+					<b>Add a comment</b> :
+					<h:form enctype="multipart/form-data">
+						<p:inputTextarea value="#{user.tempComment}" cols="30" rows="5"
+							counter="display" maxlength="300"
+							counterTemplate="{0} characters remaining." />
+						<br />
+						<h:outputText id="display" />
+						<br />
+						<h:commandButton value="Submit" />
+					</h:form>
+				</p:column>
+			</p:row>
+			<p:row>
+				<p:column>
+					<b>Comments</b> :
+					<p:panelGrid>
+						<p:repeat value="#{Game.listOfComments}" var="comment">
+							<p:row>
+								<p:column>
+								user : #{comment[0]} <br />
+								comment : #{comment[1]}
+							</p:column>
+							</p:row>
+						</p:repeat>
+					</p:panelGrid>
+				</p:column>
+			</p:row>
 		</p:panelGrid>
 	</div>
 

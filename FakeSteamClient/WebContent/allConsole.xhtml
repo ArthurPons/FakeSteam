@@ -54,24 +54,24 @@
 						<c:if test="#{user.isAdmin ne 1}">
 							<li><h:panelGroup rendered="#{not empty user}">
 									<h:link value="My games" outcome="myGames" />
-								</h:panelGroup></li>
+								</h:panelGroup>
+							</li>
+							<li><h:panelGroup rendered="#{not empty user}">
+									<h:link value="Historic" outcome="historic" />
+								</h:panelGroup>
+							</li>
 						</c:if>
-
 					</ul>
 
 					<ul class="nav navbar-nav navbar-right">
-
 						<h:panelGroup rendered="#{not empty user}">
-							<c:if test="#{user.isAdmin eq 1}">
-              	admin mode
-              </c:if>
 							<li><h:link value="#{user.usernameUser}" /></li>
-							<li><h:form>
-									<h:commandButton value="log out" action="#{user.logout}" />
-								</h:form></li>
 							<c:if test="#{user.isCartEmpty() eq 0}">
 								<li><h:link value="Cart" outcome="cart" /></li>
 							</c:if>
+							<li><h:form>
+									<h:commandButton value="log out" action="#{user.logout}" />
+								</h:form></li>
 						</h:panelGroup>
 
 						<h:panelGroup rendered="#{empty user}">

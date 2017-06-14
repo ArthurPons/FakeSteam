@@ -54,13 +54,16 @@
 						<c:if test="#{user.isAdmin ne 1}">
 							<li><h:panelGroup rendered="#{not empty user}">
 									<h:link value="My games" outcome="myGames" />
-								</h:panelGroup></li>
+								</h:panelGroup>
+							</li>
+							<li><h:panelGroup rendered="#{not empty user}">
+									<h:link value="Historic" outcome="historic" />
+								</h:panelGroup>
+							</li>
 						</c:if>
-
 					</ul>
 
 					<ul class="nav navbar-nav navbar-right">
-
 						<h:panelGroup rendered="#{not empty user}">
 							<li><h:link value="#{user.usernameUser}" /></li>
 							<c:if test="#{user.isCartEmpty() eq 0}">
@@ -86,7 +89,7 @@
 
 	<div class="jumbotron">
 		<div class="container">
-			<h1>List of all genres</h1>
+			<h1>List of all games</h1>
 		</div>
 	</div>
 
